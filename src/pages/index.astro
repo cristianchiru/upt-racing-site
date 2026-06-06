@@ -10,10 +10,26 @@ const featured = latestNews[0];
 const secondary = latestNews.slice(1);
 
 const stats = [
-  { value: '13+', label: 'Years Active' },
-  { value: '24',  label: 'Competitions' },
-  { value: '3rd', label: 'Best Placement' },
-  { value: '46',  label: 'Team Members' },
+  {
+    value: '10+',
+    title: 'Years of engineering passion',
+    desc: 'Designing, building and racing Formula Student cars from Timișoara.',
+  },
+  {
+    value: '4',
+    title: 'Car generations',
+    desc: 'From TSR 1 to TSR 3 EVO, every car marks a new step in performance, reliability and innovation.',
+  },
+  {
+    value: '7',
+    title: 'International results listed',
+    desc: 'Competed across Europe — Italy, Czech Republic, Alpe Adria and Balkans.',
+  },
+  {
+    value: '5th',
+    title: 'Best overall result',
+    desc: 'Achieved at Formula Student Balkans 2025.',
+  },
 ];
 
 const upcomingEvent = {
@@ -113,20 +129,22 @@ const marqueeLogos = [
       <div class="flex items-center gap-2">
         <div class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: var(--color-accent-cyan);"></div>
         <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color: rgba(255,255,255,0.4);">
-          FSRo 2024 — 3rd Overall
+          5th Place at FS Balkans 2025
         </span>
       </div>
     </div>
   </section>
 
-  <!-- ─── STATS BAR ─────────────────────────────────────────── -->
+  <!-- ─── STATS ────────────────────────────────────────────── -->
   <section style="background: var(--color-primary-dark); border-top: 1px solid rgba(255,255,255,0.06);">
-    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 lg:divide-x" style="divide-color: rgba(255,255,255,0.08);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background: rgba(255,255,255,0.06);">
         {stats.map(s => (
-          <div class="text-center lg:px-8">
-            <p class="font-display font-black tabular text-white leading-none mb-2" style="font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.03em;">{s.value}</p>
-            <p class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">{s.label}</p>
+          <div class="flex flex-col gap-3 px-8 py-10" style="background: var(--color-primary-dark);">
+            <p class="font-display font-black text-white leading-none tabular" style="font-size: clamp(3rem, 5vw, 4.5rem); letter-spacing: -0.03em;">{s.value}</p>
+            <div class="h-[2px] w-8" style="background: var(--color-accent-cyan);"></div>
+            <p class="font-display font-bold text-white text-lg leading-tight" style="letter-spacing: -0.01em;">{s.title}</p>
+            <p class="text-sm leading-relaxed" style="color: rgba(255,255,255,0.45);">{s.desc}</p>
           </div>
         ))}
       </div>
