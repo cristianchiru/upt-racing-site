@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+import Button from '../components/ui/Button.astro';
+
+const tiers = [
+  { name: 'Title Sponsor', size: 'large', sponsors: ['Main Sponsor'] },
+  { name: 'Gold', size: 'medium', sponsors: ['Gold Sponsor A', 'Gold Sponsor B'] },
+  { name: 'Silver', size: 'small', sponsors: ['Silver A', 'Silver B', 'Silver C', 'Silver D'] },
+  { name: 'Supporting', size: 'xsmall', sponsors: ['Support A', 'Support B', 'Support C', 'Support D', 'Support E', 'Support F'] },
+];
+
+const sizes = { large: 'h-28', medium: 'h-20', small: 'h-16', xsmall: 'h-12' };
+---
+
+<Layout title="Sponsors" description="UPT Racing sponsors and partners">
+
+  <!-- Hero -->
+  <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Partners & Sponsors" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
+        Our<br /><span style="color: var(--color-accent-amber);">Sponsors</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Tiers -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      {tiers.map(tier => (
+        <div>
+          <div class="flex items-center gap-4 mb-8">
+            <div class="h-[3px] w-8" style="background: var(--color-accent-cyan);"></div>
+            <span class="text-xs font-black uppercase tracking-widest" style="color: var(--color-text-muted);">{tier.name}</span>
+            <div class="flex-1 h-px" style="background: var(--color-border);"></div>
+          </div>
+          <div class="flex flex-wrap gap-6 items-center">
+            {tier.sponsors.map(name => (
+              <div
+                class={`${sizes[tier.size]} px-8 flex items-center justify-center border transition-colors cursor-pointer grayscale hover:grayscale-0`}
+                style="border-color: var(--color-border); min-width: 160px;"
+                onmouseenter="this.style.borderColor='var(--color-primary)'"
+                onmouseleave="this.style.borderColor='var(--color-border)'"
+              >
+                <span class="text-sm font-bold uppercase tracking-wide" style="color: var(--color-text-muted);">{name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Become a sponsor -->
+  <section class="py-20 lg:py-28" style="background: var(--color-surface); border-top: 1px solid var(--color-border);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <SectionLabel label="Partner With Us" />
+          <h2 class="font-display font-black uppercase text-5xl mb-6" style="color: var(--color-text);">Become a Sponsor</h2>
+          <p class="text-lg leading-relaxed mb-4" style="color: var(--color-text-muted);">
+            Partnering with UPT Racing gives your brand direct exposure to future engineers and motorsport enthusiasts across Europe. Your logo travels to every competition we attend.
+          </p>
+          <p class="text-lg leading-relaxed mb-8" style="color: var(--color-text-muted);">
+            We offer flexible sponsorship packages — from financial support to in-kind technical contributions like materials, machining, or software licenses.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <Button href="/contact" variant="primary">Contact Us</Button>
+            <Button href="/sponsorship-package.pdf" variant="ghost">Download Package (PDF)</Button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          {['Brand Exposure', 'Talent Pipeline', 'Technical Collaboration', 'Community Impact'].map(b => (
+            <div class="p-6 border" style="border-color: var(--color-border);">
+              <div class="h-[3px] w-6 mb-4" style="background: var(--color-accent-cyan);"></div>
+              <p class="font-display font-bold uppercase text-lg" style="color: var(--color-text);">{b}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

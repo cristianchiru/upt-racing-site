@@ -1,0 +1,143 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { label: 'About', href: '/about' },
+  { label: 'Car', href: '/car/current' },
+  { label: 'Team', href: '/team' },
+  { label: 'Competitions', href: '/competitions' },
+  { label: 'News', href: '/news' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Sponsors', href: '/sponsors' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header
+  class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+  style="background: color-mix(in srgb, var(--color-background) 92%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border);"
+>
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center h-[72px] gap-8">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 shrink-0 mr-2">
+        <div
+          class="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-[11px] tracking-tight font-display"
+          style="background: var(--color-primary);"
+        >
+          UPT
+        </div>
+        <span class="font-display text-xl font-bold tracking-wide uppercase" style="color: var(--color-primary-dark);">
+          Racing
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden lg:flex items-stretch h-full flex-1 gap-0" aria-label="Main navigation">
+        {navLinks.map(link => {
+          const active = currentPath === link.href || currentPath.startsWith(link.href + '/');
+          return (
+            <a
+              href={link.href}
+              aria-current={active ? 'page' : undefined}
+              class="relative flex items-center px-4 text-sm font-medium transition-colors nav-link"
+              style={`color: var(--color-text);`}
+              data-active={active ? 'true' : 'false'}
+            >
+              {link.label}
+              <span
+                class="absolute bottom-0 left-0 right-0 h-[2px]"
+                style={`background: var(--color-accent-amber); opacity: ${active ? 1 : 0}; transition: opacity 0.2s;`}
+              />
+            </a>
+          );
+        })}
+      </nav>
+
+      <!-- Right actions -->
+      <div class="hidden lg:flex items-center gap-2 shrink-0 ml-auto">
+        <ThemeToggle />
+        <div class="w-px h-6 mx-1" style="background: var(--color-border);" />
+        <a
+          href="/join-us"
+          class="px-5 py-2 text-sm font-semibold border-2 transition-colors"
+          style="border-color: var(--color-primary); color: var(--color-primary);"
+          onmouseenter="this.style.background='var(--color-primary-light)'"
+          onmouseleave="this.style.background='transparent'"
+        >
+          Join Us
+        </a>
+        <a
+          href="/join-us"
+          class="px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          style="background: var(--color-accent-amber); color: var(--color-primary-dark);"
+        >
+          Apply Now
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="mobile-menu-btn"
+        class="lg:hidden ml-auto p-2"
+        style="color: var(--color-text);"
+        aria-label="Open menu"
+      >
+        <svg id="hamburger-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="close-icon" class="hidden" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu overlay -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden fixed inset-0 top-[72px] z-40"
+    style="background: var(--color-background);"
+  >
+    <nav class="flex flex-col p-6 gap-1">
+      {navLinks.map(link => {
+        const active = currentPath === link.href || currentPath.startsWith(link.href + '/');
+        return (
+          <a
+            href={link.href}
+            class="px-4 py-4 text-2xl font-display font-bold uppercase tracking-wide border-b transition-colors"
+            style={`color: ${active ? 'var(--color-primary)' : 'var(--color-text)'}; border-color: var(--color-border);`}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+      <div class="flex gap-3 mt-6">
+        <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold border-2" style="border-color: var(--color-primary); color: var(--color-primary);">Join Us</a>
+        <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">Apply Now</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav-link:hover { color: var(--color-primary) !important; }
+  .nav-link:hover span { opacity: 0.4 !important; }
+  .nav-link[data-active='true'] { color: var(--color-primary) !important; font-weight: 600; }
+</style>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const hamburger = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  btn?.addEventListener('click', () => {
+    const open = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden', open);
+    hamburger?.classList.toggle('hidden', !open);
+    closeIcon?.classList.toggle('hidden', open);
+  });
+</script>

@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+:root {
+  --color-primary: #0047AB;
+  --color-primary-dark: #071A2F;
+  --color-primary-light: #EAF2FF;
+  --color-accent-cyan: #00D4FF;
+  --color-accent-amber: #FFB000;
+  --color-background: #FFFFFF;
+  --color-surface: #F5F7FA;
+  --color-text: #111827;
+  --color-text-muted: #6B7280;
+  --color-border: #DDE3EA;
+}
+
+.dark {
+  --color-background: #071A2F;
+  --color-surface: #0D2540;
+  --color-text: #F9FAFB;
+  --color-text-muted: #9CA3AF;
+  --color-border: #1E3A5F;
+  --color-primary-light: #0D2540;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { transition: background-color 0.3s ease, color 0.3s ease; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.font-display { font-family: 'Barlow Condensed', sans-serif; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-cyan);
+  outline-offset: 2px;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes line-draw {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-line-draw {
+    animation: line-draw 1s ease forwards;
+    animation-delay: 0.3s;
+    width: 0;
+  }
+  .animate-fade-up {
+    animation: fade-up 0.7s ease forwards;
+    opacity: 0;
+  }
+  .animate-fade-up-1 { animation-delay: 0.1s; }
+  .animate-fade-up-2 { animation-delay: 0.25s; }
+  .animate-fade-up-3 { animation-delay: 0.4s; }
+  .animate-marquee {
+    animation: marquee 28s linear infinite;
+  }
+}
+
+.prose-racing {
+  max-width: 720px;
+  line-height: 1.8;
+}
+.prose-racing p:first-of-type {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.prose-racing h2 {
+  font-size: 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-primary-dark);
+}
+.dark .prose-racing h2 { color: var(--color-text); }
+.prose-racing a { color: var(--color-primary); }
+.prose-racing table { border-collapse: collapse; width: 100%; }
+.prose-racing th, .prose-racing td { border: 1px solid var(--color-border); padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+.prose-racing th { background: var(--color-surface); font-weight: 700; }
+
+.calendar-day.has-event::after {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent-amber);
+  margin: 2px auto 0;
+}

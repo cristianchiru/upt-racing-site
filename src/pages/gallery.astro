@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+
+const categories = ['All', 'Car', 'Events', 'Workshop', 'Competitions'];
+
+const images = [
+  { src: 'https://placehold.co/800x600/071A2F/00D4FF?text=Car+01', cat: 'Car', alt: 'Car front view' },
+  { src: 'https://placehold.co/600x800/0047AB/FFFFFF?text=Workshop+01', cat: 'Workshop', alt: 'Workshop' },
+  { src: 'https://placehold.co/800x500/071A2F/FFB000?text=Event+01', cat: 'Events', alt: 'Event' },
+  { src: 'https://placehold.co/700x700/0047AB/00D4FF?text=Car+02', cat: 'Car', alt: 'Car detail' },
+  { src: 'https://placehold.co/900x600/071A2F/FFFFFF?text=Competition+01', cat: 'Competitions', alt: 'Competition' },
+  { src: 'https://placehold.co/600x600/F5F7FA/0047AB?text=Team+01', cat: 'Events', alt: 'Team photo' },
+  { src: 'https://placehold.co/800x450/0047AB/FFB000?text=Car+03', cat: 'Car', alt: 'Car on track' },
+  { src: 'https://placehold.co/600x900/071A2F/00D4FF?text=Workshop+02', cat: 'Workshop', alt: 'Workshop 2' },
+  { src: 'https://placehold.co/800x600/0047AB/FFFFFF?text=Competition+02', cat: 'Competitions', alt: 'Competition 2' },
+  { src: 'https://placehold.co/700x500/F5F7FA/071A2F?text=Events+02', cat: 'Events', alt: 'Events 2' },
+  { src: 'https://placehold.co/500x700/071A2F/FFB000?text=Car+04', cat: 'Car', alt: 'Car 4' },
+  { src: 'https://placehold.co/800x600/0047AB/00D4FF?text=Workshop+03', cat: 'Workshop', alt: 'Workshop 3' },
+];
+---
+
+<Layout title="Gallery" description="UPT Racing photo gallery">
+
+  <section class="py-20 lg:py-28" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Photos" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">Gallery</h1>
+    </div>
+  </section>
+
+  <section class="py-16 lg:py-24" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Filters -->
+      <div class="flex flex-wrap gap-2 mb-10" id="gallery-filters">
+        {categories.map((c, i) => (
+          <button class="gal-btn px-4 py-2 text-sm font-semibold uppercase tracking-wide border transition-colors" data-cat={c}
+            style={`border-color: ${i===0?'var(--color-primary)':'var(--color-border)'}; background: ${i===0?'var(--color-primary)':'transparent'}; color: ${i===0?'white':'var(--color-text-muted)'};`}>
+            {c}
+          </button>
+        ))}
+      </div>
+
+      <!-- Masonry grid -->
+      <div class="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3" id="gallery-grid">
+        {images.map((img, i) => (
+          <div class="gal-item break-inside-avoid mb-3 group cursor-pointer overflow-hidden" data-cat={img.cat} data-index={i}>
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              class="w-full object-cover group-hover:opacity-80 transition-opacity duration-300"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center" style="background: rgba(0,0,0,0.95);">
+    <button id="lb-close" class="absolute top-6 right-6 text-white text-3xl font-bold hover:text-gray-300">✕</button>
+    <button id="lb-prev" class="absolute left-6 text-white text-4xl font-bold hover:text-gray-300 select-none">‹</button>
+    <img id="lb-img" src="" alt="" class="max-h-[85vh] max-w-[85vw] object-contain" />
+    <button id="lb-next" class="absolute right-6 text-white text-4xl font-bold hover:text-gray-300 select-none">›</button>
+  </div>
+</Layout>
+
+<script define:vars={{ images }}>
+  const allImages = images;
+  let currentIndex = 0;
+
+  // Filter
+  const filterBtns = document.querySelectorAll('.gal-btn');
+  const items = document.querySelectorAll('.gal-item');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.cat;
+      filterBtns.forEach(b => {
+        const active = b.dataset.cat === cat;
+        b.style.background = active ? 'var(--color-primary)' : 'transparent';
+        b.style.borderColor = active ? 'var(--color-primary)' : 'var(--color-border)';
+        b.style.color = active ? 'white' : 'var(--color-text-muted)';
+      });
+      items.forEach(item => {
+        item.style.display = (cat === 'All' || item.dataset.cat === cat) ? '' : 'none';
+      });
+    });
+  });
+
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+
+  function open(index) {
+    currentIndex = index;
+    lbImg.src = allImages[index].src;
+    lbImg.alt = allImages[index].alt;
+    lb.classList.remove('hidden');
+    lb.classList.add('flex');
+  }
+
+  function close() {
+    lb.classList.add('hidden');
+    lb.classList.remove('flex');
+  }
+
+  items.forEach(item => {
+    item.addEventListener('click', () => open(parseInt(item.dataset.index)));
+  });
+
+  document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', () => open((currentIndex - 1 + allImages.length) % allImages.length));
+  document.getElementById('lb-next').addEventListener('click', () => open((currentIndex + 1) % allImages.length));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') open((currentIndex - 1 + allImages.length) % allImages.length);
+    if (e.key === 'ArrowRight') open((currentIndex + 1) % allImages.length);
+  });
+</script>

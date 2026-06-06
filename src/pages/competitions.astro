@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+import EventCalendar from '../components/ui/EventCalendar.astro';
+
+const upcoming = [
+  { name: 'Formula Student Romania 2025', location: 'Piteşti, Romania', date: '2025-07-18', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Germany 2025', location: 'Hockenheimring, Germany', date: '2025-08-04', status: 'Registered', type: 'Competition' },
+  { name: 'Formula Student East 2025', location: 'Budapest, Hungary', date: '2025-06-25', status: 'Confirmed', type: 'Competition' },
+];
+
+const pastResults = [
+  { year: 2024, event: 'FSRo 2024', location: 'Romania', class: 'Combustion', placement: 3 },
+  { year: 2024, event: 'FS East 2024', location: 'Hungary', class: 'Combustion', placement: 12 },
+  { year: 2023, event: 'FSRo 2023', location: 'Romania', class: 'Combustion', placement: 5 },
+  { year: 2023, event: 'FS East 2023', location: 'Hungary', class: 'Combustion', placement: 18 },
+  { year: 2023, event: 'FSG 2023', location: 'Germany', class: 'Combustion', placement: 34 },
+  { year: 2022, event: 'FSRo 2022', location: 'Romania', class: 'Combustion', placement: 7 },
+];
+
+const calendarEvents = upcoming.map(e => ({ date: e.date, title: e.name, location: e.location, type: e.type }));
+---
+
+<Layout title="Competitions" description="UPT Racing competition schedule and past results">
+
+  <!-- Hero -->
+  <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Race Calendar" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
+        Competi-<br /><span style="color: var(--color-accent-amber);">tions</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Upcoming events -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="2025 Season" />
+      <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Upcoming Events</h2>
+      <div class="space-y-4">
+        {upcoming.map(e => (
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+            <div class="w-24 shrink-0 text-center">
+              <div class="font-display font-black text-3xl" style="color: var(--color-primary);">
+                {new Date(e.date).getDate()}
+              </div>
+              <div class="text-xs font-bold uppercase tracking-wide" style="color: var(--color-text-muted);">
+                {new Date(e.date).toLocaleString('en', { month: 'short', year: 'numeric' })}
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-display font-bold uppercase text-2xl" style="color: var(--color-text);">{e.name}</h3>
+              <p class="text-sm mt-1" style="color: var(--color-text-muted);">{e.location}</p>
+            </div>
+            <div>
+              <span
+                class="px-3 py-1 text-xs font-bold uppercase tracking-wide"
+                style={`background: ${e.status === 'Confirmed' ? 'rgba(0,212,255,0.1)' : 'rgba(255,176,0,0.1)'}; color: ${e.status === 'Confirmed' ? 'var(--color-accent-cyan)' : 'var(--color-accent-amber)'}; border: 1px solid currentColor;`}
+              >
+                {e.status}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Calendar -->
+  <section class="py-20 lg:py-32" style="background: var(--color-surface);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Calendar View" />
+      <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Event Calendar</h2>
+      <div class="max-w-lg">
+        <EventCalendar events={calendarEvents} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Past results -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Historical Results" />
+      <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Past Results</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--color-border);">
+              {['Year', 'Event', 'Location', 'Class', 'Placement'].map(h => (
+                <th class="text-left py-3 pr-8 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {pastResults.map(r => (
+              <tr style="border-bottom: 1px solid var(--color-border);">
+                <td class="py-4 pr-8 font-display font-bold text-lg" style="color: var(--color-primary);">{r.year}</td>
+                <td class="py-4 pr-8 font-medium" style="color: var(--color-text);">{r.event}</td>
+                <td class="py-4 pr-8" style="color: var(--color-text-muted);">{r.location}</td>
+                <td class="py-4 pr-8" style="color: var(--color-text-muted);">{r.class}</td>
+                <td class="py-4 pr-8">
+                  <span class="font-display font-black text-2xl tabular" style={`color: ${r.placement <= 3 ? 'var(--color-accent-amber)' : 'var(--color-text)'};`}>
+                    #{r.placement}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Layout>

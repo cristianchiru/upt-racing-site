@@ -1,0 +1,138 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/ui/SectionLabel.astro';
+import Button from '../../components/ui/Button.astro';
+
+const tabs = ['Powertrain', 'Chassis', 'Aerodynamics', 'Electronics'];
+
+const specs = {
+  Powertrain: [
+    ['Engine', 'KTM 690 Duke — Single Cylinder 4-stroke'],
+    ['Displacement', '690 cc'],
+    ['Power Output', '65 hp @ 7500 rpm'],
+    ['Torque', '68 Nm @ 6500 rpm'],
+    ['Transmission', '6-speed sequential'],
+    ['Drivetrain', 'Rear-wheel drive, chain'],
+  ],
+  Chassis: [
+    ['Frame Type', 'Space frame, chromoly steel (25CrMo4)'],
+    ['Wheelbase', '1530 mm'],
+    ['Track Width (F/R)', '1200 / 1150 mm'],
+    ['Vehicle Weight', '195 kg (with driver)'],
+    ['Weight Distribution', '45% Front / 55% Rear'],
+    ['Suspension', 'Double wishbone, pushrod actuated'],
+  ],
+  Aerodynamics: [
+    ['Downforce', '~250 N at 80 km/h'],
+    ['Drag Coefficient', '0.82 Cd'],
+    ['Front Wing', 'Two-element, adjustable'],
+    ['Rear Wing', 'Single-element with Gurney flap'],
+    ['Undertray', 'Flat floor with diffuser'],
+    ['Material', 'Carbon fibre composite'],
+  ],
+  Electronics: [
+    ['ECU', 'MoTeC M130'],
+    ['Data Logger', 'AIM EVO5'],
+    ['Sensors', '32 channel sensor suite'],
+    ['Traction Control', 'Software-based, wheel speed differential'],
+    ['Battery', '12V LiFePO4, 6 Ah'],
+    ['Wiring', 'Custom harness, MIL-spec connectors'],
+  ],
+};
+
+const gallery = [
+  'https://placehold.co/800x600/071A2F/00D4FF?text=Front+View',
+  'https://placehold.co/800x600/0047AB/FFFFFF?text=Rear+View',
+  'https://placehold.co/800x600/071A2F/FFB000?text=Cockpit',
+  'https://placehold.co/800x600/0047AB/FFFFFF?text=Engine+Bay',
+];
+---
+
+<Layout title="The Car — UPT-R25" description="Technical specifications of the UPT-R25 Formula Student car">
+
+  <!-- Hero -->
+  <section class="relative min-h-[70vh] flex items-end overflow-hidden" style="background: var(--color-primary-dark);">
+    <img src="https://placehold.co/1440x800/071A2F/00D4FF?text=UPT-R25" alt="UPT-R25" class="absolute inset-0 w-full h-full object-cover opacity-40" />
+    <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-20 w-full">
+      <SectionLabel label="Season 2025" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(5rem, 14vw, 12rem); letter-spacing: -0.02em;">UPT-R25</h1>
+    </div>
+  </section>
+
+  <!-- Tabbed specs -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Technical Specifications" />
+      <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">By the Numbers</h2>
+
+      <!-- Tab buttons -->
+      <div class="flex flex-wrap gap-0 mb-0 border-b" style="border-color: var(--color-border);" id="tab-btns">
+        {tabs.map((tab, i) => (
+          <button
+            class="tab-btn px-6 py-3 text-sm font-semibold uppercase tracking-wide border-b-2 -mb-px transition-colors"
+            data-tab={tab}
+            style={`border-color: ${i === 0 ? 'var(--color-primary)' : 'transparent'}; color: ${i === 0 ? 'var(--color-primary)' : 'var(--color-text-muted)'};`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
+      <!-- Tab panels -->
+      {tabs.map((tab, i) => (
+        <div class="tab-panel pt-8" data-tab={tab} style={i !== 0 ? 'display:none;' : ''}>
+          <dl class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            {specs[tab].map(([k, v]) => (
+              <div class="flex items-start gap-6 py-5 border-b" style="border-color: var(--color-border);">
+                <dt class="text-xs font-bold uppercase tracking-widest w-44 shrink-0 pt-1" style="color: var(--color-text-muted);">{k}</dt>
+                <dd class="font-display font-bold text-xl uppercase" style="color: var(--color-text);">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="py-20" style="background: var(--color-surface);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Photo Gallery" />
+      <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">The Car Up Close</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {gallery.map((src, i) => (
+          <div class="group overflow-hidden" style="aspect-ratio: 4/3;">
+            <img src={src} alt={`UPT-R25 view ${i+1}`} class="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-300" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 text-center" style="background: var(--color-primary-dark);">
+    <div class="max-w-xl mx-auto px-4">
+      <h2 class="font-display font-black uppercase text-white text-4xl mb-4">Interested in how we build it?</h2>
+      <p class="mb-8" style="color: rgba(255,255,255,0.6);">Explore past cars or join the team and help build the next one.</p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <Button href="/car/archive" variant="ghost">Car Archive</Button>
+        <Button href="/join-us" variant="accent">Join the Team</Button>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const btns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      btns.forEach(b => {
+        b.style.borderColor = b.dataset.tab === tab ? 'var(--color-primary)' : 'transparent';
+        b.style.color = b.dataset.tab === tab ? 'var(--color-primary)' : 'var(--color-text-muted)';
+      });
+      panels.forEach(p => { p.style.display = p.dataset.tab === tab ? '' : 'none'; });
+    });
+  });
+</script>

@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/ui/SectionLabel.astro';
+import { getCollection } from 'astro:content';
+
+const cars = await getCollection('cars');
+const sorted = cars.sort((a, b) => b.data.year - a.data.year);
+---
+
+<Layout title="Car Archive" description="Every UPT Racing Formula Student car, from the beginning">
+
+  <!-- Hero -->
+  <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Our History" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
+        Car<br /><span style="color: var(--color-accent-amber);">Archive</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-20">
+        {sorted.map((car, i) => (
+          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${i % 2 !== 0 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+            <div class="relative">
+              <img
+                src={car.data.coverImage}
+                alt={car.data.title}
+                class="w-full object-cover"
+                style="aspect-ratio: 16/10;"
+              />
+              <div class="absolute top-4 left-4 px-3 py-1 font-display font-black text-sm uppercase" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">
+                {car.data.year}
+              </div>
+            </div>
+            <div>
+              <p class="font-display font-black text-7xl mb-2" style="color: var(--color-primary); opacity: 0.15;">{car.data.year}</p>
+              <h2 class="font-display font-black uppercase text-5xl mb-4 -mt-10" style="color: var(--color-text);">{car.data.title}</h2>
+              <dl class="space-y-3 mb-8">
+                {Object.entries(car.data.specs).slice(0, 4).map(([k, v]) => (
+                  <div class="flex gap-4 pb-3 border-b" style="border-color: var(--color-border);">
+                    <dt class="text-xs font-bold uppercase tracking-widest w-36 shrink-0 pt-0.5" style="color: var(--color-text-muted);">{k}</dt>
+                    <dd class="font-semibold" style="color: var(--color-text);">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              {car.data.results.length > 0 && (
+                <div class="p-4" style="background: var(--color-surface); border-left: 3px solid var(--color-accent-cyan);">
+                  <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Best Result</p>
+                  <p class="font-display font-bold uppercase text-lg" style="color: var(--color-text);">
+                    {car.data.results[0].placement === 1 ? '🥇' : car.data.results[0].placement === 2 ? '🥈' : car.data.results[0].placement === 3 ? '🥉' : `#${car.data.results[0].placement}`} — {car.data.results[0].event}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {sorted.length === 0 && (
+          <p class="text-center py-20" style="color: var(--color-text-muted);">No car archive entries yet.</p>
+        )}
+      </div>
+    </div>
+  </section>
+</Layout>

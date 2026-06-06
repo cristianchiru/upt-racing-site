@@ -1,11 +1,296 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+import Button from '../components/ui/Button.astro';
+import { getCollection } from 'astro:content';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const allNews = await getCollection('news');
+const latestNews = allNews.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 3);
+
+const stats = [
+  { value: '18', label: 'Years Active' },
+  { value: '24', label: 'Competitions' },
+  { value: '3rd', label: 'Best Placement' },
+  { value: '45', label: 'Team Members' },
+];
+
+const upcomingEvent = {
+  title: 'Formula Student Germany 2025',
+  date: new Date('2025-08-04'),
+  location: 'Hockenheimring, Germany',
+};
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Home" description="UPT Racing — Formula Student team from Universitatea Politehnica Timișoara">
+
+  <!-- ─── HERO ────────────────────────────────────────────────── -->
+  <section class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- Background image -->
+    <div class="absolute inset-0">
+      <img
+        src="/hero-image.jpg"
+        alt="UPT Racing car on track"
+        class="w-full h-full object-cover"
+        onerror="this.style.display='none'"
+      />
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(7,26,47,0.88) 0%, rgba(7,26,47,0.50) 60%, transparent 100%);"></div>
+    </div>
+
+    <!-- Fallback bg when no image -->
+    <div class="absolute inset-0 -z-10" style="background: var(--color-primary-dark);"></div>
+
+    <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-32">
+      <!-- Cyan line draw -->
+      <div class="h-[3px] mb-8 animate-line-draw" style="background: var(--color-accent-cyan); max-width: 80px;"></div>
+
+      <p class="text-sm font-bold uppercase tracking-[0.3em] mb-4 animate-fade-up animate-fade-up-1" style="color: var(--color-accent-amber);">
+        Formula Student · Politehnica Timișoara
+      </p>
+
+      <h1
+        class="font-display font-black uppercase text-white leading-[0.9] mb-6 animate-fade-up animate-fade-up-2"
+        style="font-size: clamp(4rem, 12vw, 10rem); letter-spacing: -0.01em;"
+      >
+        BUILT<br />TO<br /><span style="color: var(--color-accent-cyan);">RACE.</span>
+      </h1>
+
+      <p class="text-lg mb-10 max-w-md leading-relaxed animate-fade-up animate-fade-up-3" style="color: rgba(255,255,255,0.7);">
+        Engineering the future of motorsport — designed, built and raced by students of UPT.
+      </p>
+
+      <div class="flex flex-wrap gap-4 animate-fade-up animate-fade-up-3">
+        <Button href="/car/current" variant="primary" size="lg">Discover the Car</Button>
+        <Button href="/team" variant="ghost" size="lg">
+          <span style="border-color: white; color: white; background: transparent;">Meet the Team</span>
+        </Button>
+      </div>
+
+      <!-- Bottom stat badge -->
+      <div class="absolute bottom-10 left-4 sm:left-8 lg:left-12 flex items-center gap-3">
+        <div class="w-2 h-2 rounded-full animate-pulse" style="background: var(--color-accent-cyan);"></div>
+        <span class="text-xs font-bold uppercase tracking-widest" style="color: rgba(255,255,255,0.5);">
+          FSRo 2024 — 3rd Overall
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS BAR ─────────────────────────────────────────── -->
+  <section style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 lg:divide-x" style="divide-color: rgba(255,255,255,0.1);">
+        {stats.map(s => (
+          <div class="text-center lg:px-8">
+            <p class="font-display font-black tabular text-white leading-none mb-2" style="font-size: clamp(3rem, 5vw, 4.5rem);">{s.value}</p>
+            <p class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT TEASER ──────────────────────────────────────── -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <SectionLabel label="About the Team" />
+          <h2 class="font-display font-black uppercase text-5xl lg:text-6xl leading-tight mb-6" style="color: var(--color-text);">
+            Students.<br />Engineers.<br /><span style="color: var(--color-primary);">Racers.</span>
+          </h2>
+          <p class="text-lg leading-relaxed mb-4" style="color: var(--color-text-muted);">
+            UPT Racing was founded in 2006 at Universitatea Politehnica Timișoara. We are a team of over 40 engineering students who design, build and compete with a formula-style race car every year in Formula Student competitions across Europe.
+          </p>
+          <p class="text-lg leading-relaxed mb-8" style="color: var(--color-text-muted);">
+            From aerodynamics to electronics, every component is engineered and manufactured in-house — giving our members real-world experience that goes far beyond the classroom.
+          </p>
+          <Button href="/about" variant="primary">Learn More About Us</Button>
+        </div>
+        <div class="relative">
+          <img
+            src="https://placehold.co/800x600/0047AB/FFFFFF?text=Workshop+Team"
+            alt="UPT Racing team in workshop"
+            class="w-full object-cover"
+            style="aspect-ratio: 4/3;"
+          />
+          <div class="absolute -bottom-4 -left-4 w-24 h-24 hidden lg:block" style="background: var(--color-accent-amber);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CURRENT CAR TEASER ────────────────────────────────── -->
+  <section class="py-20 lg:py-32 relative overflow-hidden" style="background: var(--color-surface);">
+    <!-- Watermark -->
+    <div
+      class="absolute inset-0 flex items-center justify-center pointer-events-none select-none font-display font-black uppercase"
+      style="font-size: 20vw; color: var(--color-primary); opacity: 0.04; letter-spacing: -0.02em; white-space: nowrap;"
+    >
+      UPT-R25
+    </div>
+
+    <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Current Car" />
+      <h2 class="font-display font-black uppercase text-5xl lg:text-6xl mb-12" style="color: var(--color-text);">
+        UPT-R25
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <img
+          src="https://placehold.co/800x500/071A2F/00D4FF?text=UPT-R25"
+          alt="UPT-R25 Race Car"
+          class="w-full object-cover"
+          style="aspect-ratio: 16/10;"
+        />
+        <div>
+          <dl class="space-y-4">
+            {[
+              ['Engine', 'KTM 690 Duke — Single Cylinder'],
+              ['Power Output', '65 hp'],
+              ['Vehicle Weight', '195 kg'],
+              ['0–75m Acceleration', '3.8 s'],
+              ['Wheelbase', '1530 mm'],
+              ['Suspension', 'Double Wishbone, Pushrod'],
+            ].map(([k, v]) => (
+              <div class="flex items-start gap-4 pb-4 border-b" style="border-color: var(--color-border);">
+                <dt class="text-xs font-bold uppercase tracking-widest w-40 shrink-0 pt-0.5" style="color: var(--color-text-muted);">{k}</dt>
+                <dd class="font-display font-bold text-xl uppercase" style="color: var(--color-text);">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div class="mt-8">
+            <Button href="/car/current" variant="primary">Full Car Specs</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LATEST NEWS ───────────────────────────────────────── -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <SectionLabel label="Latest News" />
+          <h2 class="font-display font-black uppercase text-5xl" style="color: var(--color-text);">From the Pit Lane</h2>
+        </div>
+        <a href="/news" class="text-sm font-semibold uppercase tracking-wide hidden sm:block" style="color: var(--color-primary);">View All News →</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {latestNews.length > 0 ? latestNews.map(post => (
+          <a href={`/news/${post.id}`} class="group border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+            <div class="overflow-hidden" style="aspect-ratio: 16/9;">
+              <img
+                src={post.data.coverImage}
+                alt={post.data.title}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">{post.data.category}</span>
+                <span class="text-xs" style="color: var(--color-text-muted);">{post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+              </div>
+              <h3 class="font-display font-bold uppercase text-xl leading-tight line-clamp-2 mb-2" style="color: var(--color-text);">{post.data.title}</h3>
+              <p class="text-sm leading-relaxed line-clamp-2" style="color: var(--color-text-muted);">{post.data.excerpt}</p>
+            </div>
+          </a>
+        )) : (
+          [1,2,3].map(i => (
+            <div class="border" style="border-color: var(--color-border);">
+              <div class="w-full" style={`aspect-ratio: 16/9; background: var(--color-surface);`}></div>
+              <div class="p-5">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">Technical</span>
+                  <span class="text-xs" style="color: var(--color-text-muted);">1 Jun 2025</span>
+                </div>
+                <h3 class="font-display font-bold uppercase text-xl mb-2" style="color: var(--color-text);">Article Title {i}</h3>
+                <p class="text-sm" style="color: var(--color-text-muted);">Sample excerpt text for the news article goes here.</p>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+      <div class="mt-8 text-center sm:hidden">
+        <a href="/news" class="text-sm font-semibold uppercase tracking-wide" style="color: var(--color-primary);">View All News →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── UPCOMING EVENT ────────────────────────────────────── -->
+  <section style="background: var(--color-primary-dark);" class="py-20 lg:py-32">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <SectionLabel label="Next Event" light={true} />
+          <h2 class="font-display font-black uppercase text-5xl lg:text-6xl leading-tight mb-4 text-white">{upcomingEvent.title}</h2>
+          <p class="text-sm mb-8" style="color: rgba(255,255,255,0.5);">{upcomingEvent.location}</p>
+          <Button href="/competitions" variant="accent">View All Events</Button>
+        </div>
+        <!-- Countdown -->
+        <div>
+          <div class="grid grid-cols-4 gap-4" id="countdown">
+            {['days','hours','minutes','seconds'].map(unit => (
+              <div class="text-center p-4" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                <p class="font-display font-black text-white tabular" style="font-size: 3rem;" id={`cd-${unit}`}>--</p>
+                <p class="text-xs font-bold uppercase tracking-widest mt-1" style="color: var(--color-accent-cyan);">{unit}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SPONSORS STRIP ────────────────────────────────────── -->
+  <section class="py-14 overflow-hidden" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="max-w-[1280px] mx-auto px-4 mb-8 text-center">
+      <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Our Sponsors</span>
+    </div>
+    <div class="relative overflow-hidden">
+      <div class="flex gap-16 animate-marquee whitespace-nowrap" style="width: max-content;">
+        {Array(8).fill(null).map((_, i) => (
+          <div class="flex items-center justify-center w-40 h-16 grayscale hover:grayscale-0 transition-all cursor-pointer" style="opacity: 0.5; hover:opacity:1;">
+            <div class="w-36 h-10 flex items-center justify-center border text-xs font-bold uppercase tracking-wide" style="border-color: var(--color-border); color: var(--color-text-muted);">Sponsor {i+1}</div>
+          </div>
+        ))}
+        {Array(8).fill(null).map((_, i) => (
+          <div class="flex items-center justify-center w-40 h-16 grayscale hover:grayscale-0 transition-all cursor-pointer" style="opacity: 0.5;">
+            <div class="w-36 h-10 flex items-center justify-center border text-xs font-bold uppercase tracking-wide" style="border-color: var(--color-border); color: var(--color-text-muted);">Sponsor {i+1}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── JOIN CTA BAND ─────────────────────────────────────── -->
+  <section class="py-20 lg:py-28 text-center" style="background: var(--color-primary);">
+    <div class="max-w-[1280px] mx-auto px-4">
+      <h2 class="font-display font-black uppercase text-white leading-tight mb-4" style="font-size: clamp(2.5rem, 6vw, 5rem);">
+        Want to build the<br />future of racing?
+      </h2>
+      <p class="text-lg mb-10 max-w-lg mx-auto" style="color: rgba(255,255,255,0.7);">
+        We're looking for passionate engineering students ready to get their hands dirty.
+      </p>
+      <Button href="/join-us" variant="accent" size="lg">Join the Team</Button>
+    </div>
+  </section>
+
 </Layout>
+
+<script define:vars={{ eventDate: upcomingEvent.date.toISOString() }}>
+  function tick() {
+    const diff = new Date(eventDate) - new Date();
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const pad = n => String(n).padStart(2, '0');
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = pad(v); };
+    set('cd-days', d); set('cd-hours', h); set('cd-minutes', m); set('cd-seconds', s);
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>

@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SectionLabel from '../../components/ui/SectionLabel.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news');
+  return posts.map(post => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const allPosts = await getCollection('news');
+const related = allPosts.filter(p => p.id !== post.id && p.data.category === post.data.category).slice(0, 2);
+---
+
+<Layout title={post.data.title} description={post.data.excerpt}>
+  <section class="relative min-h-[60vh] flex items-end overflow-hidden">
+    <img src={post.data.coverImage} alt={post.data.title} class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(7,26,47,0.95) 0%, rgba(7,26,47,0.4) 50%, transparent 100%);"></div>
+    <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-16 w-full">
+      <SectionLabel label={post.data.category} light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-tight max-w-3xl" style="font-size: clamp(2.5rem, 6vw, 5rem);">{post.data.title}</h1>
+      <div class="flex items-center gap-4 mt-4">
+        <span class="text-sm" style="color: rgba(255,255,255,0.6);">{post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+        <span class="text-sm" style="color: rgba(255,255,255,0.6);">By {post.data.author}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 lg:py-24" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="lg:grid lg:grid-cols-[1fr_280px] lg:gap-16">
+        <article class="prose-racing max-w-[720px]" style="color: var(--color-text);">
+          <Content />
+        </article>
+        <aside class="hidden lg:block">
+          <div class="sticky top-24">
+            <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: var(--color-text-muted);">Category</p>
+            <span class="inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest mb-8" style="background: var(--color-primary-light); color: var(--color-primary);">{post.data.category}</span>
+            <br />
+            <a href="/news" class="text-sm font-semibold" style="color: var(--color-primary);">← Back to News</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="py-16" style="background: var(--color-surface); border-top: 1px solid var(--color-border);">
+      <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-display font-bold uppercase text-3xl mb-8" style="color: var(--color-text);">Related Articles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {related.map(r => (
+            <a href={`/news/${r.id}`} class="group border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+              <div class="overflow-hidden" style="aspect-ratio: 16/9;">
+                <img src={r.data.coverImage} alt={r.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div class="p-5">
+                <span class="text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">{r.data.category}</span>
+                <h3 class="font-display font-bold uppercase text-xl mt-2" style="color: var(--color-text);">{r.data.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>

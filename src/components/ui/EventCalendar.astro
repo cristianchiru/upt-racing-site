@@ -1,0 +1,114 @@
+---
+interface CalendarEvent {
+  date: string; // YYYY-MM-DD
+  title: string;
+  location: string;
+  type: string;
+}
+
+interface Props {
+  events: CalendarEvent[];
+}
+
+const { events } = Astro.props;
+---
+
+<div id="calendar-wrapper" class="w-full">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <button id="cal-prev" class="w-9 h-9 flex items-center justify-center border transition-colors hover:border-[var(--color-primary)]" style="border-color: var(--color-border); color: var(--color-text);">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <h3 id="cal-title" class="font-display text-xl font-bold uppercase tracking-wide" style="color: var(--color-text);"></h3>
+    <button id="cal-next" class="w-9 h-9 flex items-center justify-center border transition-colors hover:border-[var(--color-primary)]" style="border-color: var(--color-border); color: var(--color-text);">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <!-- Day labels -->
+  <div class="grid grid-cols-7 mb-2">
+    {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => (
+      <div class="text-center text-xs font-bold uppercase tracking-widest py-2" style="color: var(--color-text-muted);">{d}</div>
+    ))}
+  </div>
+
+  <!-- Grid -->
+  <div id="cal-grid" class="grid grid-cols-7 gap-1"></div>
+
+  <!-- Event detail -->
+  <div id="cal-detail" class="hidden mt-4 p-4 border-l-4" style="border-color: var(--color-accent-amber); background: var(--color-surface);">
+    <p id="cal-detail-title" class="font-display text-lg font-bold uppercase" style="color: var(--color-text);"></p>
+    <p id="cal-detail-location" class="text-sm mt-1" style="color: var(--color-text-muted);"></p>
+  </div>
+</div>
+
+<script define:vars={{ events }}>
+  const calEvents = events;
+  let current = new Date();
+  current.setDate(1);
+
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function eventForDate(y, m, d) {
+    const str = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    return calEvents.find(e => e.date === str);
+  }
+
+  function render() {
+    const y = current.getFullYear();
+    const m = current.getMonth();
+    document.getElementById('cal-title').textContent = `${months[m]} ${y}`;
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    const firstDay = new Date(y, m, 1);
+    // Monday-based: 0=Mon
+    let startOffset = (firstDay.getDay() + 6) % 7;
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+    for (let i = 0; i < startOffset; i++) {
+      const el = document.createElement('div');
+      el.className = 'aspect-square';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const ev = eventForDate(y, m, d);
+      const el = document.createElement('button');
+      el.className = 'aspect-square flex flex-col items-center justify-center text-sm transition-colors rounded-sm';
+      el.style.color = 'var(--color-text)';
+      if (ev) {
+        el.classList.add('has-event');
+        el.style.fontWeight = '700';
+        el.style.color = 'var(--color-primary-dark)';
+        el.style.background = 'rgba(255,176,0,0.15)';
+      }
+      const today = new Date();
+      if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear()) {
+        el.style.background = 'var(--color-primary)';
+        el.style.color = 'white';
+      }
+      el.textContent = String(d);
+      if (ev) {
+        el.addEventListener('click', () => {
+          document.getElementById('cal-detail').classList.remove('hidden');
+          document.getElementById('cal-detail-title').textContent = ev.title;
+          document.getElementById('cal-detail-location').textContent = `${ev.location} · ${ev.type}`;
+        });
+      }
+      grid.appendChild(el);
+    }
+    document.getElementById('cal-detail').classList.add('hidden');
+  }
+
+  document.getElementById('cal-prev').addEventListener('click', () => {
+    current.setMonth(current.getMonth() - 1);
+    render();
+  });
+  document.getElementById('cal-next').addEventListener('click', () => {
+    current.setMonth(current.getMonth() + 1);
+    render();
+  });
+
+  render();
+</script>

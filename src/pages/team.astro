@@ -1,0 +1,181 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+
+const departments = ['Toți', 'Leadership', 'Aero', 'Vehicle Dynamics', 'Mechanical', 'Powertrain', 'Electronics', 'Media & Marketing'];
+
+const members = [
+  // Leadership
+  { name: 'Borborean Andrei-Tiberiu', role: 'Faculty Advisor', dept: 'Leadership' },
+  { name: 'Borza Andrei-Casian',      role: 'Team Captain',    dept: 'Leadership' },
+
+  // Aero
+  { name: 'Varga Eduard',             role: 'Aero',            dept: 'Aero' },
+  { name: 'Mutuleasa Răzvan',         role: 'Aero',            dept: 'Aero' },
+  { name: 'Cenușa Raul',             role: 'Aero',            dept: 'Aero' },
+  { name: 'Iovanovici Nikola',        role: 'Aero',            dept: 'Aero' },
+  { name: 'Pleș Alexandru',           role: 'Aero',            dept: 'Aero' },
+  { name: 'Rusu Alexandru Andrei',    role: 'Aero',            dept: 'Aero' },
+  { name: 'Chița Flaviu-Ovidiu',     role: 'Aero',            dept: 'Aero' },
+
+  // Vehicle Dynamics
+  { name: 'Păl Darius-Florin',        role: 'Vehicle Dynamics', dept: 'Vehicle Dynamics' },
+  { name: 'Liciu Daniel-Andrei',      role: 'Vehicle Dynamics', dept: 'Vehicle Dynamics' },
+  { name: 'Ilie Luca',                role: 'Vehicle Dynamics', dept: 'Vehicle Dynamics' },
+  { name: 'Schinteie Ian',            role: 'Vehicle Dynamics', dept: 'Vehicle Dynamics' },
+
+  // Mechanical
+  { name: 'Apostol Marian',           role: 'Mechanical',      dept: 'Mechanical' },
+  { name: 'Ștefan-Krakovszki Andrei', role: 'Mechanical',      dept: 'Mechanical' },
+  { name: 'Rată Andrei Adrian',       role: 'Mechanical',      dept: 'Mechanical' },
+  { name: 'Suhanski Ștefan Daniel',   role: 'Mechanical',      dept: 'Mechanical' },
+  { name: 'Malanciuc Paul',           role: 'Mechanical',      dept: 'Mechanical' },
+  { name: 'Bulancea Arina',           role: 'Mechanical',      dept: 'Mechanical' },
+  { name: 'Dani B.',                  role: 'Mechanical',      dept: 'Mechanical' },
+
+  // Powertrain
+  { name: 'Bogdan Adrian-Gabriel',    role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Ardelean Mark',            role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Iordache Caius-Cezar',     role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Buteică Nicolas',          role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Neghină Ionuț-Alexandru',  role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Cercel Ștefania Bianca',   role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Lihet Raul-Ionuț',         role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Ciuclea Alexandru',        role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Robu Radu',                role: 'Powertrain',      dept: 'Powertrain' },
+  { name: 'Alic Ionuț',              role: 'Powertrain',      dept: 'Powertrain' },
+
+  // Electronics
+  { name: 'Borza Darius-Filip',       role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Muncean Mihai-Rareș',      role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Dămoc Ionuț-Damian',       role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Vramița Darius-Adrian',    role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Vermeșan Bogdan-Andrei',   role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Bârna Filip-Andrei',       role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Muscă Raul',              role: 'Electronics',     dept: 'Electronics' },
+  { name: 'Dumitru Alexandru',        role: 'Electronics',     dept: 'Electronics' },
+
+  // Media & Marketing
+  { name: 'Bugaru Madeea-Alexandra',  role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Sasu David',               role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Bercu Ariana',             role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Olaru Amalia',             role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Cosmescu Alexandra',       role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Pintican Gabriel',         role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Birău Mara',              role: 'Media & Marketing', dept: 'Media & Marketing' },
+  { name: 'Vișan Andrei',            role: 'Media & Marketing', dept: 'Media & Marketing' },
+];
+
+const deptColors: Record<string, string> = {
+  'Leadership':       '#0047AB',
+  'Aero':             '#00D4FF',
+  'Vehicle Dynamics': '#FFB000',
+  'Mechanical':       '#6B7280',
+  'Powertrain':       '#DC2626',
+  'Electronics':      '#7C3AED',
+  'Media & Marketing':'#059669',
+};
+
+function initials(name: string) {
+  return name.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase();
+}
+---
+
+<Layout title="Echipă" description="Cunoaște membrii echipei UPT Racing 2026">
+
+  <!-- Hero -->
+  <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Sezonul 2026" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
+        Echipa<br /><span style="color: var(--color-accent-cyan);">Noastră</span>
+      </h1>
+      <p class="mt-6 text-lg max-w-xl" style="color: rgba(255,255,255,0.6);">
+        {members.length} de membri. Un singur obiectiv — să concurăm la cel mai înalt nivel Formula Student.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter + Grid -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Filter tabs -->
+      <div class="flex flex-wrap gap-2 mb-14" id="dept-filters">
+        {departments.map((d, i) => (
+          <button
+            class="dept-btn px-4 py-2 text-sm font-semibold uppercase tracking-wide border transition-colors"
+            data-dept={d}
+            style={`border-color: ${i === 0 ? 'var(--color-primary)' : 'var(--color-border)'}; background: ${i === 0 ? 'var(--color-primary)' : 'transparent'}; color: ${i === 0 ? 'white' : 'var(--color-text-muted)'};`}
+          >
+            {d}
+          </button>
+        ))}
+      </div>
+
+      <!-- Members grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5" id="members-grid">
+        {members.map(m => {
+          const color = deptColors[m.dept] ?? '#0047AB';
+          const init = initials(m.name);
+          return (
+            <div class="member-card group" data-dept={m.dept}>
+              <!-- Avatar placeholder -->
+              <div
+                class="w-full mb-4 flex items-center justify-center overflow-hidden"
+                style={`aspect-ratio: 1/1; background: ${color}18;`}
+              >
+                <span
+                  class="font-display font-black text-4xl"
+                  style={`color: ${color};`}
+                >
+                  {init}
+                </span>
+              </div>
+              <h3 class="font-display font-bold uppercase text-base leading-tight" style="color: var(--color-text);">{m.name}</h3>
+              <span
+                class="inline-block mt-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide"
+                style={`background: ${color}18; color: ${color};`}
+              >
+                {m.dept}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      <!-- Count -->
+      <p class="mt-12 text-sm" style="color: var(--color-text-muted);" id="member-count">
+        Se afișează {members.length} membri
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll('.dept-btn');
+  const cards = document.querySelectorAll('.member-card');
+  const countEl = document.getElementById('member-count');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dept = btn.dataset.dept;
+
+      buttons.forEach(b => {
+        const active = b.dataset.dept === dept;
+        b.style.background = active ? 'var(--color-primary)' : 'transparent';
+        b.style.borderColor = active ? 'var(--color-primary)' : 'var(--color-border)';
+        b.style.color = active ? 'white' : 'var(--color-text-muted)';
+      });
+
+      let visible = 0;
+      cards.forEach(c => {
+        const show = dept === 'Toți' || c.dataset.dept === dept;
+        (c as HTMLElement).style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      if (countEl) countEl.textContent = `Se afișează ${visible} membri`;
+    });
+  });
+</script>

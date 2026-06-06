@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+import Button from '../components/ui/Button.astro';
+
+const departments = [
+  { name: 'Mechanical Engineering', what: 'Design and manufacture chassis, suspension, powertrain and body components.', need: 'AutoCAD / CATIA / SolidWorks experience; passion for precision manufacturing.' },
+  { name: 'Aerodynamics', what: 'Simulate and design wings, diffusers and underbody aero packages using CFD.', need: 'Ansys Fluent or OpenFOAM; strong fluid dynamics fundamentals.' },
+  { name: 'Electronics & Software', what: 'Build the wiring harness, ECU configuration, data logging and embedded control systems.', need: 'C/C++, CAN bus, MATLAB; electronics lab experience a plus.' },
+  { name: 'Business & Marketing', what: 'Manage sponsorships, social media, cost reports and the Business Plan Event.', need: 'Communication skills, business acumen, design sense (Adobe / Figma).' },
+];
+
+const faqs = [
+  { q: 'Do I need prior racing experience?', a: 'No. We teach everything you need. Passion and commitment matter most.' },
+  { q: 'When can I join?', a: 'We recruit mainly at the start of each academic year, but reach out anytime.' },
+  { q: 'How much time does it take?', a: 'Expect 10–15 hours per week during build season (Oct–May), more around competitions.' },
+  { q: 'Is it paid?', a: 'The team is volunteer-based, but you gain industry experience, competition travel, and references.' },
+];
+---
+
+<Layout title="Join Us" description="Apply to join UPT Racing Formula Student team">
+
+  <!-- Hero -->
+  <section class="py-28 lg:py-40 text-center" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Open Positions" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none mb-6" style="font-size: clamp(4rem, 12vw, 10rem);">
+        JOIN THE<br /><span style="color: var(--color-accent-amber);">RACE</span>
+      </h1>
+      <p class="text-xl max-w-xl mx-auto" style="color: rgba(255,255,255,0.65);">
+        We're looking for passionate engineering students ready to build something extraordinary.
+      </p>
+    </div>
+  </section>
+
+  <!-- Departments -->
+  <section class="py-20 lg:py-32" style="background: var(--color-background);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Open Roles" />
+      <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Departments</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {departments.map(d => (
+          <div class="p-8 border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+            <h3 class="font-display font-bold uppercase text-2xl mb-4" style="color: var(--color-text);">{d.name}</h3>
+            <div class="mb-3">
+              <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: var(--color-accent-cyan);">What you'll do</p>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">{d.what}</p>
+            </div>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: var(--color-accent-amber);">What we need</p>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">{d.need}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Application form -->
+  <section class="py-20 lg:py-32" style="background: var(--color-surface);">
+    <div class="max-w-[720px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Apply Now" />
+      <h2 class="font-display font-black uppercase text-5xl mb-10" style="color: var(--color-text);">Apply to Join</h2>
+      <form class="space-y-6" netlify name="join-application" method="POST">
+        <input type="hidden" name="form-name" value="join-application" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Full Name</label>
+            <input type="text" name="name" required class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Email</label>
+            <input type="email" name="email" required class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Department</label>
+          <select name="department" class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none" style="border-color: var(--color-border); color: var(--color-text);">
+            {departments.map(d => <option>{d.name}</option>)}
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Why do you want to join?</label>
+          <textarea name="message" rows="5" required class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors resize-none" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'"></textarea>
+        </div>
+        <Button type="submit" variant="accent" size="lg">Submit Application</Button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 lg:py-28" style="background: var(--color-background);">
+    <div class="max-w-[720px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="FAQ" />
+      <h2 class="font-display font-black uppercase text-5xl mb-10" style="color: var(--color-text);">Common Questions</h2>
+      <div class="space-y-2">
+        {faqs.map(f => (
+          <details class="group border-b" style="border-color: var(--color-border);">
+            <summary class="flex items-center justify-between py-5 cursor-pointer font-display font-bold uppercase text-xl list-none" style="color: var(--color-text);">
+              {f.q}
+              <span class="text-2xl transition-transform group-open:rotate-45" style="color: var(--color-primary);">+</span>
+            </summary>
+            <p class="pb-5 text-sm leading-relaxed" style="color: var(--color-text-muted);">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
