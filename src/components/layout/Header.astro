@@ -51,13 +51,12 @@ const currentPath = Astro.url.pathname;
       <!-- Right actions -->
       <div class="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
         <ThemeToggle />
-        <div class="w-px h-5 mx-1" style="background: rgba(255,255,255,0.15);" />
+        <div id="header-divider" class="w-px h-5 mx-1" style="background: rgba(255,255,255,0.15);" />
         <a
+          id="join-us-outline"
           href="/join-us"
           class="px-5 py-2 text-sm font-semibold border transition-colors"
           style="border-color: rgba(255,255,255,0.4); color: white;"
-          onmouseenter="this.style.borderColor='white'"
-          onmouseleave="this.style.borderColor='rgba(255,255,255,0.4)'"
         >
           Join Us
         </a>
@@ -118,9 +117,14 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <style>
-  .nav-link:hover { color: white !important; }
+  /* Active & hover — colour shifts relative to whatever the nav text currently is */
+  .nav-link:hover { opacity: 1 !important; filter: brightness(1.35); }
   .nav-link:hover span { opacity: 0.4 !important; }
-  .nav-link[data-active='true'] { color: white !important; font-weight: 600; }
+  .nav-link[data-active='true'] { font-weight: 600; opacity: 1 !important; filter: brightness(1.35); }
+
+  /* On dark / transparent header: override filter with a true white */
+  .header-transparent .nav-link:hover,
+  .header-transparent .nav-link[data-active='true'] { filter: none; color: white !important; }
 
   .logo-img {
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -146,9 +150,11 @@ const currentPath = Astro.url.pathname;
   });
 
   // Scroll: transparent on hero, solid after
-  const header  = document.getElementById('site-header') as HTMLElement;
-  const logo    = document.getElementById('header-logo') as HTMLImageElement;
-  const navLinks = document.querySelectorAll<HTMLElement>('.nav-link');
+  const header      = document.getElementById('site-header') as HTMLElement;
+  const logo        = document.getElementById('header-logo') as HTMLImageElement;
+  const navLinks    = document.querySelectorAll<HTMLElement>('.nav-link');
+  const divider     = document.getElementById('header-divider') as HTMLElement;
+  const joinOutline = document.getElementById('join-us-outline') as HTMLAnchorElement;
 
   function updateHeader() {
     const scrolled = window.scrollY > 60;
@@ -161,13 +167,24 @@ const currentPath = Astro.url.pathname;
     header.style.backdropFilter    = transparent ? 'none'        : 'blur(14px)';
     header.style.borderBottomColor = transparent ? 'transparent' : 'var(--header-border)';
 
+    // Toggle class used by CSS for active/hover colour logic
+    header.classList.toggle('header-transparent', transparent);
+
     // Logo: always white over hero, theme-aware when solid
     logo.style.filter = (transparent || isDark) ? 'brightness(0) invert(1)' : 'none';
 
     // Nav text: always white over hero, theme-aware when solid
-    navLinks.forEach(el => {
-      el.style.color = transparent ? 'rgba(255,255,255,0.85)' : 'var(--header-text)';
-    });
+    const navColor = transparent ? 'rgba(255,255,255,0.85)' : 'var(--header-text)';
+    navLinks.forEach(el => { el.style.color = navColor; });
+
+    // Divider + Join Us outline: white on transparent/dark, theme colour on solid light
+    if (transparent || isDark) {
+      if (divider)     divider.style.background    = 'rgba(255,255,255,0.15)';
+      if (joinOutline) { joinOutline.style.borderColor = 'rgba(255,255,255,0.4)'; joinOutline.style.color = 'white'; }
+    } else {
+      if (divider)     divider.style.background    = 'var(--color-border)';
+      if (joinOutline) { joinOutline.style.borderColor = 'var(--color-primary)'; joinOutline.style.color = 'var(--color-primary)'; }
+    }
   }
 
   window.addEventListener('scroll', updateHeader, { passive: true });
