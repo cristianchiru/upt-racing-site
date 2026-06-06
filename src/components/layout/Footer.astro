@@ -43,12 +43,9 @@ const socials = [
 
       <!-- LEFT: CTA + newsletter + socials -->
       <div class="flex flex-col gap-10">
-        <!-- Logo badge with orbiting years -->
-        <a href="/" class="footer-logo-badge" aria-label="UPT Racing home">
-          <!-- Orbiting year ring -->
-          <div class="years-orbit" aria-hidden="true"></div>
-          <!-- Logo -->
-          <img src="/logo.png" alt="UPT Racing" class="footer-logo-img" style="filter: brightness(0) invert(1);" />
+        <!-- Logo -->
+        <a href="/">
+          <img src="/logo.png" alt="UPT Racing" class="h-10 w-auto object-contain" style="filter: brightness(0) invert(1);" />
         </a>
 
         <!-- Heading -->
@@ -125,87 +122,8 @@ const socials = [
   </div>
 </footer>
 
-<script>
-  const years = ['2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'];
-  const orbit = document.querySelector('.years-orbit') as HTMLElement;
-  if (orbit) {
-    const count = years.length;
-    const radius = 88; // px from centre
-    years.forEach((year, i) => {
-      const angleDeg = (i / count) * 360 - 90; // start from 12 o'clock
-      const angleRad = (angleDeg * Math.PI) / 180;
-      const x = Math.cos(angleRad) * radius;
-      const y = Math.sin(angleRad) * radius;
-      const span = document.createElement('span');
-      span.textContent = year;
-      // translate to position on circle, then rotate so text follows the curve
-      span.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) rotate(${angleDeg + 90}deg)`;
-      orbit.appendChild(span);
-    });
-  }
-</script>
-
 <style>
   .footer-nav-link:hover { color: white !important; }
-
-  /* ── Logo badge ── */
-  .footer-logo-badge {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 200px;
-    text-decoration: none;
-  }
-
-  /* Orbiting ring — rotates continuously */
-  .years-orbit {
-    position: absolute;
-    inset: 0;
-    animation: orbit-spin 18s linear infinite;
-  }
-  .years-orbit span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: rgba(255, 255, 255, 0.45);
-    transition: color 0.3s;
-    white-space: nowrap;
-  }
-  .footer-logo-badge:hover .years-orbit span {
-    color: rgba(0, 212, 255, 0.75);
-  }
-
-  @keyframes orbit-spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
-  /* Logo image — fades + scales in on load */
-  .footer-logo-img {
-    position: relative;
-    z-index: 2;
-    width: 64px;
-    height: 64px;
-    object-fit: contain;
-    opacity: 0;
-    transform: scale(0.7);
-    animation: logo-reveal 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s;
-  }
-  .footer-logo-badge:hover .footer-logo-img {
-    transform: scale(1.1);
-    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(0,212,255,0.6));
-  }
-
-  @keyframes logo-reveal {
-    to { opacity: 1; transform: scale(1); }
-  }
 
   /* Radial glow — cyan top-left, amber accent bottom-right */
   .footer-gradient {
