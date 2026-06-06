@@ -7,9 +7,10 @@ interface Props {
   title?: string;
   description?: string;
   fullWidth?: boolean;
+  hasHero?: boolean;
 }
 
-const { title = 'UPT Racing', description = 'Formula Student team from Universitatea Politehnica Timișoara', fullWidth = false } = Astro.props;
+const { title = 'UPT Racing', description = 'Formula Student team from Universitatea Politehnica Timișoara', fullWidth = false, hasHero = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -30,7 +31,7 @@ const { title = 'UPT Racing', description = 'Formula Student team from Universit
       })();
     </script>
   </head>
-  <body style="background-color: var(--color-background); color: var(--color-text);">
+  <body style="background-color: var(--color-background); color: var(--color-text);" data-hero={hasHero ? 'true' : 'false'}>
     <Header />
     <main class="pt-[72px]">
       <slot />

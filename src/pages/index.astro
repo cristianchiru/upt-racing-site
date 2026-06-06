@@ -38,32 +38,34 @@ const upcomingEvent = {
   location: 'Hockenheimring, Germany',
 };
 
-const sponsorBase = '/Logo%20sponsori%20alb/SVG';
+const sponsorBase     = '/Logo%20sponsori%20alb/SVG';
+const sponsorBaseBlue = '/Logo%20sponsori%20albastre/SVG';
+// fileW = white folder, fileB = blue folder (filenames differ slightly between folders)
 const marqueeLogos = [
-  { name: 'Ansys',         file: 'Ansys.svg' },
-  { name: 'BRD',           file: 'BRD.svg' },
-  { name: 'Continental',   file: 'Conti.svg' },
-  { name: 'Dassault',      file: 'Dassault%20Systems.svg' },
-  { name: 'Duqueine',      file: 'Duqueine.svg' },
-  { name: 'EnergoBit',     file: 'EnergoBit.svg' },
-  { name: 'Haltech',       file: 'Haltech.svg' },
-  { name: 'Hexagon',       file: 'Hexagon.svg' },
-  { name: 'Linde',         file: 'Linde.svg' },
-  { name: 'Milwaukee',     file: 'Milwaukee.svg' },
-  { name: 'Motul',         file: 'Motul.svg' },
-  { name: 'Schaeffler',    file: 'Schaeffler.svg' },
-  { name: 'TME',           file: 'TME.svg' },
-  { name: 'Total Materia', file: 'Total%20Materia.svg' },
-  { name: 'Zuken',         file: 'Zuken.svg' },
-  { name: 'Autonom',       file: 'Autonom.svg' },
-  { name: 'CADworks',      file: 'CADworks.svg' },
-  { name: 'Mitutoyo',      file: 'Mitutoyo.svg' },
-  { name: 'PCBway',        file: 'PCBway.svg' },
-  { name: 'Formwerk',      file: 'Formwerk.svg' },
+  { name: 'Ansys',         fileW: 'Ansys.svg',               fileB: 'Ansys.svg' },
+  { name: 'BRD',           fileW: 'BRD.svg',                 fileB: 'BRD.svg' },
+  { name: 'Continental',   fileW: 'Conti.svg',               fileB: 'Conti.svg' },
+  { name: 'Dassault',      fileW: 'Dassault%20Systems.svg',  fileB: 'Dassault.svg' },
+  { name: 'Duqueine',      fileW: 'Duqueine.svg',            fileB: 'Duqueine%202.svg' },
+  { name: 'EnergoBit',     fileW: 'EnergoBit.svg',           fileB: 'Energobit.svg' },
+  { name: 'Haltech',       fileW: 'Haltech.svg',             fileB: 'Haltech.svg' },
+  { name: 'Hexagon',       fileW: 'Hexagon.svg',             fileB: 'Hexagon.svg' },
+  { name: 'Linde',         fileW: 'Linde.svg',               fileB: 'Linde.svg' },
+  { name: 'Milwaukee',     fileW: 'Milwaukee.svg',           fileB: 'Milwaukee.svg' },
+  { name: 'Motul',         fileW: 'Motul.svg',               fileB: 'Motul.svg' },
+  { name: 'Schaeffler',    fileW: 'Schaeffler.svg',          fileB: 'Schaeffler.svg' },
+  { name: 'TME',           fileW: 'TME.svg',                 fileB: 'TME.svg' },
+  { name: 'Total Materia', fileW: 'Total%20Materia.svg',     fileB: 'Total%20Materia.svg' },
+  { name: 'Zuken',         fileW: 'Zuken.svg',               fileB: 'Zuken.svg' },
+  { name: 'Autonom',       fileW: 'Autonom.svg',             fileB: 'Autonom.svg' },
+  { name: 'CADworks',      fileW: 'CADworks.svg',            fileB: 'CADWorks.svg' },
+  { name: 'Mitutoyo',      fileW: 'Mitutoyo.svg',            fileB: 'Mitutoyo.svg' },
+  { name: 'PCBway',        fileW: 'PCBway.svg',              fileB: 'PCBway.svg' },
+  { name: 'Formwerk',      fileW: 'Formwerk.svg',            fileB: 'Formwerk.svg' },
 ];
 ---
 
-<Layout title="Home" description="UPT Racing — Formula Student team from Universitatea Politehnica Timișoara">
+<Layout title="Home" description="UPT Racing — Formula Student team from Universitatea Politehnica Timișoara" hasHero={true}>
 
   <!-- ─── HERO ────────────────────────────────────────────────── -->
   <section class="relative flex flex-col overflow-hidden" style="min-height: 100svh; margin-top: -72px;">
@@ -136,15 +138,15 @@ const marqueeLogos = [
   </section>
 
   <!-- ─── STATS ────────────────────────────────────────────── -->
-  <section style="background: var(--color-primary-dark); border-top: 1px solid rgba(255,255,255,0.06);">
+  <section style="background: var(--section-dark); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background: rgba(255,255,255,0.06);">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background: var(--gap-dark);">
         {stats.map(s => (
-          <div class="flex flex-col gap-3 px-8 py-10" style="background: var(--color-primary-dark);">
-            <p class="font-display font-black text-white leading-none tabular" style="font-size: clamp(3rem, 5vw, 4.5rem); letter-spacing: -0.03em;">{s.value}</p>
+          <div class="flex flex-col gap-3 px-8 py-10" style="background: var(--section-dark);">
+            <p class="font-display font-black leading-none tabular" style="font-size: clamp(3rem, 5vw, 4.5rem); letter-spacing: -0.03em; color: var(--on-dark);">{s.value}</p>
             <div class="h-[2px] w-8" style="background: var(--color-accent-cyan);"></div>
-            <p class="font-display font-bold text-white text-lg leading-tight" style="letter-spacing: -0.01em;">{s.title}</p>
-            <p class="text-sm leading-relaxed" style="color: rgba(255,255,255,0.45);">{s.desc}</p>
+            <p class="font-display font-bold text-lg leading-tight" style="letter-spacing: -0.01em; color: var(--on-dark);">{s.title}</p>
+            <p class="text-sm leading-relaxed" style="color: var(--on-dark-muted);">{s.desc}</p>
           </div>
         ))}
       </div>
@@ -152,60 +154,60 @@ const marqueeLogos = [
   </section>
 
   <!-- ─── LATEST NEWS (RBR editorial layout) ───────────────── -->
-  <section class="py-16 lg:py-24" style="background: var(--color-primary-dark);">
+  <section class="py-16 lg:py-24" style="background: var(--section-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
 
       <div class="flex items-end justify-between mb-10">
         <div>
           <SectionLabel label="Latest News" light={true} />
-          <h2 class="font-display font-black text-4xl lg:text-5xl text-white" style="letter-spacing: -0.02em;">From the pit lane</h2>
+          <h2 class="font-display font-black text-4xl lg:text-5xl" style="letter-spacing: -0.02em; color: var(--on-dark);">From the pit lane</h2>
         </div>
-        <a href="/news" class="font-mono text-xs font-bold uppercase tracking-widest hidden sm:flex items-center gap-2 transition-colors hover:text-white" style="color: rgba(255,255,255,0.4);">
+        <a href="/news" class="font-mono text-xs font-bold uppercase tracking-widest hidden sm:flex items-center gap-2 transition-colors" style="color: var(--on-dark-subtle);">
           All News <span>→</span>
         </a>
       </div>
 
       {latestNews.length > 0 ? (
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-px" style="background: rgba(255,255,255,0.06);">
-          <!-- Featured card — spans 2 cols -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-px" style="background: var(--gap-dark);">
+          <!-- Featured card — spans 2 cols — always dark overlay (image card) -->
           {featured && (
-            <a href={`/news/${featured.id}`} class="group relative overflow-hidden lg:col-span-2" style="background: var(--color-primary-dark); aspect-ratio: 16/9;">
+            <a href={`/news/${featured.id}`} class="group relative overflow-hidden lg:col-span-2" style="background: var(--section-dark); aspect-ratio: 16/9;">
               <img
                 src={featured.data.coverImage}
                 alt={featured.data.title}
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(7,26,47,0.95) 0%, rgba(7,26,47,0.3) 60%, transparent 100%);"></div>
+              <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.25) 60%, transparent 100%);"></div>
               <div class="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
                 <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">{featured.data.category}</span>
                 <h3 class="font-display font-black text-white text-2xl lg:text-4xl mt-2 leading-tight" style="letter-spacing: -0.02em;">{featured.data.title}</h3>
-                <p class="mt-2 text-sm" style="color: rgba(255,255,255,0.5);">{featured.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                <p class="mt-2 text-sm" style="color: rgba(255,255,255,0.6);">{featured.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
               </div>
             </a>
           )}
 
           <!-- Secondary cards stacked -->
-          <div class="flex flex-col gap-px" style="background: rgba(255,255,255,0.06);">
+          <div class="flex flex-col gap-px" style="background: var(--gap-dark);">
             {secondary.length > 0 ? secondary.map(post => (
-              <a href={`/news/${post.id}`} class="group relative overflow-hidden flex-1" style="background: var(--color-primary-dark); min-height: 200px;">
+              <a href={`/news/${post.id}`} class="group relative overflow-hidden flex-1" style="background: var(--section-dark); min-height: 200px;">
                 <img
                   src={post.data.coverImage}
                   alt={post.data.title}
                   class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  style="opacity: 0.5;"
+                  style="opacity: 0.55;"
                 />
-                <div class="absolute inset-0 transition-opacity duration-300" style="background: rgba(7,26,47,0.6);"></div>
+                <div class="absolute inset-0" style="background: rgba(0,0,0,0.55);"></div>
                 <div class="relative h-full flex flex-col justify-end p-5">
                   <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-cyan);">{post.data.category}</span>
                   <h3 class="font-display font-bold text-white text-lg mt-1 leading-tight" style="letter-spacing: -0.01em;">{post.data.title}</h3>
-                  <p class="mt-1 text-xs" style="color: rgba(255,255,255,0.4);">{post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                  <p class="mt-1 text-xs" style="color: rgba(255,255,255,0.5);">{post.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
                 </div>
               </a>
             )) : (
               [1,2].map(i => (
-                <div class="flex-1 flex flex-col justify-end p-5" style="background: rgba(255,255,255,0.03); min-height: 200px;">
+                <div class="flex-1 flex flex-col justify-end p-5" style="background: var(--section-darker); min-height: 200px;">
                   <span class="font-mono text-xs uppercase tracking-widest" style="color: var(--color-accent-cyan);">Technical</span>
-                  <h3 class="font-display font-bold text-white text-lg mt-1">Article {i}</h3>
+                  <h3 class="font-display font-bold text-lg mt-1" style="color: var(--on-dark);">Article {i}</h3>
                 </div>
               ))
             )}
@@ -213,16 +215,16 @@ const marqueeLogos = [
         </div>
       ) : (
         <!-- Placeholder grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-px" style="background: rgba(255,255,255,0.06);">
-          <div class="lg:col-span-2 flex flex-col justify-end p-8" style="background: var(--color-surface); min-height: 360px;">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-px" style="background: var(--gap-dark);">
+          <div class="lg:col-span-2 flex flex-col justify-end p-8" style="background: var(--section-darker); min-height: 360px;">
             <span class="font-mono text-xs uppercase tracking-widest" style="color: var(--color-accent-cyan);">Featured</span>
-            <h3 class="font-display font-black text-white text-3xl mt-2" style="letter-spacing: -0.02em;">Latest Story Title</h3>
+            <h3 class="font-display font-black text-3xl mt-2" style="letter-spacing: -0.02em; color: var(--on-dark);">Latest Story Title</h3>
           </div>
-          <div class="flex flex-col gap-px" style="background: rgba(255,255,255,0.06);">
+          <div class="flex flex-col gap-px" style="background: var(--gap-dark);">
             {[1,2].map(i => (
-              <div class="flex-1 flex flex-col justify-end p-5" style="background: var(--color-surface); min-height: 180px;">
+              <div class="flex-1 flex flex-col justify-end p-5" style="background: var(--section-darker); min-height: 180px;">
                 <span class="font-mono text-xs uppercase tracking-widest" style="color: var(--color-accent-cyan);">Technical</span>
-                <h3 class="font-display font-bold text-white text-lg mt-1">Article {i}</h3>
+                <h3 class="font-display font-bold text-lg mt-1" style="color: var(--on-dark);">Article {i}</h3>
               </div>
             ))}
           </div>
@@ -230,15 +232,15 @@ const marqueeLogos = [
       )}
 
       <div class="mt-4 text-center sm:hidden">
-        <a href="/news" class="font-mono text-xs font-bold uppercase tracking-widest" style="color: rgba(255,255,255,0.4);">All News →</a>
+        <a href="/news" class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--on-dark-subtle);">All News →</a>
       </div>
     </div>
   </section>
 
   <!-- ─── CURRENT CAR ───────────────────────────────────────── -->
-  <section class="relative overflow-hidden" style="background: #050F1E;">
+  <section class="relative overflow-hidden" style="background: var(--section-darker);">
     <div class="absolute inset-0 flex items-center justify-end pointer-events-none select-none font-display font-black uppercase"
-      style="font-size: 22vw; color: white; opacity: 0.03; letter-spacing: -0.04em; padding-right: 2rem;">
+      style="font-size: 22vw; color: var(--on-dark); opacity: 0.04; letter-spacing: -0.04em; padding-right: 2rem;">
       R25
     </div>
 
@@ -246,7 +248,7 @@ const marqueeLogos = [
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
           <SectionLabel label="Current Car" light={true} />
-          <h2 class="font-display font-black text-white text-5xl lg:text-7xl mb-8 leading-none" style="letter-spacing: -0.03em;">UPT-R25</h2>
+          <h2 class="font-display font-black text-5xl lg:text-7xl mb-8 leading-none" style="letter-spacing: -0.03em; color: var(--on-dark);">UPT-R25</h2>
           <dl class="space-y-0">
             {[
               ['Engine', 'KTM 690 Duke — Single Cylinder'],
@@ -256,9 +258,9 @@ const marqueeLogos = [
               ['Wheelbase', '1530 mm'],
               ['Suspension', 'Double Wishbone, Pushrod'],
             ].map(([k, v]) => (
-              <div class="flex items-center gap-6 py-4 border-b" style="border-color: rgba(255,255,255,0.07);">
-                <dt class="font-mono text-xs font-bold uppercase tracking-widest w-40 shrink-0" style="color: rgba(255,255,255,0.35);">{k}</dt>
-                <dd class="font-display font-bold text-xl text-white" style="letter-spacing: -0.01em;">{v}</dd>
+              <div class="flex items-center gap-6 py-4 border-b" style="border-color: var(--border-dark);">
+                <dt class="font-mono text-xs font-bold uppercase tracking-widest w-40 shrink-0" style="color: var(--on-dark-subtle);">{k}</dt>
+                <dd class="font-display font-bold text-xl" style="letter-spacing: -0.01em; color: var(--on-dark);">{v}</dd>
               </div>
             ))}
           </dl>
@@ -274,15 +276,14 @@ const marqueeLogos = [
             class="w-full object-cover"
             style="aspect-ratio: 16/10;"
           />
-          <!-- Cyan accent line -->
-          <div class="absolute -bottom-0 left-0 right-0 h-[3px]" style="background: var(--color-accent-cyan);"></div>
+          <div class="absolute bottom-0 left-0 right-0 h-[3px]" style="background: var(--color-accent-cyan);"></div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ─── ABOUT TEASER ──────────────────────────────────────── -->
-  <section class="py-20 lg:py-32" style="background: var(--color-primary-dark);">
+  <section class="py-20 lg:py-32" style="background: var(--section-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div class="relative order-2 lg:order-1">
@@ -296,13 +297,13 @@ const marqueeLogos = [
         </div>
         <div class="order-1 lg:order-2">
           <SectionLabel label="About the Team" light={true} />
-          <h2 class="font-display font-black text-white text-5xl lg:text-6xl leading-[0.95] mb-6" style="letter-spacing: -0.02em;">
+          <h2 class="font-display font-black text-5xl lg:text-6xl leading-[0.95] mb-6" style="letter-spacing: -0.02em; color: var(--on-dark);">
             Students.<br />Engineers.<br /><span style="color: var(--color-accent-cyan);">Racers.</span>
           </h2>
-          <p class="text-lg leading-relaxed mb-4" style="color: rgba(255,255,255,0.55);">
+          <p class="text-lg leading-relaxed mb-4" style="color: var(--on-dark-muted);">
             UPT Racing was founded in 2013 at Universitatea Politehnica Timișoara. We are a team of over 46 engineering students who design, build and compete with a formula-style race car every year in Formula Student competitions across Europe.
           </p>
-          <p class="text-lg leading-relaxed mb-8" style="color: rgba(255,255,255,0.55);">
+          <p class="text-lg leading-relaxed mb-8" style="color: var(--on-dark-muted);">
             From aerodynamics to electronics, every component is engineered and manufactured in-house — giving our members real-world experience that goes far beyond the classroom.
           </p>
           <Button href="/about" variant="primary">Learn More About Us</Button>
@@ -312,19 +313,19 @@ const marqueeLogos = [
   </section>
 
   <!-- ─── UPCOMING EVENT ────────────────────────────────────── -->
-  <section style="background: #050F1E; border-top: 1px solid rgba(255,255,255,0.05);" class="py-20 lg:py-28">
+  <section class="py-20 lg:py-28" style="background: var(--section-darker); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
           <SectionLabel label="Next Event" light={true} />
-          <h2 class="font-display font-black text-white text-4xl lg:text-5xl leading-[0.95] mb-3" style="letter-spacing: -0.02em;">{upcomingEvent.title}</h2>
-          <p class="font-mono text-sm mb-8" style="color: rgba(255,255,255,0.4);">{upcomingEvent.location}</p>
+          <h2 class="font-display font-black text-4xl lg:text-5xl leading-[0.95] mb-3" style="letter-spacing: -0.02em; color: var(--on-dark);">{upcomingEvent.title}</h2>
+          <p class="font-mono text-sm mb-8" style="color: var(--on-dark-muted);">{upcomingEvent.location}</p>
           <Button href="/competitions" variant="accent">View All Events</Button>
         </div>
         <div class="grid grid-cols-4 gap-3" id="countdown">
           {['days','hours','minutes','seconds'].map(unit => (
-            <div class="text-center py-6 px-2" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);">
-              <p class="font-display font-black text-white tabular" style="font-size: 2.75rem; letter-spacing: -0.02em;" id={`cd-${unit}`}>--</p>
+            <div class="text-center py-6 px-2" style="background: var(--border-dark); border: 1px solid var(--gap-dark);">
+              <p class="font-display font-black tabular" style="font-size: 2.75rem; letter-spacing: -0.02em; color: var(--on-dark);" id={`cd-${unit}`}>--</p>
               <p class="font-mono text-xs font-bold uppercase tracking-widest mt-2" style="color: var(--color-accent-cyan);">{unit}</p>
             </div>
           ))}
@@ -334,21 +335,16 @@ const marqueeLogos = [
   </section>
 
   <!-- ─── SPONSORS STRIP ────────────────────────────────────── -->
-  <section class="py-12 overflow-hidden" style="background: var(--color-primary-dark); border-top: 1px solid rgba(255,255,255,0.06);">
+  <section class="py-12 overflow-hidden" style="background: var(--section-dark); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 mb-8 text-center">
-      <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color: rgba(255,255,255,0.25);">Our Sponsors</span>
+      <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--on-dark-subtle);">Our Sponsors</span>
     </div>
     <div class="relative overflow-hidden">
       <div class="flex items-center gap-12 animate-marquee" style="width: max-content;">
         {[...marqueeLogos, ...marqueeLogos].map((s) => (
-          <div class="flex items-center justify-center w-36 h-12 shrink-0 transition-all" style="opacity: 0.35;">
-            <img
-              src={`${sponsorBase}/${s.file}`}
-              alt={s.name}
-              class="max-h-8 max-w-[110px] object-contain hover:opacity-100 transition-opacity"
-              style="filter: brightness(0) invert(1);"
-              loading="lazy"
-            />
+          <div class="flex items-center justify-center w-36 h-12 shrink-0 transition-all sponsor-logo-wrap">
+            <img src={`${sponsorBase}/${s.fileW}`}     alt={s.name} class="max-h-8 max-w-[110px] object-contain sponsor-logo sponsor-logo-dark"  loading="lazy" />
+            <img src={`${sponsorBaseBlue}/${s.fileB}`} alt=""       class="max-h-8 max-w-[110px] object-contain sponsor-logo sponsor-logo-light" loading="lazy" aria-hidden="true" />
           </div>
         ))}
       </div>

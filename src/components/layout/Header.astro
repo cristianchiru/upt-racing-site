@@ -23,7 +23,7 @@ const currentPath = Astro.url.pathname;
 
       <!-- Logo -->
       <a href="/" class="flex items-center shrink-0 mr-2 logo-link">
-        <img src="/logo.png" alt="UPT Racing" class="h-8 w-auto object-contain logo-img" style="filter: brightness(0) invert(1);" />
+        <img src="/logo.png" alt="UPT Racing" class="h-8 w-auto object-contain logo-img" id="header-logo" style="filter: brightness(0) invert(1);" />
       </a>
 
       <!-- Desktop nav -->
@@ -146,15 +146,34 @@ const currentPath = Astro.url.pathname;
   });
 
   // Scroll: transparent on hero, solid after
-  const header = document.getElementById('site-header') as HTMLElement;
+  const header  = document.getElementById('site-header') as HTMLElement;
+  const logo    = document.getElementById('header-logo') as HTMLImageElement;
+  const navLinks = document.querySelectorAll<HTMLElement>('.nav-link');
+
   function updateHeader() {
     const scrolled = window.scrollY > 60;
-    header.style.background = scrolled
-      ? 'color-mix(in srgb, var(--color-primary-dark) 96%, transparent)'
-      : 'transparent';
-    header.style.backdropFilter = scrolled ? 'blur(14px)' : 'none';
-    header.style.borderBottomColor = scrolled ? 'rgba(255,255,255,0.08)' : 'transparent';
+    const isDark   = document.documentElement.classList.contains('dark');
+    const hasHero  = document.body.dataset.hero === 'true';
+
+    const transparent = hasHero && !scrolled;
+
+    header.style.background        = transparent ? 'transparent' : 'var(--header-bg-solid)';
+    header.style.backdropFilter    = transparent ? 'none'        : 'blur(14px)';
+    header.style.borderBottomColor = transparent ? 'transparent' : 'var(--header-border)';
+
+    // Logo: always white over hero, theme-aware when solid
+    logo.style.filter = (transparent || isDark) ? 'brightness(0) invert(1)' : 'none';
+
+    // Nav text: always white over hero, theme-aware when solid
+    navLinks.forEach(el => {
+      el.style.color = transparent ? 'rgba(255,255,255,0.85)' : 'var(--header-text)';
+    });
   }
+
   window.addEventListener('scroll', updateHeader, { passive: true });
+  // Re-run when theme changes
+  document.documentElement.addEventListener('classChange', updateHeader);
+  const observer = new MutationObserver(updateHeader);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   updateHeader();
 </script>

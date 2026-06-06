@@ -7,16 +7,36 @@
 }
 
 :root {
+  /* Brand */
   --color-primary: #0047AB;
   --color-primary-dark: #071A2F;
   --color-primary-light: #EAF2FF;
   --color-accent-cyan: #00D4FF;
   --color-accent-amber: #FFB000;
+
+  /* Base */
   --color-background: #FFFFFF;
   --color-surface: #F5F7FA;
   --color-text: #111827;
   --color-text-muted: #6B7280;
   --color-border: #DDE3EA;
+
+  /* Semantic section colors — light mode */
+  --section-dark:   #EBF2FF;   /* replaces navy sections */
+  --section-darker: #DCE8FF;   /* replaces near-black sections */
+
+  /* Text/borders on "dark" sections — light mode */
+  --on-dark:        #111827;
+  --on-dark-muted:  #4B5563;
+  --on-dark-subtle: #9CA3AF;
+  --border-dark:    #C3D4EE;
+  --gap-dark:       #C3D4EE;
+
+  /* Header */
+  --header-bg-solid: color-mix(in srgb, #FFFFFF 95%, transparent);
+  --header-border:   rgba(0,0,0,0.08);
+  --header-text:     #111827;
+  --logo-filter:     none;
 }
 
 .dark {
@@ -26,6 +46,23 @@
   --color-text-muted: #9CA3AF;
   --color-border: #1E3A5F;
   --color-primary-light: #0D2540;
+
+  /* Semantic section colors — dark mode */
+  --section-dark:   #071A2F;
+  --section-darker: #050F1E;
+
+  /* Text/borders on "dark" sections — dark mode */
+  --on-dark:        #F9FAFB;
+  --on-dark-muted:  #9CA3AF;
+  --on-dark-subtle: #4B6080;
+  --border-dark:    #1E3A5F;
+  --gap-dark:       #1E3A5F;
+
+  /* Header */
+  --header-bg-solid: color-mix(in srgb, #071A2F 96%, transparent);
+  --header-border:   rgba(255,255,255,0.08);
+  --header-text:     rgba(255,255,255,0.85);
+  --logo-filter:     brightness(0) invert(1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -104,6 +141,22 @@ h1, h2, h3, h4, h5, h6 {
 .prose-racing table { border-collapse: collapse; width: 100%; }
 .prose-racing th, .prose-racing td { border: 1px solid var(--color-border); padding: 0.5rem 0.75rem; font-size: 0.9rem; }
 .prose-racing th { background: var(--color-surface); font-weight: 700; }
+
+/* Sponsor logos — swap between white and blue variants per theme */
+.sponsor-logo { transition: opacity 0.3s; }
+
+/* Dark mode: show white logo, hide blue */
+.sponsor-logo-dark  { filter: brightness(0) invert(1); opacity: 0.35; }
+.sponsor-logo-light { display: none; }
+.sponsor-logo-wrap:hover .sponsor-logo-dark { opacity: 0.8; }
+
+/* Light mode: hide white logo, show blue */
+html:not(.dark) .sponsor-logo-dark  { display: none; }
+html:not(.dark) .sponsor-logo-light { display: block; opacity: 0.55; }
+html:not(.dark) .sponsor-logo-wrap:hover .sponsor-logo-light { opacity: 1; }
+
+/* SectionLabel — light prop not needed in light mode */
+html:not(.dark) .section-label-light { color: var(--color-text-muted) !important; }
 
 .calendar-day.has-event::after {
   content: '';
