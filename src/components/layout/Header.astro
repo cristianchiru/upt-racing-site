@@ -117,14 +117,13 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <style>
-  /* Active & hover — colour shifts relative to whatever the nav text currently is */
-  .nav-link:hover { opacity: 1 !important; filter: brightness(1.35); }
-  .nav-link:hover span { opacity: 0.4 !important; }
-  .nav-link[data-active='true'] { font-weight: 600; opacity: 1 !important; filter: brightness(1.35); }
+  /* Active & hover — amber (#FFB000) matches the Apply Now button */
+  .nav-link:hover { color: var(--color-accent-amber) !important; }
+  .nav-link:hover span { opacity: 0.5 !important; }
+  .nav-link[data-active='true'] { color: var(--color-accent-amber) !important; font-weight: 600; }
 
-  /* On dark / transparent header: override filter with a true white */
-  .header-transparent .nav-link:hover,
-  .header-transparent .nav-link[data-active='true'] { filter: none; color: white !important; }
+  /* On transparent header (dark hero bg) keep hover white, active stays amber */
+  .header-transparent .nav-link:hover { color: white !important; }
 
   .logo-img {
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
