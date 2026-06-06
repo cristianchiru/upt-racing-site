@@ -158,67 +158,6 @@ html:not(.dark) .sponsor-logo-wrap:hover .sponsor-logo-light { opacity: 1; }
 /* SectionLabel — light prop not needed in light mode */
 html:not(.dark) .section-label-light { color: var(--color-text-muted) !important; }
 
-/* ── Section FX: grain noise + radial glow ─────────────────────────────── */
-/* Usage: add class="section-fx" + one of the glow variants below          */
-
-.section-fx {
-  position: relative;
-  overflow: hidden; /* keep pseudo-elements clipped */
-}
-
-/* Grain noise layer */
-.section-fx::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  background-repeat: repeat;
-}
-
-/* Radial glow layer — controlled per variant via custom properties */
-.section-fx::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: var(--section-glow, none);
-}
-
-/* All direct children sit above the pseudo-element layers */
-.section-fx > * { position: relative; z-index: 1; }
-
-/* ── Glow variants ── */
-.glow-cyan-tl {
-  --section-glow:
-    radial-gradient(ellipse 65% 55% at 0% 0%,   rgba(0,212,255,0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 45% 40% at 100% 100%, rgba(0,71,171,0.10) 0%, transparent 65%);
-}
-.glow-amber-tr {
-  --section-glow:
-    radial-gradient(ellipse 60% 50% at 100% 0%,  rgba(255,176,0,0.07)  0%, transparent 65%),
-    radial-gradient(ellipse 50% 45% at 0% 100%,  rgba(0,212,255,0.06)  0%, transparent 65%);
-}
-.glow-blue-center {
-  --section-glow:
-    radial-gradient(ellipse 80% 60% at 50% 50%,  rgba(0,71,171,0.12)   0%, transparent 75%),
-    radial-gradient(ellipse 40% 35% at 5%  0%,   rgba(0,212,255,0.07)  0%, transparent 60%);
-}
-.glow-cyan-br {
-  --section-glow:
-    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(0,212,255,0.08) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 40% at 0%   0%,   rgba(0,71,171,0.09)  0%, transparent 60%);
-}
-.glow-amber-bl {
-  --section-glow:
-    radial-gradient(ellipse 65% 55% at 0%   100%, rgba(255,176,0,0.08) 0%, transparent 65%),
-    radial-gradient(ellipse 45% 40% at 100% 0%,   rgba(0,212,255,0.06) 0%, transparent 60%);
-}
-
 .calendar-day.has-event::after {
   content: '';
   display: block;
