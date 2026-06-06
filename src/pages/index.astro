@@ -11,22 +11,22 @@ const secondary = latestNews.slice(1);
 
 const stats = [
   {
-    value: '10+',
+    value: '10+', num: 10, suffix: '+',
     title: 'Years of engineering passion',
     desc: 'Designing, building and racing Formula Student cars from Timișoara.',
   },
   {
-    value: '4',
+    value: '4', num: 4, suffix: '',
     title: 'Car generations',
     desc: 'From TSR 1 to TSR 3 EVO, every car marks a new step in performance, reliability and innovation.',
   },
   {
-    value: '7',
+    value: '7', num: 7, suffix: '',
     title: 'International results listed',
     desc: 'Competed across Europe — Italy, Czech Republic, Alpe Adria and Balkans.',
   },
   {
-    value: '5th',
+    value: '5th', num: 5, suffix: 'th',
     title: 'Best overall result',
     desc: 'Achieved at Formula Student Balkans 2025.',
   },
@@ -138,12 +138,22 @@ const marqueeLogos = [
   </section>
 
   <!-- ─── STATS ────────────────────────────────────────────── -->
-  <section style="background: var(--section-dark); border-top: 1px solid var(--border-dark);">
+  <section id="stats-section" style="background: var(--section-dark); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background: var(--gap-dark);">
-        {stats.map(s => (
-          <div class="flex flex-col gap-3 px-8 py-10" style="background: var(--section-dark);">
-            <p class="font-display font-black leading-none tabular" style="font-size: clamp(3rem, 5vw, 4.5rem); letter-spacing: -0.03em; color: var(--on-dark);">{s.value}</p>
+        {stats.map((s, i) => (
+          <div
+            class="stat-card flex flex-col gap-3 px-8 py-10"
+            style={`background: var(--section-dark); opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease ${i * 0.1}s, transform 0.55s ease ${i * 0.1}s;`}
+          >
+            <p
+              class="stat-number font-display font-black leading-none tabular"
+              data-num={s.num}
+              data-suffix={s.suffix}
+              style="font-size: clamp(3rem, 5vw, 4.5rem); letter-spacing: -0.03em; color: var(--on-dark);"
+            >
+              {s.value}
+            </p>
             <div class="h-[2px] w-8" style="background: var(--color-accent-cyan);"></div>
             <p class="font-display font-bold text-lg leading-tight" style="letter-spacing: -0.01em; color: var(--on-dark);">{s.title}</p>
             <p class="text-sm leading-relaxed" style="color: var(--on-dark-muted);">{s.desc}</p>
@@ -152,6 +162,55 @@ const marqueeLogos = [
       </div>
     </div>
   </section>
+
+  <script>
+    const section = document.getElementById('stats-section');
+    const cards   = section?.querySelectorAll<HTMLElement>('.stat-card');
+    const numbers = section?.querySelectorAll<HTMLElement>('.stat-number');
+
+    function easeOutExpo(t: number) {
+      return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
+    function countUp(el: HTMLElement) {
+      const target   = parseInt(el.dataset.num ?? '0', 10);
+      const suffix   = el.dataset.suffix ?? '';
+      const duration = 1400; // ms
+      const start    = performance.now();
+
+      function tick(now: number) {
+        const elapsed  = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const value    = Math.round(easeOutExpo(progress) * target);
+        el.textContent = value + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    let triggered = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (triggered || !entries[0].isIntersecting) return;
+        triggered = true;
+        observer.disconnect();
+
+        // Fade + slide cards in
+        cards?.forEach(card => {
+          card.style.opacity  = '1';
+          card.style.transform = 'translateY(0)';
+        });
+
+        // Count up numbers, staggered to match card reveal
+        numbers?.forEach((el, i) => {
+          setTimeout(() => countUp(el), i * 100 + 150);
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    if (section) observer.observe(section);
+  </script>
 
   <!-- ─── LATEST NEWS (RBR editorial layout) ───────────────── -->
   <section class="py-16 lg:py-24" style="background: var(--section-dark);">
