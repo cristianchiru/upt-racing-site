@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 203.58 57.02">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        isolation: isolate;
+      }
+
+      .cls-2 {
+        font-family: Inter-Bold, Inter;
+        font-variation-settings: 'opsz' 14, 'wght' 700;
+        font-weight: 700;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #f6f6f6;
+        font-size: 26.65px;
+      }
+
+      .cls-3 {
+        font-family: Inter-Regular, Inter;
+        font-variation-settings: 'opsz' 14, 'wght' 400;
+      }
+    </style>
+  </defs>
+  <g id="sp">
+    <g class="cls-1">
+      <text class="cls-2" transform="translate(0 23.02) scale(1.03 1)"><tspan x="0" y="0">T</tspan></text>
+      <text class="cls-2" transform="translate(17.89 23.02) scale(1.03 1)"><tspan x="0" y="0">OMPOS </tspan></text>
+      <text class="cls-3" transform="translate(0 48.43) scale(1.03 1)"><tspan x="0" y="0" xml:space="preserve">        PRODCOM</tspan></text>
+    </g>
+  </g>
+</svg>

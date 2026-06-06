@@ -22,9 +22,10 @@ const { title = 'UPT Racing', description = 'Formula Student team from Universit
     <meta name="generator" content={Astro.generator} />
     <title>{title} | UPT Racing</title>
     <script is:inline>
-      // Prevent flash of wrong theme
+      // Dark mode default
       (function() {
-        const dark = localStorage.getItem('theme') === 'dark';
+        const stored = localStorage.getItem('theme');
+        const dark = stored ? stored === 'dark' : true;
         if (dark) document.documentElement.classList.add('dark');
       })();
     </script>

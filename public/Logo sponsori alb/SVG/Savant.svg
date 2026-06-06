@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180.35 39.63">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f6f6f6;
+        font-family: ErasITC-Bold, 'Eras Bold ITC';
+        font-size: 36.57px;
+        font-weight: 700;
+      }
+
+      .cls-1, .cls-2 {
+        isolation: isolate;
+      }
+    </style>
+  </defs>
+  <g id="sp">
+    <g class="cls-2">
+      <text class="cls-1" transform="translate(0 30.48) scale(1.12 1)"><tspan x="0" y="0">SAVANT</tspan></text>
+    </g>
+  </g>
+</svg>

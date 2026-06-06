@@ -2,36 +2,28 @@
 import ThemeToggle from './ThemeToggle.astro';
 
 const navLinks = [
-  { label: 'About', href: '/about' },
-  { label: 'Car', href: '/car/current' },
-  { label: 'Team', href: '/team' },
-  { label: 'Competitions', href: '/competitions' },
-  { label: 'News', href: '/news' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Sponsors', href: '/sponsors' },
+  { label: 'About Us',      href: '/about' },
+  { label: 'Our Car',       href: '/car/current' },
+  { label: 'Meet the Team', href: '/team' },
+  { label: 'Competitions',  href: '/competitions' },
+  { label: 'Latest News',   href: '/news' },
+  { label: 'Our Sponsors',  href: '/sponsors' },
 ];
 
 const currentPath = Astro.url.pathname;
 ---
 
 <header
-  class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
-  style="background: color-mix(in srgb, var(--color-background) 92%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border);"
+  id="site-header"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+  style="background: transparent; border-bottom: 1px solid transparent;"
 >
   <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center h-[72px] gap-8">
 
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 shrink-0 mr-2">
-        <div
-          class="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-[11px] tracking-tight font-display"
-          style="background: var(--color-primary);"
-        >
-          UPT
-        </div>
-        <span class="font-display text-xl font-bold tracking-wide uppercase" style="color: var(--color-primary-dark);">
-          Racing
-        </span>
+      <a href="/" class="flex items-center shrink-0 mr-2 logo-link">
+        <img src="/logo.png" alt="UPT Racing" class="h-8 w-auto object-contain logo-img" style="filter: brightness(0) invert(1);" />
       </a>
 
       <!-- Desktop nav -->
@@ -43,7 +35,7 @@ const currentPath = Astro.url.pathname;
               href={link.href}
               aria-current={active ? 'page' : undefined}
               class="relative flex items-center px-4 text-sm font-medium transition-colors nav-link"
-              style={`color: var(--color-text);`}
+              style="color: rgba(255,255,255,0.85);"
               data-active={active ? 'true' : 'false'}
             >
               {link.label}
@@ -57,21 +49,21 @@ const currentPath = Astro.url.pathname;
       </nav>
 
       <!-- Right actions -->
-      <div class="hidden lg:flex items-center gap-2 shrink-0 ml-auto">
+      <div class="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
         <ThemeToggle />
-        <div class="w-px h-6 mx-1" style="background: var(--color-border);" />
+        <div class="w-px h-5 mx-1" style="background: rgba(255,255,255,0.15);" />
         <a
           href="/join-us"
-          class="px-5 py-2 text-sm font-semibold border-2 transition-colors"
-          style="border-color: var(--color-primary); color: var(--color-primary);"
-          onmouseenter="this.style.background='var(--color-primary-light)'"
-          onmouseleave="this.style.background='transparent'"
+          class="px-5 py-2 text-sm font-semibold border transition-colors"
+          style="border-color: rgba(255,255,255,0.4); color: white;"
+          onmouseenter="this.style.borderColor='white'"
+          onmouseleave="this.style.borderColor='rgba(255,255,255,0.4)'"
         >
           Join Us
         </a>
         <a
           href="/join-us"
-          class="px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          class="px-5 py-2 text-sm font-semibold transition-opacity hover:opacity-90"
           style="background: var(--color-accent-amber); color: var(--color-primary-dark);"
         >
           Apply Now
@@ -118,17 +110,29 @@ const currentPath = Astro.url.pathname;
         <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold border-2" style="border-color: var(--color-primary); color: var(--color-primary);">Join Us</a>
         <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">Apply Now</a>
       </div>
+      <div class="mt-4 flex justify-center">
+        <ThemeToggle />
+      </div>
     </nav>
   </div>
 </header>
 
 <style>
-  .nav-link:hover { color: var(--color-primary) !important; }
+  .nav-link:hover { color: white !important; }
   .nav-link:hover span { opacity: 0.4 !important; }
-  .nav-link[data-active='true'] { color: var(--color-primary) !important; font-weight: 600; }
+  .nav-link[data-active='true'] { color: white !important; font-weight: 600; }
+
+  .logo-img {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+  }
+  .logo-link:hover .logo-img {
+    transform: scale(1.12) rotate(-2deg);
+  }
 </style>
 
 <script>
+  // Mobile menu
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
   const hamburger = document.getElementById('hamburger-icon');
@@ -140,4 +144,17 @@ const currentPath = Astro.url.pathname;
     hamburger?.classList.toggle('hidden', !open);
     closeIcon?.classList.toggle('hidden', open);
   });
+
+  // Scroll: transparent on hero, solid after
+  const header = document.getElementById('site-header') as HTMLElement;
+  function updateHeader() {
+    const scrolled = window.scrollY > 60;
+    header.style.background = scrolled
+      ? 'color-mix(in srgb, var(--color-primary-dark) 96%, transparent)'
+      : 'transparent';
+    header.style.backdropFilter = scrolled ? 'blur(14px)' : 'none';
+    header.style.borderBottomColor = scrolled ? 'rgba(255,255,255,0.08)' : 'transparent';
+  }
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  updateHeader();
 </script>

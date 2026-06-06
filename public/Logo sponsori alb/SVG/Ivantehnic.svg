@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.28 37.55">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f6f6f6;
+        font-family: Inter-Bold, Inter;
+        font-size: 31.66px;
+        font-variation-settings: 'opsz' 14, 'wght' 700;
+        font-weight: 700;
+      }
+
+      .cls-1, .cls-2 {
+        isolation: isolate;
+      }
+    </style>
+  </defs>
+  <g id="sp">
+    <g class="cls-2">
+      <text class="cls-1" transform="translate(0 27.35) scale(1.03 1)"><tspan x="0" y="0">I</tspan></text>
+      <text class="cls-1" transform="translate(9.51 27.35) scale(1.03 1)"><tspan x="0" y="0">V</tspan></text>
+      <text class="cls-1" transform="translate(31.55 27.35)"><tspan x="0" y="0">ANTEHNIC</tspan></text>
+    </g>
+  </g>
+</svg>

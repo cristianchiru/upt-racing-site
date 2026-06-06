@@ -3,52 +3,104 @@ import Layout from '../layouts/Layout.astro';
 import SectionLabel from '../components/ui/SectionLabel.astro';
 import Button from '../components/ui/Button.astro';
 
-const tiers = [
-  { name: 'Title Sponsor', size: 'large', sponsors: ['Main Sponsor'] },
-  { name: 'Gold', size: 'medium', sponsors: ['Gold Sponsor A', 'Gold Sponsor B'] },
-  { name: 'Silver', size: 'small', sponsors: ['Silver A', 'Silver B', 'Silver C', 'Silver D'] },
-  { name: 'Supporting', size: 'xsmall', sponsors: ['Support A', 'Support B', 'Support C', 'Support D', 'Support E', 'Support F'] },
-];
+const base = '/Logo%20sponsori%20albastre/SVG';
 
-const sizes = { large: 'h-28', medium: 'h-20', small: 'h-16', xsmall: 'h-12' };
+const sponsors = [
+  { name: 'Adcons',            file: 'Adcons.svg' },
+  { name: 'Aeroport Arad',     file: 'Aeroportul%20Arad.svg' },
+  { name: 'Airtech',           file: 'Airtech.svg' },
+  { name: 'Aninoasa',          file: 'Aninoasa.svg' },
+  { name: 'Ansys',             file: 'Ansys.svg' },
+  { name: 'Autonom',           file: 'Autonom.svg' },
+  { name: 'BRD',               file: 'BRD.svg' },
+  { name: 'CADworks',          file: 'CADWorks.svg' },
+  { name: 'CPM Bocșa',         file: 'CPM%20Bocsa.svg' },
+  { name: 'CargoTXK',          file: 'Cargotxk.svg' },
+  { name: 'Color Metal',       file: 'Color%20Metal.svg' },
+  { name: 'Complete Motors',   file: 'Complete%20Motors.svg' },
+  { name: 'Continental',       file: 'Conti.svg' },
+  { name: 'Corratec',          file: 'Corratec.svg' },
+  { name: 'Dassault Systèmes', file: 'Dassault.svg' },
+  { name: 'Duqueine',          file: 'Duqueine%202.svg' },
+  { name: 'Easycomp',          file: 'Easycomp.svg' },
+  { name: 'Electric Still',    file: 'Electric%20Still.svg' },
+  { name: 'EnergoBit',         file: 'Energobit.svg' },
+  { name: 'Formwerk',          file: 'Formwerk.svg' },
+  { name: 'Getecno',           file: 'Getecno.svg' },
+  { name: 'Gynoprax',          file: 'Gynoprax.svg' },
+  { name: 'HAI',               file: 'HAI.svg' },
+  { name: 'Haltech',           file: 'Haltech.svg' },
+  { name: 'Helbako',           file: 'Helbako.svg' },
+  { name: 'Hexagon',           file: 'Hexagon.svg' },
+  { name: 'INAS',              file: 'INAS.svg' },
+  { name: 'ISIM',              file: 'ISIM.svg' },
+  { name: 'Infiniti',          file: 'Infiniti.svg' },
+  { name: 'Jansen Composites', file: 'Jansen.svg' },
+  { name: 'Joker',             file: 'Joker.svg' },
+  { name: 'Klass CNC',         file: 'Klass%20CNC.svg' },
+  { name: 'Kliktronic',        file: 'Kliktronic.svg' },
+  { name: 'Linde',             file: 'Linde.svg' },
+  { name: 'Milwaukee',         file: 'Milwaukee.svg' },
+  { name: 'Mitutoyo',          file: 'Mitutoyo.svg' },
+  { name: 'Motul',             file: 'Motul.svg' },
+  { name: 'PCBway',            file: 'PCBway.svg' },
+  { name: 'Performance Parts', file: 'Perfor.svg' },
+  { name: 'Rally Design',      file: 'Rally%20Design.svg' },
+  { name: 'Remro',             file: 'Remro.svg' },
+  { name: 'Schaeffler',        file: 'Schaeffler.svg' },
+  { name: 'Sipa',              file: 'Sipa.svg' },
+  { name: 'Space Print',       file: 'Space%20Print.svg' },
+  { name: 'TME',               file: 'TME.svg' },
+  { name: 'Tabrizi',           file: 'Tabrizi.svg' },
+  { name: 'Total Materia',     file: 'Total%20Materia.svg' },
+  { name: 'Zuken',             file: 'Zuken.svg' },
+];
 ---
 
-<Layout title="Sponsors" description="UPT Racing sponsors and partners">
+<Layout title="Sponsors" description="Partenerii și sponsorii UPT Racing">
 
   <!-- Hero -->
   <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       <SectionLabel label="Partners & Sponsors" light={true} />
-      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem); letter-spacing: -0.03em;">
         Our<br /><span style="color: var(--color-accent-amber);">Sponsors</span>
       </h1>
+      <p class="mt-6 text-lg max-w-xl" style="color: rgba(255,255,255,0.6);">
+        Alături de partenerii noștri, transformăm ingineria studențească în performanță pe circuit.
+      </p>
     </div>
   </section>
 
-  <!-- Tiers -->
+  <!-- Sponsor grid -->
   <section class="py-20 lg:py-32" style="background: var(--color-background);">
-    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-      {tiers.map(tier => (
-        <div>
-          <div class="flex items-center gap-4 mb-8">
-            <div class="h-[3px] w-8" style="background: var(--color-accent-cyan);"></div>
-            <span class="text-xs font-black uppercase tracking-widest" style="color: var(--color-text-muted);">{tier.name}</span>
-            <div class="flex-1 h-px" style="background: var(--color-border);"></div>
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-4 mb-12">
+        <div class="h-[3px] w-8" style="background: var(--color-accent-cyan);"></div>
+        <span class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Toți partenerii</span>
+        <div class="flex-1 h-px" style="background: var(--color-border);"></div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-px" style="background: var(--color-border);">
+        {sponsors.map(s => (
+          <div
+            class="group flex items-center justify-center p-6 transition-colors cursor-pointer"
+            style="background: var(--color-background); aspect-ratio: 2/1;"
+            onmouseenter="this.style.background='var(--color-surface)'"
+            onmouseleave="this.style.background='var(--color-background)'"
+          >
+            <img
+              src={`${base}/${s.file}`}
+              alt={s.name}
+              class="max-h-10 w-full object-contain transition-all duration-300 grayscale group-hover:grayscale-0"
+              style="opacity: 0.6;"
+              onmouseenter="this.style.opacity='1'"
+              onmouseleave="this.style.opacity='0.6'"
+              loading="lazy"
+            />
           </div>
-          <div class="flex flex-wrap gap-6 items-center">
-            {tier.sponsors.map(name => (
-              <div
-                class={`${sizes[tier.size]} px-8 flex items-center justify-center border transition-colors cursor-pointer grayscale hover:grayscale-0`}
-                style="border-color: var(--color-border); min-width: 160px;"
-                onmouseenter="this.style.borderColor='var(--color-primary)'"
-                onmouseleave="this.style.borderColor='var(--color-border)'"
-              >
-                <span class="text-sm font-bold uppercase tracking-wide" style="color: var(--color-text-muted);">{name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </section>
 
@@ -57,28 +109,35 @@ const sizes = { large: 'h-28', medium: 'h-20', small: 'h-16', xsmall: 'h-12' };
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
-          <SectionLabel label="Partner With Us" />
-          <h2 class="font-display font-black uppercase text-5xl mb-6" style="color: var(--color-text);">Become a Sponsor</h2>
+          <SectionLabel label="Partner with us" />
+          <h2 class="font-display font-black text-5xl mb-6" style="color: var(--color-text); letter-spacing: -0.02em;">Devino sponsor</h2>
           <p class="text-lg leading-relaxed mb-4" style="color: var(--color-text-muted);">
-            Partnering with UPT Racing gives your brand direct exposure to future engineers and motorsport enthusiasts across Europe. Your logo travels to every competition we attend.
+            Parteneriatul cu UPT Racing oferă brandului tău expunere directă în fața inginerilor de mâine și a pasionaților de motorsport din toată Europa. Logo-ul tău participă la fiecare competiție.
           </p>
           <p class="text-lg leading-relaxed mb-8" style="color: var(--color-text-muted);">
-            We offer flexible sponsorship packages — from financial support to in-kind technical contributions like materials, machining, or software licenses.
+            Oferim pachete flexibile de sponsorizare — de la suport financiar până la contribuții tehnice: materiale, prelucrări CNC sau licențe software.
           </p>
           <div class="flex flex-wrap gap-4">
-            <Button href="/contact" variant="primary">Contact Us</Button>
-            <Button href="/sponsorship-package.pdf" variant="ghost">Download Package (PDF)</Button>
+            <Button href="/contact" variant="primary">Contactează-ne</Button>
+            <Button href="/sponsorship-package.pdf" variant="ghost">Descarcă pachetul (PDF)</Button>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-4">
-          {['Brand Exposure', 'Talent Pipeline', 'Technical Collaboration', 'Community Impact'].map(b => (
+          {[
+            ['Expunere de brand', 'Logo-ul tău pe mașină, echipament și materiale de comunicare.'],
+            ['Pipeline de talente', 'Acces la studenți ingineri pregătiți pentru industrie.'],
+            ['Colaborare tehnică', 'Testare reală a produselor în condiții de competiție.'],
+            ['Impact comunitar', 'Susții educația inginerească și inovația studențească.'],
+          ].map(([title, desc]) => (
             <div class="p-6 border" style="border-color: var(--color-border);">
               <div class="h-[3px] w-6 mb-4" style="background: var(--color-accent-cyan);"></div>
-              <p class="font-display font-bold uppercase text-lg" style="color: var(--color-text);">{b}</p>
+              <p class="font-display font-bold text-lg mb-2" style="color: var(--color-text); letter-spacing: -0.01em;">{title}</p>
+              <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">{desc}</p>
             </div>
           ))}
         </div>
       </div>
     </div>
   </section>
+
 </Layout>
