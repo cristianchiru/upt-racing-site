@@ -340,3 +340,4 @@ html.dark .join-cta { background: #071A2F; }
 }
 .form-select:focus { outline: none; border-color: var(--color-accent-amber) !important; }
 .form-select option { background: var(--color-background); color: var(--color-text); }
+
