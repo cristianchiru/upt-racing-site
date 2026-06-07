@@ -1,7 +1,7 @@
 ---
 title: "TSR 1"
 year: 2013
-coverImage: "https://placehold.co/1280x720/071A2F/FFB000?text=TSR+1"
+coverImage: "/tsr1.jpg"
 specs:
   engine: "Single cylinder 4-stroke"
   power: "N/A"

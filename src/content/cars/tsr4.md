@@ -1,7 +1,7 @@
 ---
 title: "TSR 4 Hybrid"
 year: 2025
-coverImage: "https://placehold.co/1280x720/071A2F/00D4FF?text=TSR+4+Hybrid"
+coverImage: "/tsr4hybrid.jpg"
 specs:
   engine: "KTM 690 Duke — Single Cylinder 4-stroke + Electric Hybrid"
   power: "65 hp @ 7500 rpm"

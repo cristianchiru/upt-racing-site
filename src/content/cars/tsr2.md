@@ -1,7 +1,7 @@
 ---
 title: "TSR 2"
 year: 2015
-coverImage: "https://placehold.co/1280x720/0047AB/FFFFFF?text=TSR+2"
+coverImage: "/tsr2.jpg"
 specs:
   engine: "Single cylinder 4-stroke"
   power: "N/A"

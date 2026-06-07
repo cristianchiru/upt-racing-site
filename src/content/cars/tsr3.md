@@ -1,7 +1,7 @@
 ---
 title: "TSR 3"
 year: 2023
-coverImage: "https://placehold.co/1280x720/071A2F/00D4FF?text=TSR+3"
+coverImage: "/tsr3.jpg"
 specs:
   engine: "KTM 690 Duke — Single Cylinder 4-stroke"
   power: "63 hp"

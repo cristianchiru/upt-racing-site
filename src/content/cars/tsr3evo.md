@@ -1,7 +1,7 @@
 ---
 title: "TSR 3 EVO"
 year: 2024
-coverImage: "https://placehold.co/1280x720/0047AB/FFB000?text=TSR+3+EVO"
+coverImage: "/tsr3evo.jpg"
 specs:
   engine: "KTM 690 Duke — Single Cylinder 4-stroke"
   power: "63 hp"
