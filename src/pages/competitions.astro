@@ -4,9 +4,9 @@ import SectionLabel from '../components/ui/SectionLabel.astro';
 import EventCalendar from '../components/ui/EventCalendar.astro';
 
 const upcoming = [
-  { name: 'Formula Student Romania 2025', location: 'Piteşti, Romania', date: '2025-07-18', status: 'Confirmed', type: 'Competition' },
-  { name: 'Formula Student Germany 2025', location: 'Hockenheimring, Germany', date: '2025-08-04', status: 'Registered', type: 'Competition' },
-  { name: 'Formula Student East 2025', location: 'Budapest, Hungary', date: '2025-06-25', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Balkans', location: 'Balkans', date: '2025-07-12', endDate: '2025-07-17', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Czech Republic', location: 'Czech Republic', date: '2025-07-19', endDate: '2025-07-24', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula ATA', location: 'Italy', date: '2025-09-02', endDate: '2025-09-06', status: 'Confirmed', type: 'Competition' },
 ];
 
 const pastResults = [
@@ -41,9 +41,9 @@ const calendarEvents = upcoming.map(e => ({ date: e.date, title: e.name, locatio
       <div class="space-y-4">
         {upcoming.map(e => (
           <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
-            <div class="w-24 shrink-0 text-center">
-              <div class="font-display font-black text-3xl" style="color: var(--color-primary);">
-                {new Date(e.date).getDate()}
+            <div class="w-32 shrink-0 text-center">
+              <div class="font-display font-black text-3xl" style="color: var(--color-accent-amber);">
+                {new Date(e.date).getDate()}–{new Date(e.endDate).getDate()}
               </div>
               <div class="text-xs font-bold uppercase tracking-wide" style="color: var(--color-text-muted);">
                 {new Date(e.date).toLocaleString('en', { month: 'short', year: 'numeric' })}

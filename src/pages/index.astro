@@ -33,11 +33,13 @@ const stats = [
 ];
 
 const events = [
-  { title: 'Formula Student Balkans', date: new Date('2025-07-12'), end: new Date('2025-07-17'), location: 'Balkans' },
+  { title: 'Formula Student Balkans',       date: new Date('2025-07-12'), end: new Date('2025-07-17'), location: 'Balkans' },
   { title: 'Formula Student Czech Republic', date: new Date('2025-07-19'), end: new Date('2025-07-24'), location: 'Czech Republic' },
-  { title: 'Formula ATA', date: new Date('2025-09-02'), end: new Date('2025-09-06'), location: 'Italy' },
+  { title: 'Formula ATA',                   date: new Date('2025-09-02'), end: new Date('2025-09-06'), location: 'Italy' },
 ];
-const upcomingEvent = events[0]; // nearest event drives the countdown
+// Server-side: pick next event that hasn't ended yet (fallback to last)
+const now = new Date();
+const upcomingEvent = events.find(e => e.end >= now) ?? events[events.length - 1];
 
 const sponsorBase     = '/Logo%20sponsori%20alb/SVG';
 const sponsorBaseBlue = '/Logo%20sponsori%20albastre/SVG';
@@ -381,23 +383,28 @@ const marqueeLogos = [
 
         <!-- Left: event list -->
         <div class="flex flex-col gap-0" style="border-top: 1px solid var(--border-dark);">
-          {events.map((e, i) => (
-            <div
-              class="flex items-center justify-between py-5 gap-4"
-              style={`border-bottom: 1px solid var(--border-dark); ${i === 0 ? `opacity:1;` : `opacity:0.5;`}`}
-            >
-              <div>
-                <p class="font-display font-bold text-xl leading-tight" style="color: var(--on-dark); letter-spacing: -0.01em;">{e.title}</p>
-                <p class="font-mono text-xs mt-1" style="color: var(--on-dark-muted);">{e.location}</p>
+          {events.map((e) => {
+            const isNext = e.title === upcomingEvent.title;
+            const isPast = e.end < now;
+            return (
+              <div
+                class="event-row flex items-center justify-between py-5 gap-4"
+                data-end={e.end.toISOString()}
+                style={`border-bottom: 1px solid var(--border-dark); opacity: ${isPast ? 0.3 : isNext ? 1 : 0.5}; transition: opacity 0.4s;`}
+              >
+                <div>
+                  <p class="font-display font-bold text-xl leading-tight" style="color: var(--on-dark); letter-spacing: -0.01em;">{e.title}</p>
+                  <p class="font-mono text-xs mt-1" style="color: var(--on-dark-muted);">{e.location}</p>
+                </div>
+                <div class="text-right shrink-0">
+                  <p class="font-mono text-sm font-bold" style="color: var(--color-accent-amber);">
+                    {e.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}–{e.end.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                  </p>
+                  <p class="font-mono text-xs mt-0.5" style="color: var(--on-dark-subtle);">2025</p>
+                </div>
               </div>
-              <div class="text-right shrink-0">
-                <p class="font-mono text-sm font-bold" style="color: var(--color-accent-amber);">
-                  {e.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}–{e.end.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
-                </p>
-                <p class="font-mono text-xs mt-0.5" style="color: var(--on-dark-subtle);">2025</p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
           <div class="mt-8">
             <Button href="/competitions" variant="accent">View All Events</Button>
           </div>
@@ -406,7 +413,7 @@ const marqueeLogos = [
         <!-- Right: countdown to nearest event -->
         <div>
           <p class="font-mono text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--on-dark-subtle);">Countdown to</p>
-          <h2 class="font-display font-black text-3xl lg:text-4xl leading-[0.95] mb-6" style="letter-spacing: -0.02em; color: var(--on-dark);">{upcomingEvent.title}</h2>
+          <h2 id="countdown-title" class="font-display font-black text-3xl lg:text-4xl leading-[0.95] mb-6" style="letter-spacing: -0.02em; color: var(--on-dark);">{upcomingEvent.title}</h2>
           <div class="grid grid-cols-4 gap-3" id="countdown">
             {['days','hours','minutes','seconds'].map(unit => (
               <div class="text-center py-6 px-2" style="background: var(--border-dark); border: 1px solid var(--gap-dark);">
@@ -457,18 +464,49 @@ const marqueeLogos = [
 
 </Layout>
 
-<script define:vars={{ eventDate: upcomingEvent.date.toISOString() }}>
-  function tick() {
-    const diff = new Date(eventDate) - new Date();
-    if (diff <= 0) return;
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    const pad = n => String(n).padStart(2, '0');
-    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = pad(v); };
-    set('cd-days', d); set('cd-hours', h); set('cd-minutes', m); set('cd-seconds', s);
+<script define:vars={{ eventsData: events.map(e => ({ title: e.title, date: e.date.toISOString(), end: e.end.toISOString() })) }}>
+  // Pick the next event that hasn't ended yet (client-side, uses real local time)
+  function getNextEvent() {
+    const now = Date.now();
+    return eventsData.find(e => new Date(e.end).getTime() > now) ?? eventsData[eventsData.length - 1];
   }
+
+  function updateActiveEvent(nextEvent) {
+    // Update countdown title
+    const titleEl = document.getElementById('countdown-title');
+    if (titleEl) titleEl.textContent = nextEvent.title;
+
+    // Update row opacities
+    const rows = document.querySelectorAll('.event-row');
+    rows.forEach(row => {
+      const endTime = new Date(row.dataset.end).getTime();
+      const now = Date.now();
+      const isPast = endTime <= now;
+      const isNext = row.querySelector('p')?.textContent?.trim() === nextEvent.title;
+      row.style.opacity = isPast ? '0.3' : isNext ? '1' : '0.5';
+    });
+  }
+
+  function tick() {
+    const next = getNextEvent();
+    updateActiveEvent(next);
+
+    const diff = new Date(next.date).getTime() - Date.now();
+    const pad = n => String(Math.max(0, n)).padStart(2, '0');
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+
+    if (diff <= 0) {
+      // Event has started — count up from start or show zeros
+      set('cd-days', '00'); set('cd-hours', '00'); set('cd-minutes', '00'); set('cd-seconds', '00');
+    } else {
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      set('cd-days', pad(d)); set('cd-hours', pad(h)); set('cd-minutes', pad(m)); set('cd-seconds', pad(s));
+    }
+  }
+
   tick();
   setInterval(tick, 1000);
 </script>
