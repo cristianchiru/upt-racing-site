@@ -39,8 +39,8 @@ const faqs = [
       <SectionLabel label="Open Roles" />
       <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Departments</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {departments.map(d => (
-          <div class="p-8 border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+        {departments.map((d, i) => (
+          <div class="reveal p-8 border transition-colors" data-delay={String((i % 2) + 1)} style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
             <h3 class="font-display font-bold uppercase text-2xl mb-4" style="color: var(--color-text);">{d.name}</h3>
             <div class="mb-3">
               <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: var(--color-accent-cyan);">What you'll do</p>

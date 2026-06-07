@@ -42,8 +42,8 @@ const contacts = [
       <SectionLabel label="Reach Out" />
       <h2 class="font-display font-black uppercase text-4xl lg:text-5xl mb-12" style="color: var(--color-text);">Who to contact</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {contacts.map(c => (
-          <div class="p-8 border flex flex-col gap-4" style="border-color: var(--color-border);">
+        {contacts.map((c, i) => (
+          <div class="reveal p-8 border flex flex-col gap-4" data-delay={String(i + 1)} style="border-color: var(--color-border);">
             <div>
               <p class="font-mono text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-accent-amber);">{c.role}</p>
               <h3 class="font-display font-bold uppercase text-2xl" style="color: var(--color-text);">{c.name}</h3>

@@ -46,5 +46,14 @@ const { title = 'UPT Racing', description = 'Formula Student team from Universit
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      (function () {
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } }),
+          { threshold: 0.12 }
+        );
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+      })();
+    </script>
   </body>
 </html>

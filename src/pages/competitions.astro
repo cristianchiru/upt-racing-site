@@ -66,8 +66,8 @@ const calendarEvents = upcoming.map(e => ({ date: e.date, endDate: e.endDate, ti
       <SectionLabel label="2026 Season" />
       <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Upcoming Events</h2>
       <div class="space-y-4">
-        {upcoming.map(e => (
-          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 border transition-colors" style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+        {upcoming.map((e, i) => (
+          <div class="reveal flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 border transition-colors" data-delay={String(i + 1)} style="border-color: var(--color-border);" onmouseenter="this.style.borderColor='var(--color-primary)'" onmouseleave="this.style.borderColor='var(--color-border)'">
             <div class="w-32 shrink-0 text-center">
               <div class="font-display font-black text-3xl" style="color: var(--color-accent-amber);">
                 {new Date(e.date).getDate()}–{new Date(e.endDate).getDate()}
