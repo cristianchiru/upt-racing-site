@@ -1,11 +1,10 @@
 ---
 ---
-<div id="theme-toggle-wrap" class="flex items-center gap-0.5 rounded-full p-0.5 transition-colors duration-400" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+<div class="theme-toggle-wrap flex items-center gap-0.5 rounded-full p-0.5 transition-colors duration-400" style="background: var(--color-surface); border: 1px solid var(--color-border);">
   <!-- Sun = light mode -->
   <button
-    id="btn-light"
     aria-label="Light mode"
-    class="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200"
+    class="theme-btn-light w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
       <circle cx="12" cy="12" r="5"/>
@@ -14,9 +13,8 @@
   </button>
   <!-- Moon = dark mode -->
   <button
-    id="btn-dark"
     aria-label="Dark mode"
-    class="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200"
+    class="theme-btn-dark w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200"
   >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
       <path stroke-linecap="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
@@ -25,35 +23,34 @@
 </div>
 
 <script>
-  const btnLight = document.getElementById('btn-light') as HTMLButtonElement;
-  const btnDark  = document.getElementById('btn-dark')  as HTMLButtonElement;
-  const html     = document.documentElement;
+  const html = document.documentElement;
 
   function applyTheme(dark: boolean) {
     html.classList.toggle('dark', dark);
 
-    // Active pill: contrasting bg so it pops against the current theme surface
-    const activeBg   = dark  ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)';
-    const activeClr  = dark  ? '#F9FAFB'                : '#1A1208';
+    const activeBg    = dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)';
+    const activeClr   = dark ? '#F9FAFB'                : '#1A1208';
     const inactiveClr = dark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)';
 
-    btnLight.style.cssText = dark
-      ? `background: transparent; color: ${inactiveClr}; box-shadow: none;`
-      : `background: ${activeBg}; color: ${activeClr}; box-shadow: 0 1px 3px rgba(0,0,0,0.1);`;
-    btnDark.style.cssText  = dark
-      ? `background: ${activeBg}; color: ${activeClr}; box-shadow: 0 1px 3px rgba(0,0,0,0.2);`
-      : `background: transparent; color: ${inactiveClr}; box-shadow: none;`;
+    document.querySelectorAll<HTMLElement>('.theme-btn-light').forEach(btn => {
+      btn.style.cssText = dark
+        ? `background: transparent; color: ${inactiveClr}; box-shadow: none;`
+        : `background: ${activeBg}; color: ${activeClr}; box-shadow: 0 1px 3px rgba(0,0,0,0.1);`;
+    });
+    document.querySelectorAll<HTMLElement>('.theme-btn-dark').forEach(btn => {
+      btn.style.cssText = dark
+        ? `background: ${activeBg}; color: ${activeClr}; box-shadow: 0 1px 3px rgba(0,0,0,0.2);`
+        : `background: transparent; color: ${inactiveClr}; box-shadow: none;`;
+    });
   }
 
   const stored = localStorage.getItem('theme');
   applyTheme(stored ? stored === 'dark' : true);
 
-  btnLight?.addEventListener('click', () => {
-    localStorage.setItem('theme', 'light');
-    applyTheme(false);
+  document.querySelectorAll('.theme-btn-light').forEach(btn => {
+    btn.addEventListener('click', () => { localStorage.setItem('theme', 'light'); applyTheme(false); });
   });
-  btnDark?.addEventListener('click', () => {
-    localStorage.setItem('theme', 'dark');
-    applyTheme(true);
+  document.querySelectorAll('.theme-btn-dark').forEach(btn => {
+    btn.addEventListener('click', () => { localStorage.setItem('theme', 'dark'); applyTheme(true); });
   });
 </script>
