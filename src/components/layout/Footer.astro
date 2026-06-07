@@ -31,10 +31,12 @@ const socials = [
 ];
 ---
 
-<footer style="color: white; border-top: 1px solid rgba(255,255,255,0.07);">
+<footer style="background: #071A2F; color: white; border-top: 1px solid rgba(255,255,255,0.07); position: relative; overflow: hidden;">
+  <!-- Gradient overlay (always dark, not theme-sensitive) -->
+  <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 5% 0%,rgba(0,212,255,0.09) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 95% 100%,rgba(255,176,0,0.07) 0%,transparent 65%),radial-gradient(ellipse 80% 50% at 50% 50%,rgba(0,71,171,0.12) 0%,transparent 80%);"></div>
 
   <!-- Main body -->
-  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28" style="position:relative;z-index:1;">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
       <!-- LEFT: CTA + newsletter + socials -->
@@ -105,7 +107,7 @@ const socials = [
   </div>
 
   <!-- Bottom bar -->
-  <div style="border-top: 1px solid rgba(255,255,255,0.07);">
+  <div style="border-top: 1px solid rgba(255,255,255,0.07); position:relative; z-index:1;">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
       <p class="font-mono text-xs" style="color: rgba(255,255,255,0.25);">© {currentYear} UPT Racing. All rights reserved.</p>
       <p class="font-mono text-xs" style="color: rgba(255,255,255,0.25);">FSG · FS East · FSRo · FS Balkans</p>
