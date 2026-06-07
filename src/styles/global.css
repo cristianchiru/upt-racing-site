@@ -188,17 +188,20 @@ h1, h2, h3, h4, h5, h6 {
 .prose-racing th { background: var(--color-surface); font-weight: 700; }
 
 /* Sponsor logos — swap between white and blue variants per theme */
-.sponsor-logo { transition: opacity 0.3s; }
+.sponsor-logo { transition: opacity 0.3s, filter 0.3s; }
 
-/* Dark mode: show white logo, hide blue */
-.sponsor-logo-dark  { filter: brightness(0) invert(1); opacity: 0.35; }
+/* Dark mode: pure white, muted — amber tint on hover */
+.sponsor-logo-dark  { filter: brightness(0) invert(1); opacity: 0.30; }
 .sponsor-logo-light { display: none; }
-.sponsor-logo-wrap:hover .sponsor-logo-dark { opacity: 0.8; }
+.sponsor-logo-wrap:hover .sponsor-logo-dark {
+  filter: brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(5deg);
+  opacity: 0.85;
+}
 
-/* Light mode: hide white logo, show blue */
+/* Light mode: pure black, very muted — sharper on hover */
 html:not(.dark) .sponsor-logo-dark  { display: none; }
-html:not(.dark) .sponsor-logo-light { display: block; opacity: 0.55; }
-html:not(.dark) .sponsor-logo-wrap:hover .sponsor-logo-light { opacity: 1; }
+html:not(.dark) .sponsor-logo-light { filter: brightness(0); display: block; opacity: 0.18; }
+html:not(.dark) .sponsor-logo-wrap:hover .sponsor-logo-light { filter: brightness(0); opacity: 0.65; }
 
 /* SectionLabel — light prop not needed in light mode */
 html:not(.dark) .section-label-light { color: var(--color-text-muted) !important; }
