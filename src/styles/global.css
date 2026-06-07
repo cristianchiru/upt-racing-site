@@ -248,6 +248,54 @@ html.dark .group:hover .sponsor-page-logo {
 /* SectionLabel — light prop not needed in light mode */
 html:not(.dark) .section-label-light { color: var(--color-text-muted) !important; }
 
+/* ── Custom cursor ────────────────────────────────────────────── */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+
+  #cur-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent-amber);
+    pointer-events: none;
+    z-index: 9999;
+    will-change: transform;
+    transition: opacity 0.2s;
+  }
+
+  #cur-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-accent-cyan);
+    pointer-events: none;
+    z-index: 9998;
+    will-change: transform;
+    transition: opacity 0.2s, width 0.2s ease, height 0.2s ease,
+                margin 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    opacity: 0.7;
+  }
+
+  /* Hover state — ring expands slightly, flips amber */
+  #cur-ring.cur-hover {
+    width: 34px; height: 34px;
+    margin-left: -3px; margin-top: -3px;
+    border-color: var(--color-accent-amber);
+    background: rgba(255,176,0,0.04);
+    opacity: 0.85;
+  }
+
+  /* Click — ring snaps in tight */
+  #cur-ring.cur-pressed {
+    width: 18px; height: 18px;
+    margin-left: 5px; margin-top: 5px;
+    background: rgba(0,212,255,0.14);
+    border-color: var(--color-accent-cyan);
+  }
+}
+
 .calendar-day.has-event::after {
   content: '';
   display: block;
