@@ -158,8 +158,16 @@ const currentPath = Astro.url.pathname;
     if (menu && menuOpen) menu.style.top = getMobileMenuTop() + 'px';
     hamburger?.classList.toggle('hidden', menuOpen);
     closeIcon?.classList.toggle('hidden', !menuOpen);
-    // When menu is open, force the header bar solid so the top strip isn't transparent
-    updateHeader();
+    // Disable transition so header colour snaps instantly on menu open/close
+    const headerEl = document.getElementById('site-header') as HTMLElement;
+    if (headerEl) {
+      headerEl.style.transition = 'none';
+      updateHeader();
+      // Re-enable transition on next frame so scroll behaviour still animates
+      requestAnimationFrame(() => { headerEl.style.transition = ''; });
+    } else {
+      updateHeader();
+    }
   });
 
   // Scroll: transparent on hero, solid after
