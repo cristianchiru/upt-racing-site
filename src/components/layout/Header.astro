@@ -135,6 +135,17 @@ const currentPath = Astro.url.pathname;
   .logo-link:hover .logo-img {
     transform: scale(1.12) rotate(-2deg);
   }
+
+  @keyframes menu-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes menu-out {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-10px); }
+  }
+  #mobile-menu.menu-entering { animation: menu-in  0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  #mobile-menu.menu-leaving  { animation: menu-out 0.18s ease-in forwards; }
 </style>
 
 <script>
@@ -152,23 +163,51 @@ const currentPath = Astro.url.pathname;
     return 72 + bannerH;
   }
 
-  btn?.addEventListener('click', () => {
-    menuOpen = !menuOpen;
-    menu?.classList.toggle('hidden', !menuOpen);
-    if (menu && menuOpen) menu.style.top = getMobileMenuTop() + 'px';
-    hamburger?.classList.toggle('hidden', menuOpen);
-    closeIcon?.classList.toggle('hidden', !menuOpen);
-    // Disable transition so header colour snaps instantly on menu open/close
+  let closing = false;
+
+  function openMenu() {
+    menuOpen = true;
+    closing = false;
+    if (menu) {
+      menu.style.top = getMobileMenuTop() + 'px';
+      menu.classList.remove('hidden', 'menu-leaving');
+      menu.classList.add('menu-entering');
+    }
+    hamburger?.classList.add('hidden');
+    closeIcon?.classList.remove('hidden');
+    snapHeader();
+  }
+
+  function closeMenu() {
+    if (!menuOpen || closing) return;
+    closing = true;
+    menuOpen = false;
+    hamburger?.classList.remove('hidden');
+    closeIcon?.classList.add('hidden');
+    if (menu) {
+      menu.classList.remove('menu-entering');
+      menu.classList.add('menu-leaving');
+      menu.addEventListener('animationend', () => {
+        menu!.classList.add('hidden');
+        menu!.classList.remove('menu-leaving');
+        closing = false;
+      }, { once: true });
+    }
+    snapHeader();
+  }
+
+  function snapHeader() {
     const headerEl = document.getElementById('site-header') as HTMLElement;
     if (headerEl) {
       headerEl.style.transition = 'none';
       updateHeader();
-      // Re-enable transition on next frame so scroll behaviour still animates
       requestAnimationFrame(() => { headerEl.style.transition = ''; });
     } else {
       updateHeader();
     }
-  });
+  }
+
+  btn?.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
 
   // Scroll: transparent on hero, solid after
   const header      = document.getElementById('site-header') as HTMLElement;
