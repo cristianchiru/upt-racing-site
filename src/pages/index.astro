@@ -125,6 +125,16 @@ const marqueeLogos = [
           >
             Meet the Team
           </a>
+          <!-- Wake the Beast — inline on mobile only, hidden on md+ (fixed button takes over) -->
+          <button
+            id="engine-btn-mobile"
+            class="md:hidden inline-flex items-center gap-3 px-6 py-4 text-sm font-semibold uppercase tracking-wide border beast-waiting"
+            style="border-color: var(--color-accent-amber); color: var(--color-accent-amber); background: transparent;"
+          >
+            <svg id="engine-icon-play-mobile" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="engine-icon-stop-mobile" class="hidden" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12"/></svg>
+            <span id="engine-btn-label-mobile">Wake the beast</span>
+          </button>
         </div>
       </div>
     </div>
@@ -501,7 +511,7 @@ const marqueeLogos = [
 <!-- Fixed engine button — bottom-right, always visible while scrolling -->
 <div
   id="engine-btn-wrap"
-  class="fixed z-40 flex flex-col items-end gap-2 bottom-20 md:bottom-8 right-4 sm:right-6 lg:right-8"
+  class="hidden md:fixed md:flex z-40 flex-col items-end gap-2 bottom-20 md:bottom-8 right-4 sm:right-6 lg:right-8"
 >
   <button
     id="engine-btn"
@@ -525,6 +535,11 @@ const marqueeLogos = [
   const label    = document.getElementById('engine-btn-label') as HTMLElement | null;
   const iconPlay = document.getElementById('engine-icon-play') as HTMLElement | null;
   const iconStop = document.getElementById('engine-icon-stop') as HTMLElement | null;
+  const btnMobile       = document.getElementById('engine-btn-mobile') as HTMLButtonElement | null;
+  const iconPlayMobile  = document.getElementById('engine-icon-play-mobile') as HTMLElement | null;
+  const iconStopMobile  = document.getElementById('engine-icon-stop-mobile') as HTMLElement | null;
+  const labelMobile     = document.getElementById('engine-btn-label-mobile') as HTMLElement | null;
+  const btnCutMobile    = document.getElementById('engine-btn-cut-mobile') as HTMLButtonElement | null;
   const overlay    = document.getElementById('engine-overlay') as HTMLElement | null;
   const blurLayer  = document.getElementById('engine-blur') as HTMLElement | null;
   const rpmOverlay = document.getElementById('rpm-overlay') as HTMLElement | null;
@@ -674,6 +689,11 @@ const marqueeLogos = [
     if (iconStop) iconStop.classList.add('hidden');
     if (label)    label.textContent = 'Wake the beast';
     if (btn)      { btn.classList.add('beast-waiting'); btn.style.borderColor = 'var(--color-accent-amber)'; btn.style.color = 'var(--color-accent-amber)'; btn.style.background = root.classList.contains('dark') ? 'rgba(7,26,47,0.6)' : 'transparent'; }
+    if (iconPlayMobile)  iconPlayMobile.classList.remove('hidden');
+    if (iconStopMobile)  iconStopMobile.classList.add('hidden');
+    if (labelMobile)     labelMobile.textContent = 'Wake the beast';
+    if (btnMobile)       { btnMobile.classList.add('beast-waiting'); btnMobile.style.borderColor = 'var(--color-accent-amber)'; btnMobile.style.color = 'var(--color-accent-amber)'; btnMobile.style.background = 'transparent'; }
+    if (btnCutMobile)    btnCutMobile.style.display = 'none';
   }
 
   function startEngine() {
@@ -696,6 +716,12 @@ const marqueeLogos = [
       if (iconStop) iconStop.classList.remove('hidden');
       if (label)      label.textContent = 'Cut the engine';
       if (btn)        { btn.classList.remove('beast-waiting'); btn.style.borderColor = 'var(--color-accent-amber)'; btn.style.color = 'var(--color-primary-dark)'; btn.style.background = 'var(--color-accent-amber)'; }
+      if (iconPlayMobile)  iconPlayMobile.classList.add('hidden');
+      if (iconStopMobile)  iconStopMobile.classList.remove('hidden');
+      if (labelMobile)     labelMobile.textContent = 'Cut the engine';
+      if (btnMobile)       btnMobile.classList.remove('beast-waiting');
+      // Show the root-level cut button on mobile (above all engine layers)
+      if (btnCutMobile && window.innerWidth < 768) btnCutMobile.style.display = 'flex';
 
       // Phase 1 — blur fades in first; push scroll-to-top behind it
       if (blurLayer)  { blurLayer.style.backdropFilter = 'blur(6px)'; (blurLayer.style as any).webkitBackdropFilter = 'blur(6px)'; blurLayer.style.opacity = '1'; }
@@ -718,8 +744,13 @@ const marqueeLogos = [
   };
   window.addEventListener('scroll', onScroll, { passive: true });
 
+  // Wire mobile buttons
+  btnMobile?.addEventListener('click', () => playing ? stopEngine() : startEngine());
+  btnCutMobile?.addEventListener('click', () => stopEngine());
+
   // Start the idle tease animation immediately
   btn?.classList.add('beast-waiting');
+  btnMobile?.classList.add('beast-waiting');
 
   btn?.addEventListener('click', () => playing ? stopEngine() : startEngine());
 </script>

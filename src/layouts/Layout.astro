@@ -44,7 +44,12 @@ const { title = 'UPT Racing', description = 'Formula Student team from Universit
     <!-- Engine blur layer — blurs the whole site when engine plays -->
     <div id="engine-blur" style="position:fixed;inset:0;z-index:28;pointer-events:none;opacity:0;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);transition:opacity 0.35s,backdrop-filter 0.35s,-webkit-backdrop-filter 0.35s;"></div>
     <!-- Engine audio overlay — fixed above blur, pointer-events: none -->
-    <div id="engine-overlay" style="position:fixed;inset:0;z-index:35;pointer-events:none;opacity:0;mix-blend-mode:screen;transition:opacity 0.4s;"></div>
+    <div id="engine-overlay" style="position:fixed;inset:0;z-index:34;pointer-events:none;opacity:0;mix-blend-mode:screen;transition:opacity 0.4s;"></div>
+    <!-- Mobile cut-engine button — lives at root level, above all engine layers, mobile only -->
+    <button id="engine-btn-cut-mobile" style="display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:40;border:1.5px solid var(--color-accent-amber);background:var(--color-accent-amber);color:#071A2F;padding:1rem 1.5rem;font-family:inherit;font-size:0.875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;cursor:pointer;display:none;align-items:center;gap:0.5rem;">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><rect width="12" height="12"/></svg>
+      Cut the Engine
+    </button>
     <!-- Lap progress bar -->
     <div id="lap-bar" aria-hidden="true" style="position:fixed;top:0;left:0;right:0;z-index:51;height:3px;pointer-events:none;">
       <div style="position:absolute;inset:0;background:rgba(255,255,255,0.07);"></div>
