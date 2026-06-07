@@ -1,6 +1,6 @@
 ---
 ---
-<div class="flex items-center gap-0.5 rounded-full p-0.5" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+<div id="theme-toggle-wrap" class="flex items-center gap-0.5 rounded-full p-0.5 transition-colors duration-400" style="background: var(--color-surface); border: 1px solid var(--color-border);">
   <!-- Sun = light mode -->
   <button
     id="btn-light"
@@ -32,12 +32,17 @@
   function applyTheme(dark: boolean) {
     html.classList.toggle('dark', dark);
 
-    // Active = white pill bg + full opacity; inactive = transparent + muted
-    const activeStyle   = 'background: var(--color-background); color: var(--color-text); box-shadow: 0 1px 4px rgba(0,0,0,0.15);';
-    const inactiveStyle = 'background: transparent; color: var(--color-text-muted); box-shadow: none; opacity: 0.6;';
+    // Active pill: contrasting bg so it pops against the current theme surface
+    const activeBg   = dark  ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)';
+    const activeClr  = dark  ? '#F9FAFB'                : '#1A1208';
+    const inactiveClr = dark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)';
 
-    btnLight.setAttribute('style', dark ? inactiveStyle : activeStyle);
-    btnDark .setAttribute('style', dark ? activeStyle   : inactiveStyle);
+    btnLight.style.cssText = dark
+      ? `background: transparent; color: ${inactiveClr}; box-shadow: none;`
+      : `background: ${activeBg}; color: ${activeClr}; box-shadow: 0 1px 3px rgba(0,0,0,0.1);`;
+    btnDark.style.cssText  = dark
+      ? `background: ${activeBg}; color: ${activeClr}; box-shadow: 0 1px 3px rgba(0,0,0,0.2);`
+      : `background: transparent; color: ${inactiveClr}; box-shadow: none;`;
   }
 
   const stored = localStorage.getItem('theme');

@@ -10,22 +10,53 @@
   /* Brand */
   --color-primary: #0047AB;
   --color-primary-dark: #071A2F;
-  --color-primary-light: #0D2540;
+  --color-primary-light: #FFF8EC;
   --color-accent-cyan: #00D4FF;
   --color-accent-amber: #FFB000;
 
-  /* Base — always dark canvas */
+  /* ── Light theme (default) ── */
+  --color-background: #FAF8F5;
+  --color-surface: rgba(0,0,0,0.03);
+  --color-text: #1A1208;
+  --color-text-muted: #6B5E4A;
+  --color-border: rgba(0,0,0,0.08);
+
+  /* Section overlays */
+  --section-dark:   transparent;
+  --section-darker: rgba(0,0,0,0.04);
+
+  /* Text on sections */
+  --on-dark:        #1A1208;
+  --on-dark-muted:  #6B5E4A;
+  --on-dark-subtle: #9C8E7A;
+  --border-dark:    rgba(0,0,0,0.08);
+  --gap-dark:       rgba(0,0,0,0.06);
+
+  /* Header */
+  --header-bg-solid: color-mix(in srgb, #FAF8F5 92%, transparent);
+  --header-border:   rgba(0,0,0,0.08);
+  --header-text:     #1A1208;
+  --logo-filter:     none;
+
+  /* Canvas gradient — warm amber/gold for light theme */
+  --canvas-g1: radial-gradient(ellipse 70% 55% at 100% 0%,   rgba(255,176,0,0.12)   0%, transparent 65%);
+  --canvas-g2: radial-gradient(ellipse 55% 45% at 0%   100%, rgba(255,130,40,0.07)  0%, transparent 60%);
+  --canvas-g3: radial-gradient(ellipse 80% 60% at 50%  50%,  rgba(255,210,120,0.05) 0%, transparent 75%);
+}
+
+.dark {
   --color-background: #071A2F;
   --color-surface: rgba(255,255,255,0.04);
   --color-text: #F9FAFB;
   --color-text-muted: #9CA3AF;
   --color-border: rgba(255,255,255,0.08);
+  --color-primary-light: #0D2540;
 
-  /* Section overlays — transparent so the fixed gradient shows through */
+  /* Section overlays */
   --section-dark:   transparent;
   --section-darker: rgba(0,0,0,0.18);
 
-  /* Text/borders on sections */
+  /* Text on sections */
   --on-dark:        #F9FAFB;
   --on-dark-muted:  #9CA3AF;
   --on-dark-subtle: #4B6080;
@@ -37,12 +68,11 @@
   --header-border:   rgba(255,255,255,0.08);
   --header-text:     rgba(255,255,255,0.85);
   --logo-filter:     brightness(0) invert(1);
-}
 
-/* Light mode — brighter text/borders, same dark canvas */
-.light {
-  --color-text: #F9FAFB;
-  --color-text-muted: #94A3B8;
+  /* Canvas gradient — cyan/amber/navy for dark theme */
+  --canvas-g1: radial-gradient(ellipse 70% 55% at 5%   0%,   rgba(0,212,255,0.09)  0%, transparent 65%);
+  --canvas-g2: radial-gradient(ellipse 55% 45% at 95%  100%, rgba(255,176,0,0.07)  0%, transparent 60%);
+  --canvas-g3: radial-gradient(ellipse 80% 60% at 50%  50%,  rgba(0,71,171,0.12)   0%, transparent 75%);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -51,10 +81,11 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background-color: var(--color-background);
+  background: transparent; /* canvas handles the bg */
   color: var(--color-text);
   margin: 0;
   -webkit-font-smoothing: antialiased;
+  transition: color 0.4s ease;
 }
 
 /* ── Fixed background canvas ─────────────────────────────────────────────── */
@@ -65,21 +96,28 @@ body {
   pointer-events: none;
 }
 
-/* Radial glow — matches footer treatment */
+/* Base colour fill — transitions smoothly on theme change */
+.bg-canvas::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-background);
+  transition: background 0.4s ease;
+}
+
+/* Radial glow — driven by CSS vars, transitions between themes */
 .bg-canvas__gradient {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 70% 55% at 5%   0%,   rgba(0,212,255,0.09)  0%, transparent 65%),
-    radial-gradient(ellipse 55% 45% at 95%  100%, rgba(255,176,0,0.07)  0%, transparent 60%),
-    radial-gradient(ellipse 80% 60% at 50%  50%,  rgba(0,71,171,0.12)   0%, transparent 75%);
+  background: var(--canvas-g1), var(--canvas-g2), var(--canvas-g3);
+  transition: opacity 0.4s ease;
 }
 
 /* Grain / noise */
 .bg-canvas__noise {
   position: absolute;
   inset: 0;
-  opacity: 0.035;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-size: 200px 200px;
   background-repeat: repeat;
@@ -142,9 +180,8 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 2rem;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
-  color: var(--color-primary-dark);
+  color: var(--color-text);
 }
-.dark .prose-racing h2 { color: var(--color-text); }
 .prose-racing a { color: var(--color-primary); }
 .prose-racing table { border-collapse: collapse; width: 100%; }
 .prose-racing th, .prose-racing td { border: 1px solid var(--color-border); padding: 0.5rem 0.75rem; font-size: 0.9rem; }
