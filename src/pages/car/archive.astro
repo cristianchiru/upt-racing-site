@@ -1,10 +1,23 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import SectionLabel from '../../components/ui/SectionLabel.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 const cars = await getCollection('cars');
 const sorted = cars.sort((a, b) => b.data.year - a.data.year);
+const rendered = await Promise.all(sorted.map(car => render(car)));
+
+function placementLabel(p: number) {
+  if (p === 1) return '🥇 P1';
+  if (p === 2) return '🥈 P2';
+  if (p === 3) return '🥉 P3';
+  if (p > 0)   return `P${p}`;
+  return null;
+}
+
+function bestResult(results: any[]) {
+  return results?.filter(r => r.placement > 0).sort((a, b) => a.placement - b.placement)[0] ?? null;
+}
 ---
 
 <Layout title="Car Archive" description="Every UPT Racing Formula Student car, from the beginning">
@@ -22,47 +35,114 @@ const sorted = cars.sort((a, b) => b.data.year - a.data.year);
   <!-- Timeline -->
   <section class="py-20 lg:py-32" style="background: var(--color-background);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="space-y-20">
-        {sorted.map((car, i) => (
-          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${i % 2 !== 0 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
-            <div class="relative">
-              <img
-                src={car.data.coverImage}
-                alt={car.data.title}
-                class="w-full object-cover"
-                style="aspect-ratio: 16/10;"
-              />
-              <div class="absolute top-4 left-4 px-3 py-1 font-display font-black text-sm uppercase" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">
-                {car.data.year}
+      <div class="space-y-32">
+        {sorted.map((car, i) => {
+          const d = car.data;
+          const { Content } = rendered[i];
+          const best = bestResult(d.results ?? []);
+          const specs = [
+            d.engine        && ['Engine',      d.engine],
+            d.weight        && ['Weight',      d.weight],
+            d.dimensions?.wheelbase && ['Wheelbase', d.dimensions.wheelbase],
+            d.aerodynamics  && ['Aero',        d.aerodynamics],
+            d.chassis?.type && ['Chassis',     d.chassis.type + (d.chassis.mass ? ` — ${d.chassis.mass}` : '')],
+          ].filter(Boolean) as [string, string][];
+
+          return (
+            <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start ${i % 2 !== 0 ? 'lg:[&>*:first-child]:order-2' : ''}`}>
+
+              {/* Image */}
+              <div class="relative">
+                <img
+                  src={d.coverImage}
+                  alt={d.title}
+                  class="w-full object-cover"
+                  style="aspect-ratio: 16/10;"
+                />
+                <div class="absolute top-4 left-4 px-3 py-1 font-mono font-bold text-xs uppercase tracking-widest" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">
+                  {d.years ?? d.year}
+                </div>
+                {best && (
+                  <div class="absolute bottom-4 right-4 px-3 py-1 font-display font-bold text-sm uppercase" style="background: rgba(7,26,47,0.85); color: var(--color-accent-amber);">
+                    {placementLabel(best.placement)}
+                  </div>
+                )}
+              </div>
+
+              {/* Info */}
+              <div>
+                {d.tagline && (
+                  <p class="font-mono text-xs font-bold uppercase tracking-[0.25em] mb-3" style="color: var(--color-accent-amber);">{d.tagline}</p>
+                )}
+                <h2 class="font-display font-black uppercase leading-none mb-6" style="font-size: clamp(3rem, 6vw, 5rem); color: var(--color-text);">{d.title}</h2>
+
+                {/* Body description */}
+                <div class="prose prose-sm mb-8" style="color: var(--color-text-muted); max-width: none;">
+                  <Content />
+                </div>
+
+                {/* Key specs */}
+                <dl class="space-y-0 mb-8">
+                  {specs.map(([k, v]) => (
+                    <div class="flex gap-4 py-3 border-b" style="border-color: var(--color-border);">
+                      <dt class="text-xs font-bold uppercase tracking-widest w-28 shrink-0 pt-0.5" style="color: var(--color-text-muted);">{k}</dt>
+                      <dd class="text-sm font-semibold" style="color: var(--color-text);">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                {/* Dimensions grid */}
+                {d.dimensions && (
+                  <div class="mb-8">
+                    <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: var(--color-text-muted);">Dimensions</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {Object.entries(d.dimensions).map(([k, v]) => (
+                        <div class="p-3" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                          <p class="text-[0.6rem] font-bold uppercase tracking-widest mb-1" style="color: var(--color-text-muted);">{k.replace(/([A-Z])/g, ' $1').trim()}</p>
+                          <p class="font-mono font-bold text-sm" style="color: var(--color-text);">{v as string}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Seasons / results */}
+                {d.seasons && d.seasons.length > 0 && (
+                  <div class="mb-8">
+                    <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color: var(--color-text-muted);">Competitions</p>
+                    <ul class="space-y-1">
+                      {d.seasons.map((s: string) => (
+                        <li class="flex items-center gap-2 text-sm" style="color: var(--color-text);">
+                          <span style="color: var(--color-accent-cyan);">—</span>
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Team */}
+                {d.team && d.team.length > 0 && (
+                  <details class="group">
+                    <summary class="flex items-center gap-2 cursor-pointer list-none text-xs font-bold uppercase tracking-widest mb-3" style="color: var(--color-text-muted);">
+                      <span>Team ({d.team.length} members)</span>
+                      <span class="transition-transform group-open:rotate-180" style="color: var(--color-accent-amber);">▾</span>
+                    </summary>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                      {d.team.map((name: string) => (
+                        <span class="px-2 py-1 text-xs font-mono" style="background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-text-muted);">
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </details>
+                )}
               </div>
             </div>
-            <div>
-              <p class="font-display font-black text-7xl mb-2" style="color: var(--color-primary); opacity: 0.15;">{car.data.year}</p>
-              <h2 class="font-display font-black uppercase text-5xl mb-4 -mt-10" style="color: var(--color-text);">{car.data.title}</h2>
-              <dl class="space-y-3 mb-8">
-                {Object.entries(car.data.specs).slice(0, 4).map(([k, v]) => (
-                  <div class="flex gap-4 pb-3 border-b" style="border-color: var(--color-border);">
-                    <dt class="text-xs font-bold uppercase tracking-widest w-36 shrink-0 pt-0.5" style="color: var(--color-text-muted);">{k}</dt>
-                    <dd class="font-semibold" style="color: var(--color-text);">{v}</dd>
-                  </div>
-                ))}
-              </dl>
-              {car.data.results.length > 0 && (
-                <div class="p-4" style="background: var(--color-surface); border-left: 3px solid var(--color-accent-cyan);">
-                  <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Best Result</p>
-                  <p class="font-display font-bold uppercase text-lg" style="color: var(--color-text);">
-                    {car.data.results[0].placement === 1 ? '🥇' : car.data.results[0].placement === 2 ? '🥈' : car.data.results[0].placement === 3 ? '🥉' : `#${car.data.results[0].placement}`} — {car.data.results[0].event}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-
-        {sorted.length === 0 && (
-          <p class="text-center py-20" style="color: var(--color-text-muted);">No car archive entries yet.</p>
-        )}
+          );
+        })}
       </div>
     </div>
   </section>
+
 </Layout>
