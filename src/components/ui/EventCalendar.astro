@@ -1,6 +1,7 @@
 ---
 interface CalendarEvent {
-  date: string; // YYYY-MM-DD
+  date: string;    // YYYY-MM-DD start
+  endDate: string; // YYYY-MM-DD end (inclusive)
   title: string;
   location: string;
   type: string;
@@ -49,9 +50,19 @@ const { events } = Astro.props;
 
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
+  function pad(n) { return String(n).padStart(2, '0'); }
+
   function eventForDate(y, m, d) {
-    const str = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    return calEvents.find(e => e.date === str);
+    const str = `${y}-${pad(m+1)}-${pad(d)}`;
+    return calEvents.find(e => str >= e.date && str <= (e.endDate ?? e.date));
+  }
+
+  function isStartDate(ev, y, m, d) {
+    return `${y}-${pad(m+1)}-${pad(d)}` === ev.date;
+  }
+
+  function isEndDate(ev, y, m, d) {
+    return `${y}-${pad(m+1)}-${pad(d)}` === (ev.endDate ?? ev.date);
   }
 
   function render() {
@@ -82,7 +93,23 @@ const { events } = Astro.props;
         el.style.fontWeight = '700';
         el.style.color = 'var(--color-accent-amber)';
         el.style.background = 'rgba(255,176,0,0.12)';
-        el.style.outline = '1px solid rgba(255,176,0,0.3)';
+        el.style.borderRadius = '0';
+
+        const start = isStartDate(ev, y, m, d);
+        const end   = isEndDate(ev, y, m, d);
+
+        if (start && end) {
+          // Single-day event
+          el.style.outline = '1px solid rgba(255,176,0,0.5)';
+          el.style.borderRadius = '4px';
+        } else if (start) {
+          el.style.borderLeft = '2px solid var(--color-accent-amber)';
+          el.style.borderRadius = '4px 0 0 4px';
+        } else if (end) {
+          el.style.borderRight = '2px solid var(--color-accent-amber)';
+          el.style.borderRadius = '0 4px 4px 0';
+        }
+        // Middle days: just the tint, no border
       }
       const today = new Date();
       if (d === today.getDate() && m === today.getMonth() && y === today.getFullYear()) {

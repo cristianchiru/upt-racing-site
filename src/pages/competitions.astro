@@ -18,7 +18,7 @@ const pastResults = [
   { year: 2022, event: 'FSRo 2022', location: 'Romania', class: 'Combustion', placement: 7 },
 ];
 
-const calendarEvents = upcoming.map(e => ({ date: e.date, title: e.name, location: e.location, type: e.type }));
+const calendarEvents = upcoming.map(e => ({ date: e.date, endDate: e.endDate, title: e.name, location: e.location, type: e.type }));
 ---
 
 <Layout title="Competitions" description="UPT Racing competition schedule and past results">
