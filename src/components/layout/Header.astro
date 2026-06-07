@@ -90,7 +90,8 @@ const currentPath = Astro.url.pathname;
 <!-- Mobile menu — sibling of header so it has its own stacking context -->
 <div
   id="mobile-menu"
-  class="lg:hidden hidden fixed inset-0 top-[72px] z-[49] overflow-y-auto"
+  class="lg:hidden hidden fixed inset-0 z-[49] overflow-y-auto"
+  style="top: 72px;"
 >
   <nav class="flex flex-col p-6 gap-1">
     {navLinks.map(link => {
@@ -145,9 +146,16 @@ const currentPath = Astro.url.pathname;
 
   let menuOpen = false;
 
+  function getMobileMenuTop() {
+    const banner = document.getElementById('launch-banner');
+    const bannerH = (banner && banner.offsetHeight && banner.style.display !== 'none') ? banner.offsetHeight : 0;
+    return 72 + bannerH;
+  }
+
   btn?.addEventListener('click', () => {
     menuOpen = !menuOpen;
     menu?.classList.toggle('hidden', !menuOpen);
+    if (menu && menuOpen) menu.style.top = getMobileMenuTop() + 'px';
     hamburger?.classList.toggle('hidden', menuOpen);
     closeIcon?.classList.toggle('hidden', !menuOpen);
     // When menu is open, force the header bar solid so the top strip isn't transparent
