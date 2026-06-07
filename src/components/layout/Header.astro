@@ -85,35 +85,35 @@ const currentPath = Astro.url.pathname;
     </div>
   </div>
 
-  <!-- Mobile menu overlay -->
-  <div
-    id="mobile-menu"
-    class="lg:hidden hidden fixed inset-0 top-[72px] z-40"
-    style="background: var(--color-background);"
-  >
-    <nav class="flex flex-col p-6 gap-1">
-      {navLinks.map(link => {
-        const active = currentPath === link.href || currentPath.startsWith(link.href + '/');
-        return (
-          <a
-            href={link.href}
-            class="px-4 py-4 text-2xl font-display font-bold uppercase tracking-wide border-b transition-colors"
-            style={`color: ${active ? 'var(--color-primary)' : 'var(--color-text)'}; border-color: var(--color-border);`}
-          >
-            {link.label}
-          </a>
-        );
-      })}
-      <div class="flex gap-3 mt-6">
-        <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold border-2" style="border-color: var(--color-primary); color: var(--color-primary);">Join Us</a>
-        <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">Apply Now</a>
-      </div>
-      <div class="mt-4 flex justify-center">
-        <ThemeToggle />
-      </div>
-    </nav>
-  </div>
 </header>
+
+<!-- Mobile menu — sibling of header so it has its own stacking context -->
+<div
+  id="mobile-menu"
+  class="lg:hidden hidden fixed inset-0 top-[72px] z-[49] overflow-y-auto"
+>
+  <nav class="flex flex-col p-6 gap-1">
+    {navLinks.map(link => {
+      const active = currentPath === link.href || currentPath.startsWith(link.href + '/');
+      return (
+        <a
+          href={link.href}
+          class="px-4 py-4 text-2xl font-display font-bold uppercase tracking-wide border-b transition-colors"
+          style={`color: ${active ? 'var(--color-primary)' : 'var(--color-text)'}; border-color: var(--color-border);`}
+        >
+          {link.label}
+        </a>
+      );
+    })}
+    <div class="flex gap-3 mt-6">
+      <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold border-2" style="border-color: var(--color-primary); color: var(--color-primary);">Join Us</a>
+      <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">Apply Now</a>
+    </div>
+    <div class="mt-4 flex justify-center">
+      <ThemeToggle />
+    </div>
+  </nav>
+</div>
 
 <style>
   /* Default (solid, light mode) */
@@ -139,15 +139,19 @@ const currentPath = Astro.url.pathname;
 <script>
   // Mobile menu
   const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
+  const menu = document.getElementById('mobile-menu') as HTMLElement | null;
   const hamburger = document.getElementById('hamburger-icon');
   const closeIcon = document.getElementById('close-icon');
 
+  let menuOpen = false;
+
   btn?.addEventListener('click', () => {
-    const open = !menu?.classList.contains('hidden');
-    menu?.classList.toggle('hidden', open);
-    hamburger?.classList.toggle('hidden', !open);
-    closeIcon?.classList.toggle('hidden', open);
+    menuOpen = !menuOpen;
+    menu?.classList.toggle('hidden', !menuOpen);
+    hamburger?.classList.toggle('hidden', menuOpen);
+    closeIcon?.classList.toggle('hidden', !menuOpen);
+    // When menu is open, force the header bar solid so the top strip isn't transparent
+    updateHeader();
   });
 
   // Scroll: transparent on hero, solid after
@@ -162,7 +166,7 @@ const currentPath = Astro.url.pathname;
     const isDark   = document.documentElement.classList.contains('dark');
     const hasHero  = document.body.dataset.hero === 'true';
 
-    const transparent = hasHero && !scrolled;
+    const transparent = hasHero && !scrolled && !menuOpen;
 
     header.style.background        = transparent ? 'transparent' : 'var(--header-bg-solid)';
     header.style.backdropFilter    = transparent ? 'none'        : 'blur(14px)';

@@ -212,3 +212,15 @@ html:not(.dark) .section-label-light { color: var(--color-text-muted) !important
   background: var(--color-accent-amber);
   margin: 2px auto 0;
 }
+
+/* Mobile menu — frosted glass, same feel as the solid header */
+#mobile-menu {
+  background: color-mix(in srgb, #FAF8F5 92%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+html.dark #mobile-menu {
+  background: color-mix(in srgb, #071A2F 92%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
