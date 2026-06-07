@@ -230,7 +230,7 @@ const marqueeLogos = [
       </div>
 
       {latestNews.length > 0 ? (
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-px" style="background: var(--gap-dark);">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-3" style="background: var(--gap-dark);">
           <!-- Featured card — spans 2 cols — always dark overlay (image card) -->
           {featured && (
             <a href={`/news/${featured.id}`} class="group relative overflow-hidden lg:col-span-2" style="background: var(--section-dark); aspect-ratio: 16/9;">
@@ -249,7 +249,7 @@ const marqueeLogos = [
           )}
 
           <!-- Secondary cards stacked -->
-          <div class="flex flex-col gap-px" style="background: var(--gap-dark);">
+          <div class="flex flex-col gap-3" style="background: var(--gap-dark);">
             {secondary.length > 0 ? secondary.map(post => (
               <a href={`/news/${post.id}`} class="group relative overflow-hidden flex-1" style="background: var(--section-dark); min-height: 200px;">
                 <img
