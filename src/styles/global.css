@@ -10,64 +10,44 @@
   /* Brand */
   --color-primary: #0047AB;
   --color-primary-dark: #071A2F;
-  --color-primary-light: #EAF2FF;
+  --color-primary-light: #0D2540;
   --color-accent-cyan: #00D4FF;
   --color-accent-amber: #FFB000;
 
-  /* Base */
-  --color-background: #FFFFFF;
-  --color-surface: #F5F7FA;
-  --color-text: #111827;
-  --color-text-muted: #6B7280;
-  --color-border: #DDE3EA;
-
-  /* Semantic section colors — light mode */
-  --section-dark:   #EBF2FF;   /* replaces navy sections */
-  --section-darker: #DCE8FF;   /* replaces near-black sections */
-
-  /* Text/borders on "dark" sections — light mode */
-  --on-dark:        #111827;
-  --on-dark-muted:  #4B5563;
-  --on-dark-subtle: #9CA3AF;
-  --border-dark:    #C3D4EE;
-  --gap-dark:       #C3D4EE;
-
-  /* Header */
-  --header-bg-solid: color-mix(in srgb, #FFFFFF 95%, transparent);
-  --header-border:   rgba(0,0,0,0.08);
-  --header-text:     #111827;
-  --logo-filter:     none;
-}
-
-.dark {
+  /* Base — always dark canvas */
   --color-background: #071A2F;
-  --color-surface: #0D2540;
+  --color-surface: rgba(255,255,255,0.04);
   --color-text: #F9FAFB;
   --color-text-muted: #9CA3AF;
-  --color-border: #1E3A5F;
-  --color-primary-light: #0D2540;
+  --color-border: rgba(255,255,255,0.08);
 
-  /* Semantic section colors — dark mode */
-  --section-dark:   #071A2F;
-  --section-darker: #050F1E;
+  /* Section overlays — transparent so the fixed gradient shows through */
+  --section-dark:   transparent;
+  --section-darker: rgba(0,0,0,0.18);
 
-  /* Text/borders on "dark" sections — dark mode */
+  /* Text/borders on sections */
   --on-dark:        #F9FAFB;
   --on-dark-muted:  #9CA3AF;
   --on-dark-subtle: #4B6080;
-  --border-dark:    #1E3A5F;
-  --gap-dark:       #1E3A5F;
+  --border-dark:    rgba(255,255,255,0.08);
+  --gap-dark:       rgba(255,255,255,0.06);
 
   /* Header */
-  --header-bg-solid: color-mix(in srgb, #071A2F 96%, transparent);
+  --header-bg-solid: color-mix(in srgb, #071A2F 92%, transparent);
   --header-border:   rgba(255,255,255,0.08);
   --header-text:     rgba(255,255,255,0.85);
   --logo-filter:     brightness(0) invert(1);
 }
 
+/* Light mode — brighter text/borders, same dark canvas */
+.light {
+  --color-text: #F9FAFB;
+  --color-text-muted: #94A3B8;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
-html { transition: background-color 0.3s ease, color 0.3s ease; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -75,6 +55,34 @@ body {
   color: var(--color-text);
   margin: 0;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Fixed background canvas ─────────────────────────────────────────────── */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Radial glow — matches footer treatment */
+.bg-canvas__gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 5%   0%,   rgba(0,212,255,0.09)  0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 95%  100%, rgba(255,176,0,0.07)  0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50%  50%,  rgba(0,71,171,0.12)   0%, transparent 75%);
+}
+
+/* Grain / noise */
+.bg-canvas__noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  background-repeat: repeat;
 }
 
 h1, h2, h3, h4, h5, h6 {
