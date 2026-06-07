@@ -224,3 +224,7 @@ html.dark #mobile-menu {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
+
+/* Join CTA — lighter navy in light mode, full dark navy in dark mode */
+.join-cta { background: #1B3A5C; }
+html.dark .join-cta { background: #071A2F; }
