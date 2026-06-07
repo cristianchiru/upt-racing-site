@@ -154,25 +154,47 @@ function initials(name: string) {
 
 <script>
   const buttons = document.querySelectorAll('.dept-btn');
-  const cards = document.querySelectorAll('.member-card');
+  const cards   = document.querySelectorAll<HTMLElement>('.member-card');
   const countEl = document.getElementById('member-count');
+
+  // Give each card its own transition so scroll-reveal doesn't fight it
+  cards.forEach(c => {
+    c.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+  });
 
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const dept = btn.dataset.dept;
+      const dept = (btn as HTMLElement).dataset.dept;
 
+      // Update active button styles
       buttons.forEach(b => {
-        const active = b.dataset.dept === dept;
-        b.style.background = active ? 'var(--color-primary)' : 'transparent';
-        b.style.borderColor = active ? 'var(--color-primary)' : 'var(--color-border)';
-        b.style.color = active ? 'white' : 'var(--color-text-muted)';
+        const active = (b as HTMLElement).dataset.dept === dept;
+        (b as HTMLElement).style.background   = active ? 'var(--color-primary)' : 'transparent';
+        (b as HTMLElement).style.borderColor  = active ? 'var(--color-primary)' : 'var(--color-border)';
+        (b as HTMLElement).style.color        = active ? 'white' : 'var(--color-text-muted)';
       });
 
       let visible = 0;
+
       cards.forEach(c => {
         const show = dept === 'All' || c.dataset.dept === dept;
-        (c as HTMLElement).style.display = show ? '' : 'none';
-        if (show) visible++;
+
+        if (show) {
+          // Ensure visible in the DOM, then animate in next frame
+          c.style.display = '';
+          requestAnimationFrame(() => {
+            c.style.opacity   = '1';
+            c.style.transform = 'scale(1)';
+          });
+          visible++;
+        } else {
+          // Fade + shrink out, then hide after transition
+          c.style.opacity   = '0';
+          c.style.transform = 'scale(0.88)';
+          c.addEventListener('transitionend', () => {
+            if (c.style.opacity === '0') c.style.display = 'none';
+          }, { once: true });
+        }
       });
 
       if (countEl) countEl.textContent = `Showing ${visible} members`;
