@@ -4,9 +4,9 @@ import SectionLabel from '../components/ui/SectionLabel.astro';
 import EventCalendar from '../components/ui/EventCalendar.astro';
 
 const upcoming = [
-  { name: 'Formula Student Balkans', location: 'Balkans', date: '2025-07-12', endDate: '2025-07-17', status: 'Confirmed', type: 'Competition' },
-  { name: 'Formula Student Czech Republic', location: 'Czech Republic', date: '2025-07-19', endDate: '2025-07-24', status: 'Confirmed', type: 'Competition' },
-  { name: 'Formula ATA', location: 'Italy', date: '2025-09-02', endDate: '2025-09-06', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Balkans',        location: 'Balkans',        date: '2026-07-12', endDate: '2026-07-17', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Czech Republic', location: 'Czech Republic', date: '2026-07-19', endDate: '2026-07-24', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula ATA',                    location: 'Italy',          date: '2026-09-02', endDate: '2026-09-06', status: 'Confirmed', type: 'Competition' },
 ];
 
 const pastResults = [
@@ -36,7 +36,7 @@ const calendarEvents = upcoming.map(e => ({ date: e.date, title: e.name, locatio
   <!-- Upcoming events -->
   <section class="py-20 lg:py-32" style="background: var(--color-background);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionLabel label="2025 Season" />
+      <SectionLabel label="2026 Season" />
       <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Upcoming Events</h2>
       <div class="space-y-4">
         {upcoming.map(e => (

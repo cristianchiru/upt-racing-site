@@ -33,9 +33,9 @@ const stats = [
 ];
 
 const events = [
-  { title: 'Formula Student Balkans',       date: new Date('2025-07-12'), end: new Date('2025-07-17'), location: 'Balkans' },
-  { title: 'Formula Student Czech Republic', date: new Date('2025-07-19'), end: new Date('2025-07-24'), location: 'Czech Republic' },
-  { title: 'Formula ATA',                   date: new Date('2025-09-02'), end: new Date('2025-09-06'), location: 'Italy' },
+  { title: 'Formula Student Balkans',        date: new Date('2026-07-12'), end: new Date('2026-07-17'), location: 'Balkans' },
+  { title: 'Formula Student Czech Republic', date: new Date('2026-07-19'), end: new Date('2026-07-24'), location: 'Czech Republic' },
+  { title: 'Formula ATA',                    date: new Date('2026-09-02'), end: new Date('2026-09-06'), location: 'Italy' },
 ];
 // Server-side: pick next event that hasn't ended yet (fallback to last)
 const now = new Date();
@@ -377,7 +377,7 @@ const marqueeLogos = [
   <!-- ─── UPCOMING EVENTS ──────────────────────────────────── -->
   <section class="py-20 lg:py-28" style="background: var(--section-darker); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionLabel label="2025 Season" light={true} />
+      <SectionLabel label="2026 Season" light={true} />
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
@@ -400,7 +400,7 @@ const marqueeLogos = [
                   <p class="font-mono text-sm font-bold" style="color: var(--color-accent-amber);">
                     {e.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}–{e.end.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                   </p>
-                  <p class="font-mono text-xs mt-0.5" style="color: var(--on-dark-subtle);">2025</p>
+                  <p class="font-mono text-xs mt-0.5" style="color: var(--on-dark-subtle);">2026</p>
                 </div>
               </div>
             );
