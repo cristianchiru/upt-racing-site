@@ -37,8 +37,10 @@ const { title = 'UPT Racing', description = 'Formula Student team from Universit
       <div class="bg-canvas__gradient"></div>
       <div class="bg-canvas__noise"></div>
     </div>
-    <!-- Engine audio overlay — fixed above all content, pointer-events: none -->
-    <div id="engine-overlay" style="position:fixed;inset:0;z-index:30;pointer-events:none;opacity:0;mix-blend-mode:screen;transition:opacity 0.4s;"></div>
+    <!-- Engine blur layer — blurs the whole site when engine plays -->
+    <div id="engine-blur" style="position:fixed;inset:0;z-index:28;pointer-events:none;opacity:0;backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);transition:opacity 0.35s,backdrop-filter 0.35s,-webkit-backdrop-filter 0.35s;"></div>
+    <!-- Engine audio overlay — fixed above blur, pointer-events: none -->
+    <div id="engine-overlay" style="position:fixed;inset:0;z-index:35;pointer-events:none;opacity:0;mix-blend-mode:screen;transition:opacity 0.4s;"></div>
     <Header />
     <main class="pt-[72px]">
       <slot />

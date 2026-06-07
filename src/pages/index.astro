@@ -476,11 +476,14 @@ const marqueeLogos = [
 <div
   id="rpm-overlay"
   class="fixed pointer-events-none select-none z-40 text-right"
-  style="right: clamp(2rem, 5vw, 4rem); top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.4s;"
+  style="top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.4s;"
 >
-  <div class="font-display font-black uppercase leading-none" style="font-size: clamp(5rem, 12vw, 11rem); letter-spacing: -0.04em; color: var(--color-text); mix-blend-mode: overlay; line-height: 0.85; white-space: nowrap;">
-    <div id="rpm-number">800</div>
-    <div style="font-size: 0.28em; letter-spacing: 0.1em; color: var(--color-accent-amber); mix-blend-mode: normal; margin-top: 0.2em;">RPM</div>
+  <div class="font-display font-black uppercase leading-none" style="font-size: clamp(5rem, 12vw, 11rem); letter-spacing: -0.04em; mix-blend-mode: overlay; line-height: 0.85; white-space: nowrap; font-variant-numeric: tabular-nums;">
+    <div id="rpm-bar-wrap" style="width: 100%; height: 8px; margin-bottom: 0.18em; background: none;">
+      <div id="rpm-bar" style="height: 100%; width: 0%; background: var(--color-accent-amber); transition: background 0.2s;"></div>
+    </div>
+    <div id="rpm-number" style="min-width: 4ch; text-align: right;">800</div>
+    <div style="font-size: 0.28em; letter-spacing: 0.1em; color: var(--color-accent-amber); mix-blend-mode: normal; margin-top: 0.2em; text-align: right;">RPM</div>
   </div>
 </div>
 
@@ -493,7 +496,7 @@ const marqueeLogos = [
   <button
     id="engine-btn"
     class="inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-semibold uppercase tracking-wide border backdrop-blur-sm transition-all hover:opacity-85"
-    style="border-color: var(--color-accent-amber); color: var(--color-accent-amber); background: rgba(7,26,47,0.6); writing-mode: horizontal-tb; white-space: nowrap;"
+    style="border-color: var(--color-accent-amber); color: var(--color-accent-amber); writing-mode: horizontal-tb; white-space: nowrap;"
   >
     <svg id="engine-icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
       <path d="M8 5v14l11-7z"/>
@@ -512,8 +515,10 @@ const marqueeLogos = [
   const iconPlay = document.getElementById('engine-icon-play') as HTMLElement | null;
   const iconStop = document.getElementById('engine-icon-stop') as HTMLElement | null;
   const overlay    = document.getElementById('engine-overlay') as HTMLElement | null;
+  const blurLayer  = document.getElementById('engine-blur') as HTMLElement | null;
   const rpmOverlay = document.getElementById('rpm-overlay') as HTMLElement | null;
   const rpmNumber  = document.getElementById('rpm-number') as HTMLElement | null;
+  const rpmBar     = document.getElementById('rpm-bar') as HTMLElement | null;
   const noise      = document.querySelector('.bg-canvas__noise') as HTMLElement | null;
   const shimmer  = document.getElementById('heat-shimmer') as HTMLElement | null;
   const root     = document.documentElement;
@@ -565,10 +570,10 @@ const marqueeLogos = [
       const g2w  = 60  + midS  * 100, g2h  = 50  + midS  * 80;
       const g2x  = 95  - midS  * 25,  g2y  = 100 - midS  * 30;
       const g3w  = 80  + highS * 90;
-      const g1op = (0.18 + bassS  * 0.55).toFixed(3);
-      const g2op = (0.14 + midS   * 0.50).toFixed(3);
-      const g3op = (0.10 + highS  * 0.45).toFixed(3);
-      const fop  = (flashO * 0.35).toFixed(3);
+      const g1op = (0.45 + bassS  * 1.10).toFixed(3);
+      const g2op = (0.35 + midS   * 1.00).toFixed(3);
+      const g3op = (0.25 + highS  * 0.90).toFixed(3);
+      const fop  = (flashO * 0.80).toFixed(3);
 
       if (isDark) {
         overlay.style.background = [
@@ -578,11 +583,15 @@ const marqueeLogos = [
           `radial-gradient(ellipse 90% 70% at 50% 40%, rgba(0,212,255,${fop}) 0%, transparent 70%)`,
         ].join(', ');
       } else {
+        const lg1op = (0.80 + bassS  * 1.40).toFixed(3);
+        const lg2op = (0.70 + midS   * 1.30).toFixed(3);
+        const lg3op = (0.55 + highS  * 1.20).toFixed(3);
+        const lfop  = (flashO * 1.20).toFixed(3);
         overlay.style.background = [
-          `radial-gradient(ellipse ${g1w}% ${g1h}% at 100% 0%, rgba(255,176,0,${g1op}) 0%, transparent 60%)`,
-          `radial-gradient(ellipse ${g2w}% ${g2h}% at ${100 - g2x}% ${g2y}%, rgba(255,80,0,${g2op}) 0%, transparent 60%)`,
-          `radial-gradient(ellipse ${g3w}% ${g3w * 0.75}% at 50% 50%, rgba(255,200,0,${g3op}) 0%, transparent 70%)`,
-          `radial-gradient(ellipse 90% 70% at 50% 40%, rgba(255,140,0,${fop}) 0%, transparent 70%)`,
+          `radial-gradient(ellipse ${g1w}% ${g1h}% at 100% 0%, rgba(100,20,0,${lg1op}) 0%, transparent 60%)`,
+          `radial-gradient(ellipse ${g2w}% ${g2h}% at ${100 - g2x}% ${g2y}%, rgba(80,0,0,${lg2op}) 0%, transparent 60%)`,
+          `radial-gradient(ellipse ${g3w}% ${g3w * 0.75}% at 50% 50%, rgba(120,40,0,${lg3op}) 0%, transparent 70%)`,
+          `radial-gradient(ellipse 90% 70% at 50% 40%, rgba(60,0,0,${lfop}) 0%, transparent 70%)`,
         ].join(', ');
       }
       overlay.style.opacity = '1';
@@ -597,9 +606,17 @@ const marqueeLogos = [
     const targetRPM = 800 + instantEnergy * 7700;
     // Fast attack (0.4), faster decay (0.18) so it follows the waveform up AND down
     rpmSmooth += targetRPM > rpmSmooth
-      ? (targetRPM - rpmSmooth) * 0.40
-      : (targetRPM - rpmSmooth) * 0.18;
+      ? (targetRPM - rpmSmooth) * 0.36
+      : (targetRPM - rpmSmooth) * 0.16;
     if (rpmNumber) rpmNumber.textContent = Math.round(rpmSmooth).toLocaleString();
+    if (rpmBar) {
+      const pct = Math.min(100, ((rpmSmooth - 800) / (8500 - 800)) * 100);
+      rpmBar.style.width = pct.toFixed(1) + '%';
+      // shift colour from amber → red as RPM climbs
+      rpmBar.style.background = pct > 80
+        ? 'var(--color-accent-cyan)'
+        : 'var(--color-accent-amber)';
+    }
 
     // ── Exhaust heat shimmer ─────────────────────────────────────
     if (shimmer) {
@@ -616,10 +633,8 @@ const marqueeLogos = [
     root.style.setProperty('--canvas-g1', origG1);
     root.style.setProperty('--canvas-g2', origG2);
     root.style.setProperty('--canvas-g3', origG3);
-    if (overlay)    { overlay.style.background = ''; overlay.style.opacity = '0'; }
-    if (rpmOverlay) rpmOverlay.style.opacity = '0';
-    if (noise)      noise.style.opacity = '0.04';
-    if (shimmer)    { shimmer.style.backdropFilter = 'blur(0px)'; shimmer.style.opacity = '0'; }
+    if (noise) noise.style.opacity = '0.04';
+    if (shimmer) { shimmer.style.backdropFilter = 'blur(0px)'; shimmer.style.opacity = '0'; }
     rpmSmooth = 800;
   }
 
@@ -628,11 +643,26 @@ const marqueeLogos = [
     audio?.pause();
     if (rafId !== null) cancelAnimationFrame(rafId);
     rafId = null;
+
+    // Phase 1 — fade out RPM overlay and glow immediately
+    if (rpmOverlay) rpmOverlay.style.opacity = '0';
+    if (rpmBar)     rpmBar.style.width = '0%';
+    if (overlay)    overlay.style.opacity = '0';
     restoreBackground();
+
+    // Phase 2 — fade out blur shortly after (200ms)
+    setTimeout(() => {
+      if (blurLayer) {
+        blurLayer.style.backdropFilter = 'blur(0px)';
+        (blurLayer.style as any).webkitBackdropFilter = 'blur(0px)';
+        blurLayer.style.opacity = '0';
+      }
+    }, 200);
+
     if (iconPlay) iconPlay.classList.remove('hidden');
     if (iconStop) iconStop.classList.add('hidden');
     if (label)    label.textContent = 'Wake the beast';
-    if (btn)      { btn.style.borderColor = 'var(--color-accent-amber)'; btn.style.color = 'var(--color-accent-amber)'; }
+    if (btn)      { btn.style.borderColor = 'var(--color-accent-amber)'; btn.style.color = 'var(--color-accent-amber)'; btn.style.background = root.classList.contains('dark') ? 'rgba(7,26,47,0.6)' : 'transparent'; }
   }
 
   function startEngine() {
@@ -653,9 +683,17 @@ const marqueeLogos = [
       playing = true;
       if (iconPlay) iconPlay.classList.add('hidden');
       if (iconStop) iconStop.classList.remove('hidden');
-      if (label)      label.textContent = 'Kill it';
-      if (btn)        { btn.style.borderColor = 'var(--color-accent-cyan)'; btn.style.color = 'var(--color-accent-cyan)'; }
-      if (rpmOverlay) rpmOverlay.style.opacity = '1';
+      if (label)      label.textContent = 'Cut the engine';
+      if (btn)        { btn.style.borderColor = 'var(--color-accent-amber)'; btn.style.color = 'var(--color-primary-dark)'; btn.style.background = 'var(--color-accent-amber)'; }
+
+      // Phase 1 — blur fades in first
+      if (blurLayer)  { blurLayer.style.backdropFilter = 'blur(6px)'; (blurLayer.style as any).webkitBackdropFilter = 'blur(6px)'; blurLayer.style.opacity = '1'; }
+
+      // Phase 2 — RPM overlay fades in after blur settles (400ms)
+      setTimeout(() => {
+        if (rpmOverlay) rpmOverlay.style.opacity = '1';
+      }, 400);
+
       animate();
     });
   }
@@ -664,6 +702,15 @@ const marqueeLogos = [
 </script>
 
 </Layout>
+
+<style>
+  #rpm-number { color: var(--color-accent-cyan); }
+  html.dark #rpm-number { color: white; }
+
+  #engine-btn { background: transparent; }
+  html.dark #engine-btn { background: rgba(7,26,47,0.6); }
+
+</style>
 
 <script define:vars={{ eventsData: events.map(e => ({ title: e.title, date: e.date.toISOString(), end: e.end.toISOString() })) }}>
   // Pick the next event that hasn't ended yet (client-side, uses real local time)
