@@ -49,11 +49,94 @@ const { title = 'UPT Racing', description = 'Formula Student team from Universit
       <div style="position:absolute;inset:0;background:rgba(255,255,255,0.07);"></div>
       <div id="lap-fill" style="position:absolute;inset:0;background:linear-gradient(90deg,var(--color-accent-cyan),var(--color-accent-amber));transform-origin:left;transform:scaleX(0);will-change:transform;"></div>
     </div>
+    <!-- Launch event banner -->
+    <div id="launch-banner" style="position:relative;z-index:52;background:var(--color-accent-amber);color:var(--color-primary-dark);overflow:hidden;">
+      <!-- Shimmer sweep -->
+      <div class="banner-shimmer" aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.35) 50%,transparent 60%);background-size:200% 100%;animation:banner-sweep 3s ease-in-out infinite;"></div>
+      <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-center gap-3 flex-wrap" style="position:relative; padding-right: 2.5rem;">
+        <!-- Live dot + pill -->
+        <span class="font-mono text-[10px] font-black uppercase tracking-widest px-2 py-0.5 flex items-center gap-1.5" style="background:var(--color-primary-dark);color:var(--color-accent-amber);">
+          <span style="width:6px;height:6px;border-radius:50%;background:#ef4444;display:inline-block;animation:live-pulse 1.4s ease-in-out infinite;flex-shrink:0;"></span>
+          LIVE EVENT
+        </span>
+        <span class="font-display font-bold uppercase text-sm tracking-wide">TSR4 EVO Launch — ARChA / UPT</span>
+        <span class="hidden sm:inline text-xs font-medium opacity-70">· Watch the livestream</span>
+        <a
+          href="#"
+          id="banner-stream-link"
+          class="font-mono text-xs font-black uppercase tracking-widest underline underline-offset-2 hover:opacity-70 transition-opacity"
+          target="_blank" rel="noopener"
+          style="animation:banner-cta-pop 2s ease-in-out infinite;"
+        >
+          YouTube Live ↗
+        </a>
+        <button id="banner-close" aria-label="Dismiss banner" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:4px;opacity:0.6;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M1 1l12 12M13 1L1 13"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <style>
+      @keyframes banner-sweep {
+        0%   { background-position: -100% center; }
+        60%  { background-position: 200% center; }
+        100% { background-position: 200% center; }
+      }
+      @keyframes live-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50%       { opacity: 0.3; transform: scale(0.75); }
+      }
+      @keyframes banner-cta-pop {
+        0%, 85%, 100% { opacity: 1; }
+        92%            { opacity: 0.5; }
+      }
+    </style>
     <Header />
-    <main class="pt-[72px]">
+    <main id="main-content" class="pt-[72px]">
       <slot />
     </main>
     <Footer />
+<script is:inline>
+      // Banner dismiss
+      (function () {
+        var banner = document.getElementById('launch-banner');
+        if (!banner) return;
+        if (localStorage.getItem('banner-tsr4evo-dismissed') === '1') {
+          banner.style.display = 'none';
+          return;
+        }
+        document.getElementById('banner-close')?.addEventListener('click', function () {
+          banner.style.maxHeight = banner.offsetHeight + 'px';
+          banner.style.overflow = 'hidden';
+          banner.style.transition = 'max-height 0.3s ease, opacity 0.3s ease';
+          requestAnimationFrame(function () { banner.style.maxHeight = '0'; banner.style.opacity = '0'; });
+          setTimeout(function () {
+            banner.style.display = 'none';
+            var header = document.getElementById('site-header');
+            var main   = document.getElementById('main-content');
+            if (header) header.style.top = '0px';
+            if (main)   main.style.paddingTop = '72px';
+          }, 320);
+          localStorage.setItem('banner-tsr4evo-dismissed', '1');
+        });
+      })();
+    </script>
+    <script is:inline>
+      // Banner offset — push fixed header down by banner height
+      (function () {
+        var banner = document.getElementById('launch-banner');
+        var header = document.getElementById('site-header');
+        var main   = document.getElementById('main-content');
+        function applyOffset() {
+          var h = banner ? banner.offsetHeight : 0;
+          if (header) header.style.top = h + 'px';
+          if (main)   main.style.paddingTop = (72 + h) + 'px';
+        }
+        applyOffset();
+        window.addEventListener('resize', applyOffset);
+      })();
+    </script>
     <script is:inline>
       // Lap progress bar — scaleX lerp on rAF for GPU-smooth animation
       (function () {
