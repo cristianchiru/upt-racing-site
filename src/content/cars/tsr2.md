@@ -3,9 +3,12 @@ title: "TSR 2"
 year: 2015
 coverImage: "https://placehold.co/1280x720/0047AB/FFFFFF?text=TSR+2"
 specs:
-  Engine: "Single cylinder 4-stroke"
-  Drivetrain: "Rear-wheel drive, chain"
-  Suspension: "Double wishbone, pushrod"
+  engine: "Single cylinder 4-stroke"
+  power: "N/A"
+  weight: "N/A"
+  acceleration: "N/A"
+  wheelbase: "N/A"
+  suspension: "Double wishbone, pushrod"
 results: []
 ---
 
