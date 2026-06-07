@@ -12,7 +12,7 @@ specs:
   suspension: "Double wishbone, pushrod actuated"
 results:
   - event: "FS Balkans 2025"
-    location: "T&T Karting Transilvania, Dej, Romania"
+    location: "T&T Karting Transilvania, Romania"
     placement: 5
     year: 2025
 ---

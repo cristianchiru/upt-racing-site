@@ -4,48 +4,46 @@ import SectionLabel from '../components/ui/SectionLabel.astro';
 import EventCalendar from '../components/ui/EventCalendar.astro';
 
 const upcoming = [
-  { name: 'Formula Student Balkans',        location: 'T&T Karting Transilvania, Dej, Romania',              date: '2026-07-12', endDate: '2026-07-17', status: 'Confirmed', type: 'Competition' },
-  { name: 'Formula Student Czech Republic', location: 'Polygon Most, Most, Czech Republic',                   date: '2026-07-19', endDate: '2026-07-24', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Balkans',        location: 'T&T Karting Transilvania, Romania',              date: '2026-07-12', endDate: '2026-07-17', status: 'Confirmed', type: 'Competition' },
+  { name: 'Formula Student Czech Republic', location: 'Polygon Most, Most, Czech Republic',              date: '2026-07-19', endDate: '2026-07-24', status: 'Confirmed', type: 'Competition' },
   { name: 'Formula ATA',                    location: "Riccardo Paletti Circuit, Varano de' Melegari, Italy", date: '2026-09-02', endDate: '2026-09-06', status: 'Confirmed', type: 'Competition' },
 ];
 
 type P = number | 'DNF' | 'DNS' | 'DQ' | 'N/A';
-const pastResults: {
-  year: number; event: string; location: string; country: string; class: string; overall: P;
-  static: { businessPlan?: P; costAndManufacturing?: P; engineeringDesign?: P; staticOverall?: P };
-  dynamic: { acceleration?: P; skidPad?: P; autoX?: P; endurance?: P; efficiency?: P; dynamicOverall?: P };
+
+function fmt(p: P | undefined): string {
+  if (p === undefined) return '—';
+  if (typeof p === 'number') return `P${p}`;
+  return p;
+}
+
+function clr(p: P | undefined): string {
+  if (p === undefined || p === 'N/A') return 'var(--color-text-muted)';
+  if (p === 'DNF' || p === 'DNS' || p === 'DQ') return '#EF4444';
+  if (typeof p === 'number' && p <= 3) return 'var(--color-accent-amber)';
+  if (typeof p === 'number' && p <= 10) return 'var(--color-accent-cyan)';
+  return 'var(--color-text)';
+}
+
+const rawResults: {
+  year: number; event: string; location: string; country: string; class: string; placement: P;
 }[] = [
-  {
-    year: 2025, event: 'Formula Student Alpe Adria', location: 'Alpe Adria Circuit', country: 'Croatia', class: 'Combustion', overall: 14,
-    static:  { businessPlan: 16, costAndManufacturing: 5,  engineeringDesign: 14 },
-    dynamic: { acceleration: 14, skidPad: 'DQ', autoX: 14, endurance: 'DQ', efficiency: 'DQ' },
-  },
-  {
-    year: 2024, event: 'Formula Student Balkans', location: 'T&T Karting Transilvania, Dej', country: 'Romania', class: 'Combustion', overall: 2,
-    static:  { businessPlan: 3,  costAndManufacturing: 1,  engineeringDesign: 4 },
-    dynamic: { acceleration: 2,  skidPad: 2,    autoX: 2,  endurance: 2 },
-  },
-  {
-    year: 2024, event: 'Formula Student Alpe Adria', location: 'Alpe Adria Circuit', country: 'Croatia', class: 'Combustion', overall: 14,
-    static:  { businessPlan: 10, costAndManufacturing: 10, engineeringDesign: 14 },
-    dynamic: { acceleration: 12, skidPad: 12,   autoX: 11, endurance: 'DNF' },
-  },
-  {
-    year: 2024, event: 'Formula Student Czech Republic', location: 'Autodrom Most', country: 'Czech Republic', class: 'Combustion', overall: 10,
-    static:  { businessPlan: 9,  costAndManufacturing: 6,  engineeringDesign: 6 },
-    dynamic: { acceleration: 8,  skidPad: 8,    autoX: 10, endurance: 'DQ' },
-  },
-  {
-    year: 2023, event: 'Formula Student Czech Republic', location: 'Autodrom Most', country: 'Czech Republic', class: 'Combustion', overall: 12,
-    static:  { businessPlan: 13, costAndManufacturing: 14, engineeringDesign: 11 },
-    dynamic: { acceleration: 10, skidPad: 10,   autoX: 11, endurance: 'DNF' },
-  },
-  {
-    year: 2023, event: 'Formula Student East', location: 'Hungaroring', country: 'Hungary', class: 'Combustion', overall: 19,
-    static:  { businessPlan: 22, costAndManufacturing: 18, engineeringDesign: 17, staticOverall: 19 },
-    dynamic: { acceleration: 'DNS', skidPad: 'DNS', autoX: 'DNS', endurance: 'DNS', dynamicOverall: 'DNS' },
-  },
+  { year: 2025, event: 'Formula Student Alpe Adria',     location: 'Alpe Adria Circuit', country: 'Croatia',        class: 'Internal Combustion',  placement: 14 },
+  { year: 2024, event: 'Formula Student Balkans',        location: 'T&T Karting Transilvania', country: 'Romania',   class: 'Internal Combustion',  placement: 2  },
+  { year: 2024, event: 'Formula Student Alpe Adria',     location: 'Alpe Adria Circuit', country: 'Croatia',        class: 'Internal Combustion',  placement: 14 },
+  { year: 2024, event: 'Formula Student Czech Republic', location: 'Autodrom Most',      country: 'Czech Republic',  class: 'Internal Combustion',  placement: 10 },
+  { year: 2023, event: 'Formula Student Czech Republic', location: 'Autodrom Most',      country: 'Czech Republic',  class: 'Internal Combustion',  placement: 12 },
+  { year: 2023, event: 'Formula Student East',           location: 'Hungaroring',        country: 'Hungary',         class: 'Internal Combustion', placement: 19 },
+  { year: 2023, event: 'Formula Student Balkans',        location: 'T&T Karting Transilvania', country: 'Romania',   class: 'Internal Combustion', placement: 2  },
 ];
+
+const rows = rawResults.map(r => ({
+  year: r.year,
+  event: r.event,
+  loc: `${r.location}, ${r.country}`,
+  cls: r.class,
+  placement: { val: fmt(r.placement), color: clr(r.placement) },
+}));
 
 const calendarEvents = upcoming.map(e => ({ date: e.date, endDate: e.endDate, title: e.name, location: e.location, type: e.type }));
 ---
@@ -113,73 +111,52 @@ const calendarEvents = upcoming.map(e => ({ date: e.date, endDate: e.endDate, ti
       <SectionLabel label="Historical Results" />
       <h2 class="font-display font-black uppercase text-5xl mb-12" style="color: var(--color-text);">Past Results</h2>
       <div class="overflow-x-auto">
-        <table class="w-full text-sm" style="border-collapse: collapse; min-width: 900px;">
+        <table class="w-full text-sm" style="border-collapse: collapse; min-width: 600px;">
           <thead>
             <tr style="border-bottom: 2px solid var(--color-border);">
               <th class="text-left py-3 pr-6 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Year</th>
               <th class="text-left py-3 pr-6 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Event</th>
               <th class="text-left py-3 pr-6 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Location</th>
-              <th class="text-center py-3 pr-6 text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-amber);">Overall</th>
-              <!-- Static -->
-              <th class="text-center py-3 pr-2 text-xs font-bold uppercase tracking-widest" colspan="3" style="color: var(--color-accent-cyan); border-left: 1px solid var(--color-border);">Static</th>
-              <!-- Dynamic -->
-              <th class="text-center py-3 pr-2 text-xs font-bold uppercase tracking-widest" colspan="5" style="color: var(--color-accent-cyan); border-left: 1px solid var(--color-border);">Dynamic</th>
-            </tr>
-            <tr style="border-bottom: 1px solid var(--color-border);">
-              <th colspan="4"></th>
-              {['BP', 'C&M', 'ED'].map(h => (
-                <th class="text-center pb-2 px-2 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted); border-left: 1px solid var(--color-border);">{h}</th>
-              ))}
-              {['Accel', 'Skid', 'AutoX', 'Endu', 'Effic'].map(h => (
-                <th class="text-center pb-2 px-2 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted); border-left: 1px solid var(--color-border);">{h}</th>
-              ))}
+              <th class="text-center py-3 pr-6 text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Class</th>
+              <th class="text-center py-3 text-xs font-bold uppercase tracking-widest" style="color: var(--color-accent-amber);">Placement</th>
             </tr>
           </thead>
           <tbody>
-            {pastResults.map(r => {
-              const fmt = (p: P | undefined) => {
-                if (p === undefined) return '—';
-                if (typeof p === 'number') return `P${p}`;
-                return p;
-              };
-              const clr = (p: P | undefined) => {
-                if (p === undefined || p === 'N/A') return 'var(--color-text-muted)';
-                if (p === 'DNF' || p === 'DNS' || p === 'DQ') return '#EF4444';
-                if (p === 1) return 'var(--color-accent-amber)';
-                if (typeof p === 'number' && p <= 3) return 'var(--color-accent-amber)';
-                if (typeof p === 'number' && p <= 10) return 'var(--color-accent-cyan)';
-                return 'var(--color-text)';
-              };
-              return (
-                <tr style="border-bottom: 1px solid var(--color-border);">
-                  <td class="py-4 pr-6 font-display font-bold text-lg" style="color: var(--color-primary);">{r.year}</td>
-                  <td class="py-4 pr-6 font-medium" style="color: var(--color-text);">{r.event}</td>
-                  <td class="py-4 pr-6 text-xs" style="color: var(--color-text-muted);">{r.location}, {r.country}</td>
-                  <td class="py-4 pr-6 text-center">
-                    <span class="font-display font-black text-2xl tabular" style={`color: ${clr(r.overall)};`}>{fmt(r.overall)}</span>
-                  </td>
-                  {[r.static.businessPlan, r.static.costAndManufacturing, r.static.engineeringDesign].map(v => (
-                    <td class="py-4 px-2 text-center font-mono text-sm font-bold" style={`color: ${clr(v)}; border-left: 1px solid var(--color-border);`}>{fmt(v)}</td>
-                  ))}
-                  {[r.dynamic.acceleration, r.dynamic.skidPad, r.dynamic.autoX, r.dynamic.endurance, r.dynamic.efficiency].map(v => (
-                    <td class="py-4 px-2 text-center font-mono text-sm font-bold" style={`color: ${clr(v)}; border-left: 1px solid var(--color-border);`}>{fmt(v)}</td>
-                  ))}
-                </tr>
-              );
-            })}
+            {rows.map(r => (
+              <tr style="border-bottom: 1px solid var(--color-border);">
+                <td class="py-4 pr-6 font-display font-bold text-lg" style="color: var(--color-primary);">{r.year}</td>
+                <td class="py-4 pr-6 font-medium" style="color: var(--color-text);">{r.event}</td>
+                <td class="py-4 pr-6 text-xs" style="color: var(--color-text-muted);">{r.loc}</td>
+                <td class="py-4 pr-6 text-center">
+                  <span class="px-2 py-0.5 text-xs font-bold uppercase tracking-wide" style="background: rgba(0,212,255,0.1); color: var(--color-accent-cyan); border: 1px solid var(--color-accent-cyan);">{r.cls}</span>
+                </td>
+                <td class="py-4 text-center">
+                  <span class="font-display font-black text-2xl" style={`color: ${r.placement.color};`}>{r.placement.val}</span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
       <!-- Legend -->
       <div class="flex flex-wrap gap-6 mt-8">
-        {[['var(--color-accent-amber)', 'Top 3'], ['var(--color-accent-cyan)', 'Top 10'], ['var(--color-text)', 'Classified'], ['#EF4444', 'DNF / DNS / DQ']].map(([color, label]) => (
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full shrink-0" style={`background: ${color};`}></span>
-            <span class="font-mono text-xs" style="color: var(--color-text-muted);">{label}</span>
-          </div>
-        ))}
-        <span class="font-mono text-xs" style="color: var(--color-text-muted);">BP = Business Plan · C&M = Cost & Manufacturing · ED = Engineering Design · Endu = Endurance · Effic = Efficiency</span>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full shrink-0" style="background: var(--color-accent-amber);"></span>
+          <span class="font-mono text-xs" style="color: var(--color-text-muted);">Top 3</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full shrink-0" style="background: var(--color-accent-cyan);"></span>
+          <span class="font-mono text-xs" style="color: var(--color-text-muted);">Top 10</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full shrink-0" style="background: var(--color-text);"></span>
+          <span class="font-mono text-xs" style="color: var(--color-text-muted);">Classified</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full shrink-0" style="background: #EF4444;"></span>
+          <span class="font-mono text-xs" style="color: var(--color-text-muted);">DNF / DNS / DQ</span>
+        </div>
       </div>
     </div>
   </section>
