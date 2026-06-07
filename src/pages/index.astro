@@ -149,11 +149,11 @@ const marqueeLogos = [
   <!-- ─── STATS ────────────────────────────────────────────── -->
   <section id="stats-section" style="background: var(--section-dark); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background: var(--gap-dark);">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s, i) => (
           <div
             class="stat-card flex flex-col gap-3 px-8 py-10"
-            style={`background: var(--section-dark); opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease ${i * 0.1}s, transform 0.55s ease ${i * 0.1}s;`}
+            style={`opacity: 0; transform: translateY(28px); transition: opacity 0.55s ease ${i * 0.1}s, transform 0.55s ease ${i * 0.1}s;${i > 0 ? ' border-left: 1px solid var(--color-border);' : ''}`}
           >
             <p
               class="stat-number font-display font-black leading-none tabular"
