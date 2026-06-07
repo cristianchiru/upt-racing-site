@@ -32,11 +32,12 @@ const stats = [
   },
 ];
 
-const upcomingEvent = {
-  title: 'Formula Student Germany 2025',
-  date: new Date('2025-08-04'),
-  location: 'Hockenheimring, Germany',
-};
+const events = [
+  { title: 'Formula Student Balkans', date: new Date('2025-07-12'), end: new Date('2025-07-17'), location: 'Balkans' },
+  { title: 'Formula Student Czech Republic', date: new Date('2025-07-19'), end: new Date('2025-07-24'), location: 'Czech Republic' },
+  { title: 'Formula ATA', date: new Date('2025-09-02'), end: new Date('2025-09-06'), location: 'Italy' },
+];
+const upcomingEvent = events[0]; // nearest event drives the countdown
 
 const sponsorBase     = '/Logo%20sponsori%20alb/SVG';
 const sponsorBaseBlue = '/Logo%20sponsori%20albastre/SVG';
@@ -371,24 +372,51 @@ const marqueeLogos = [
     </div>
   </section>
 
-  <!-- ─── UPCOMING EVENT ────────────────────────────────────── -->
+  <!-- ─── UPCOMING EVENTS ──────────────────────────────────── -->
   <section class="py-20 lg:py-28" style="background: var(--section-darker); border-top: 1px solid var(--border-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <SectionLabel label="Next Event" light={true} />
-          <h2 class="font-display font-black text-4xl lg:text-5xl leading-[0.95] mb-3" style="letter-spacing: -0.02em; color: var(--on-dark);">{upcomingEvent.title}</h2>
-          <p class="font-mono text-sm mb-8" style="color: var(--on-dark-muted);">{upcomingEvent.location}</p>
-          <Button href="/competitions" variant="accent">View All Events</Button>
-        </div>
-        <div class="grid grid-cols-4 gap-3" id="countdown">
-          {['days','hours','minutes','seconds'].map(unit => (
-            <div class="text-center py-6 px-2" style="background: var(--border-dark); border: 1px solid var(--gap-dark);">
-              <p class="font-display font-black tabular" style="font-size: 2.75rem; letter-spacing: -0.02em; color: var(--on-dark);" id={`cd-${unit}`}>--</p>
-              <p class="font-mono text-xs font-bold uppercase tracking-widest mt-2" style="color: var(--color-accent-cyan);">{unit}</p>
+      <SectionLabel label="2025 Season" light={true} />
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+
+        <!-- Left: event list -->
+        <div class="flex flex-col gap-0" style="border-top: 1px solid var(--border-dark);">
+          {events.map((e, i) => (
+            <div
+              class="flex items-center justify-between py-5 gap-4"
+              style={`border-bottom: 1px solid var(--border-dark); ${i === 0 ? `opacity:1;` : `opacity:0.5;`}`}
+            >
+              <div>
+                <p class="font-display font-bold text-xl leading-tight" style="color: var(--on-dark); letter-spacing: -0.01em;">{e.title}</p>
+                <p class="font-mono text-xs mt-1" style="color: var(--on-dark-muted);">{e.location}</p>
+              </div>
+              <div class="text-right shrink-0">
+                <p class="font-mono text-sm font-bold" style="color: var(--color-accent-amber);">
+                  {e.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}–{e.end.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                </p>
+                <p class="font-mono text-xs mt-0.5" style="color: var(--on-dark-subtle);">2025</p>
+              </div>
             </div>
           ))}
+          <div class="mt-8">
+            <Button href="/competitions" variant="accent">View All Events</Button>
+          </div>
         </div>
+
+        <!-- Right: countdown to nearest event -->
+        <div>
+          <p class="font-mono text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--on-dark-subtle);">Countdown to</p>
+          <h2 class="font-display font-black text-3xl lg:text-4xl leading-[0.95] mb-6" style="letter-spacing: -0.02em; color: var(--on-dark);">{upcomingEvent.title}</h2>
+          <div class="grid grid-cols-4 gap-3" id="countdown">
+            {['days','hours','minutes','seconds'].map(unit => (
+              <div class="text-center py-6 px-2" style="background: var(--border-dark); border: 1px solid var(--gap-dark);">
+                <p class="font-display font-black tabular" style="font-size: 2.75rem; letter-spacing: -0.02em; color: var(--on-dark);" id={`cd-${unit}`}>--</p>
+                <p class="font-mono text-xs font-bold uppercase tracking-widest mt-2" style="color: var(--color-accent-cyan);">{unit}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
