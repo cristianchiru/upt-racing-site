@@ -61,30 +61,114 @@ const faqs = [
     <div class="max-w-[720px] mx-auto px-4 sm:px-6 lg:px-8">
       <SectionLabel label="Apply Now" />
       <h2 class="font-display font-black uppercase text-5xl mb-10" style="color: var(--color-text);">Apply to Join</h2>
-      <form class="space-y-6" netlify name="join-application" method="POST">
+      <form class="space-y-6" id="join-form" netlify name="join-application" method="POST" novalidate>
         <input type="hidden" name="form-name" value="join-application" />
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
+          <div class="flex flex-col gap-2">
             <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Full Name</label>
-            <input type="text" name="name" required class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'" />
+            <input type="text" name="name" id="j-name" class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors" style="border-color: var(--color-border); color: var(--color-text);" />
+            <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
           </div>
-          <div>
+          <div class="flex flex-col gap-2">
             <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Email</label>
-            <input type="email" name="email" required class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'" />
+            <input type="email" name="email" id="j-email" class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors" style="border-color: var(--color-border); color: var(--color-text);" />
+            <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
           </div>
         </div>
-        <div>
+        <div class="flex flex-col gap-2">
           <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Department</label>
-          <select name="department" class="form-select w-full px-4 py-3 border text-sm transition-colors" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-accent-amber)'" onblur="this.style.borderColor='var(--color-border)'">
-            {departments.map(d => <option>{d.name}</option>)}
+          <select name="department" id="j-department" class="form-select w-full px-4 py-3 border text-sm transition-colors" style="border-color: var(--color-border); color: var(--color-text);">
+            <option value="">— Select a department —</option>
+            {departments.map(d => <option value={d.name}>{d.name}</option>)}
           </select>
+          <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
         </div>
-        <div>
+        <div class="flex flex-col gap-2">
           <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Why do you want to join?</label>
-          <textarea name="message" rows="5" required class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors resize-none" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-primary)'" onblur="this.style.borderColor='var(--color-border)'"></textarea>
+          <textarea name="message" id="j-message" rows="5" class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none transition-colors resize-none" style="border-color: var(--color-border); color: var(--color-text);"></textarea>
+          <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
         </div>
-        <Button type="submit" variant="accent" size="lg">Submit Application</Button>
+        <div id="join-success" class="hidden px-4 py-3 text-sm font-semibold border" style="border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,0.06);">
+          ✓ Application submitted — we'll be in touch soon!
+        </div>
+        <button
+          type="submit"
+          id="join-submit"
+          class="px-10 py-4 font-display font-bold uppercase tracking-wide text-base transition-opacity hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          style="background: var(--color-accent-amber); color: var(--color-primary-dark);"
+        >
+          Submit Application
+        </button>
       </form>
+
+      <script>
+        (function () {
+          const form    = document.getElementById('join-form') as HTMLFormElement;
+          const submit  = document.getElementById('join-submit') as HTMLButtonElement;
+          const success = document.getElementById('join-success') as HTMLElement;
+
+          const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          const rules: Record<string, (v: string) => string | null> = {
+            'j-name':       v => v.trim().length < 2  ? 'Please enter your full name.'            : null,
+            'j-email':      v => !EMAIL_RE.test(v)    ? 'Please enter a valid email address.'     : null,
+            'j-department': v => !v                   ? 'Please select a department.'             : null,
+            'j-message':    v => v.trim().length < 20 ? 'Please write at least 20 characters.'    : null,
+          };
+
+          function getError(id: string): HTMLElement | null {
+            return document.getElementById(id)?.parentElement?.querySelector('.field-error') ?? null;
+          }
+
+          function validateField(id: string): boolean {
+            const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+            if (!el) return true;
+            const msg = rules[id]?.(el.value) ?? null;
+            const err = getError(id);
+            if (msg) {
+              el.style.borderColor = '#ef4444';
+              if (err) { err.textContent = msg; err.classList.remove('hidden'); }
+              return false;
+            } else {
+              el.style.borderColor = 'var(--color-accent-amber)';
+              if (err) { err.textContent = ''; err.classList.add('hidden'); }
+              return true;
+            }
+          }
+
+          function validateAll(): boolean {
+            return Object.keys(rules).map(id => validateField(id)).every(Boolean);
+          }
+
+          Object.keys(rules).forEach(id => {
+            document.getElementById(id)?.addEventListener('blur',  () => validateField(id));
+            document.getElementById(id)?.addEventListener('input',  () => validateField(id));
+            document.getElementById(id)?.addEventListener('change', () => validateField(id));
+          });
+
+          form.querySelectorAll('input, textarea, select').forEach(el => {
+            (el as HTMLElement).addEventListener('focus', function () {
+              (this as HTMLElement).style.borderColor = 'var(--color-accent-amber)';
+            });
+            (el as HTMLElement).addEventListener('blur', function () {
+              const id = (this as HTMLElement).id;
+              if (!rules[id]) (this as HTMLElement).style.borderColor = 'var(--color-border)';
+            });
+          });
+
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!validateAll()) return;
+            submit.textContent = 'Submitting…';
+            submit.disabled = true;
+            setTimeout(() => {
+              form.reset();
+              success.classList.remove('hidden');
+              submit.classList.add('hidden');
+            }, 800);
+          });
+        })();
+      </script>
     </div>
   </section>
 

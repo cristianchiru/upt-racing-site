@@ -68,37 +68,33 @@ const contacts = [
       <div class="max-w-2xl">
         <SectionLabel label="Send a Message" />
         <h2 class="font-display font-black uppercase text-4xl lg:text-5xl mb-12" style="color: var(--color-text);">Drop us a line</h2>
-        <form class="space-y-6" name="contact" method="POST">
+        <form class="space-y-6" id="contact-form" name="contact" method="POST" novalidate>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div class="flex flex-col gap-2">
               <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Name</label>
               <input
-                type="text" name="name" required
-                class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors focus:border-current"
+                type="text" name="name" id="c-name"
+                class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors"
                 style="border-color: var(--color-border); color: var(--color-text);"
-                onfocus="this.style.borderColor='var(--color-accent-amber)'"
-                onblur="this.style.borderColor='var(--color-border)'"
               />
+              <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
             </div>
             <div class="flex flex-col gap-2">
               <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Email</label>
               <input
-                type="email" name="email" required
+                type="email" name="email" id="c-email"
                 class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors"
                 style="border-color: var(--color-border); color: var(--color-text);"
-                onfocus="this.style.borderColor='var(--color-accent-amber)'"
-                onblur="this.style.borderColor='var(--color-border)'"
               />
+              <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
             </div>
           </div>
           <div class="flex flex-col gap-2">
             <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Subject</label>
             <select
-              name="subject"
+              name="subject" id="c-subject"
               class="form-select w-full px-4 py-3 text-sm border transition-colors"
               style="border-color: var(--color-border); color: var(--color-text);"
-              onfocus="this.style.borderColor='var(--color-accent-amber)'"
-              onblur="this.style.borderColor='var(--color-border)'"
             >
               <option value="general">General Enquiry</option>
               <option value="sponsorship">Sponsorship & Partnership</option>
@@ -109,21 +105,94 @@ const contacts = [
           <div class="flex flex-col gap-2">
             <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Message</label>
             <textarea
-              name="message" required rows="6"
+              name="message" id="c-message" rows="6"
               class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors resize-none"
               style="border-color: var(--color-border); color: var(--color-text);"
-              onfocus="this.style.borderColor='var(--color-accent-amber)'"
-              onblur="this.style.borderColor='var(--color-border)'"
             ></textarea>
+            <span class="field-error hidden text-xs font-semibold" style="color: #ef4444;"></span>
+          </div>
+          <div id="contact-success" class="hidden px-4 py-3 text-sm font-semibold border" style="border-color: #22c55e; color: #22c55e; background: rgba(34,197,94,0.06);">
+            ✓ Message sent — we'll get back to you soon.
           </div>
           <button
             type="submit"
-            class="px-10 py-3 font-display font-bold uppercase tracking-wide text-sm transition-opacity hover:opacity-80"
+            id="contact-submit"
+            class="px-10 py-3 font-display font-bold uppercase tracking-wide text-sm transition-opacity hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
             style="background: var(--color-accent-amber); color: var(--color-primary-dark);"
           >
             Send Message
           </button>
         </form>
+
+        <script>
+          (function () {
+            const form    = document.getElementById('contact-form') as HTMLFormElement;
+            const submit  = document.getElementById('contact-submit') as HTMLButtonElement;
+            const success = document.getElementById('contact-success') as HTMLElement;
+
+            const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            const rules: Record<string, (v: string) => string | null> = {
+              'c-name':    v => v.trim().length < 2  ? 'Please enter your full name.'           : null,
+              'c-email':   v => !EMAIL_RE.test(v)    ? 'Please enter a valid email address.'    : null,
+              'c-message': v => v.trim().length < 20 ? 'Message must be at least 20 characters.' : null,
+            };
+
+            function getError(id: string): HTMLElement | null {
+              return document.getElementById(id)?.parentElement?.querySelector('.field-error') ?? null;
+            }
+
+            function validateField(id: string): boolean {
+              const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement;
+              if (!el) return true;
+              const msg = rules[id]?.(el.value) ?? null;
+              const err = getError(id);
+              if (msg) {
+                el.style.borderColor = '#ef4444';
+                if (err) { err.textContent = msg; err.classList.remove('hidden'); }
+                return false;
+              } else {
+                el.style.borderColor = 'var(--color-accent-amber)';
+                if (err) { err.textContent = ''; err.classList.add('hidden'); }
+                return true;
+              }
+            }
+
+            function validateAll(): boolean {
+              return Object.keys(rules).map(id => validateField(id)).every(Boolean);
+            }
+
+            // Validate on blur
+            Object.keys(rules).forEach(id => {
+              document.getElementById(id)?.addEventListener('blur', () => validateField(id));
+              document.getElementById(id)?.addEventListener('input', () => validateField(id));
+            });
+
+            // Focus highlight
+            form.querySelectorAll('input, textarea, select').forEach(el => {
+              (el as HTMLElement).addEventListener('focus', function () {
+                (this as HTMLElement).style.borderColor = 'var(--color-accent-amber)';
+              });
+              (el as HTMLElement).addEventListener('blur', function () {
+                const id = (this as HTMLElement).id;
+                if (!rules[id]) (this as HTMLElement).style.borderColor = 'var(--color-border)';
+              });
+            });
+
+            form.addEventListener('submit', (e) => {
+              e.preventDefault();
+              if (!validateAll()) return;
+              // Simulate success (replace with fetch/action when backend is ready)
+              submit.textContent = 'Sending…';
+              submit.disabled = true;
+              setTimeout(() => {
+                form.reset();
+                success.classList.remove('hidden');
+                submit.classList.add('hidden');
+              }, 800);
+            });
+          })();
+        </script>
       </div>
     </div>
   </section>
