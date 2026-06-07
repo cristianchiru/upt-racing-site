@@ -310,8 +310,8 @@ const marqueeLogos = [
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
           <SectionLabel label="Current Car" light={true} />
-          <h2 class="font-display font-black text-5xl lg:text-7xl mb-8 leading-none" style="letter-spacing: -0.03em; color: var(--on-dark);">TSR 4 Hybrid</h2>
-          <dl class="space-y-0">
+          <h2 id="car-heading" class="font-display font-black text-5xl lg:text-7xl mb-8 leading-none" style="letter-spacing: -0.03em; color: var(--on-dark);">TSR 4 Hybrid</h2>
+          <dl id="car-specs" class="space-y-0">
             {[
               ['Engine', 'KTM 690 Duke — Single Cylinder'],
               ['Power Output', '65 hp @ 7500 rpm'],
@@ -331,13 +331,22 @@ const marqueeLogos = [
           </div>
         </div>
 
-        <div class="relative">
+        <div class="relative overflow-hidden">
           <img
+            id="car-image"
             src="/tsr4hybrid.jpg"
             alt="TSR 4 Hybrid Race Car"
             class="w-full object-cover"
             style="aspect-ratio: 16/10;"
           />
+          <!-- Heat shimmer overlay — bottom third of the car image -->
+          <div
+            id="heat-shimmer"
+            class="absolute bottom-0 left-0 right-0 pointer-events-none"
+            style="height: 45%; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
+                   mask-image: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+                   -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);"
+          ></div>
           <div class="absolute bottom-0 left-0 right-0 h-[3px]" style="background: var(--color-accent-cyan);"></div>
         </div>
       </div>
@@ -461,6 +470,198 @@ const marqueeLogos = [
       <Button href="/join-us" variant="accent" size="lg">Join the Team</Button>
     </div>
   </section>
+
+
+<!-- RPM overlay — centered vertically on the right -->
+<div
+  id="rpm-overlay"
+  class="fixed pointer-events-none select-none z-40 text-right"
+  style="right: clamp(2rem, 5vw, 4rem); top: 50%; transform: translateY(-50%); opacity: 0; transition: opacity 0.4s;"
+>
+  <div class="font-display font-black uppercase leading-none" style="font-size: clamp(5rem, 12vw, 11rem); letter-spacing: -0.04em; color: var(--color-text); mix-blend-mode: overlay; line-height: 0.85; white-space: nowrap;">
+    <div id="rpm-number">800</div>
+    <div style="font-size: 0.28em; letter-spacing: 0.1em; color: var(--color-accent-amber); mix-blend-mode: normal; margin-top: 0.2em;">RPM</div>
+  </div>
+</div>
+
+<!-- Fixed engine button — bottom-right, always visible while scrolling -->
+<div
+  id="engine-btn-wrap"
+  class="fixed z-40 flex flex-col items-end gap-2"
+  style="right: clamp(1rem, 3vw, 2rem); bottom: 2rem;"
+>
+  <button
+    id="engine-btn"
+    class="inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-semibold uppercase tracking-wide border backdrop-blur-sm transition-all hover:opacity-85"
+    style="border-color: var(--color-accent-amber); color: var(--color-accent-amber); background: rgba(7,26,47,0.6); writing-mode: horizontal-tb; white-space: nowrap;"
+  >
+    <svg id="engine-icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg id="engine-icon-stop" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+      <rect x="6" y="6" width="12" height="12" rx="1"/>
+    </svg>
+    <span id="engine-btn-label">Wake the beast</span>
+  </button>
+</div>
+
+<script>
+  // ── Engine sound → full-page spectacle ───────────────────────
+  const btn      = document.getElementById('engine-btn') as HTMLButtonElement | null;
+  const label    = document.getElementById('engine-btn-label') as HTMLElement | null;
+  const iconPlay = document.getElementById('engine-icon-play') as HTMLElement | null;
+  const iconStop = document.getElementById('engine-icon-stop') as HTMLElement | null;
+  const overlay    = document.getElementById('engine-overlay') as HTMLElement | null;
+  const rpmOverlay = document.getElementById('rpm-overlay') as HTMLElement | null;
+  const rpmNumber  = document.getElementById('rpm-number') as HTMLElement | null;
+  const noise      = document.querySelector('.bg-canvas__noise') as HTMLElement | null;
+  const shimmer  = document.getElementById('heat-shimmer') as HTMLElement | null;
+  const root     = document.documentElement;
+
+  let audio:    HTMLAudioElement | null = null;
+  let actx:     AudioContext | null = null;
+  let analyser: AnalyserNode | null = null;
+  let rafId:    number | null = null;
+  let playing   = false;
+
+  const origG1 = getComputedStyle(root).getPropertyValue('--canvas-g1').trim();
+  const origG2 = getComputedStyle(root).getPropertyValue('--canvas-g2').trim();
+  const origG3 = getComputedStyle(root).getPropertyValue('--canvas-g3').trim();
+
+  // Smoothed values
+  let bassS = 0, midS = 0, highS = 0;
+  let bassPrev = 0, flashO = 0;
+  let rpmSmooth = 800;
+
+  function animate() {
+    if (!analyser) return;
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+
+    const band = (lo: number, hi: number) => {
+      let s = 0; for (let i = lo; i < hi; i++) s += data[i];
+      return s / ((hi - lo) * 255);
+    };
+    const bass = band(0, 5);
+    const mid  = band(5, 18);
+    const high = band(18, 55);
+
+    bassS += bass > bassS ? (bass - bassS) * 0.55 : (bass - bassS) * 0.07;
+    midS  += mid  > midS  ? (mid  - midS)  * 0.45 : (mid  - midS)  * 0.08;
+    highS += high > highS ? (high - highS) * 0.40 : (high - highS) * 0.09;
+
+    const isDark = root.classList.contains('dark');
+    const energy = bassS * 0.5 + midS * 0.3 + highS * 0.2;
+
+    // ── Flash on bass hits ──────────────────────────────────────
+    const bassDelta = bass - bassPrev;
+    bassPrev = bass;
+    if (bassDelta > 0.06) flashO = Math.min(1, flashO + bassDelta * 2.5);
+    flashO *= 0.78;
+
+    // ── Overlay: sits above all content, mix-blend-mode: screen ──
+    if (overlay) {
+      const g1w  = 70  + bassS * 110, g1h  = 55  + bassS * 90;
+      const g2w  = 60  + midS  * 100, g2h  = 50  + midS  * 80;
+      const g2x  = 95  - midS  * 25,  g2y  = 100 - midS  * 30;
+      const g3w  = 80  + highS * 90;
+      const g1op = (0.18 + bassS  * 0.55).toFixed(3);
+      const g2op = (0.14 + midS   * 0.50).toFixed(3);
+      const g3op = (0.10 + highS  * 0.45).toFixed(3);
+      const fop  = (flashO * 0.35).toFixed(3);
+
+      if (isDark) {
+        overlay.style.background = [
+          `radial-gradient(ellipse ${g1w}% ${g1h}% at 5% 0%, rgba(0,212,255,${g1op}) 0%, transparent 60%)`,
+          `radial-gradient(ellipse ${g2w}% ${g2h}% at ${g2x}% ${g2y}%, rgba(255,176,0,${g2op}) 0%, transparent 60%)`,
+          `radial-gradient(ellipse ${g3w}% ${g3w * 0.75}% at 50% 50%, rgba(0,100,255,${g3op}) 0%, transparent 70%)`,
+          `radial-gradient(ellipse 90% 70% at 50% 40%, rgba(0,212,255,${fop}) 0%, transparent 70%)`,
+        ].join(', ');
+      } else {
+        overlay.style.background = [
+          `radial-gradient(ellipse ${g1w}% ${g1h}% at 100% 0%, rgba(255,176,0,${g1op}) 0%, transparent 60%)`,
+          `radial-gradient(ellipse ${g2w}% ${g2h}% at ${100 - g2x}% ${g2y}%, rgba(255,80,0,${g2op}) 0%, transparent 60%)`,
+          `radial-gradient(ellipse ${g3w}% ${g3w * 0.75}% at 50% 50%, rgba(255,200,0,${g3op}) 0%, transparent 70%)`,
+          `radial-gradient(ellipse 90% 70% at 50% 40%, rgba(255,140,0,${fop}) 0%, transparent 70%)`,
+        ].join(', ');
+      }
+      overlay.style.opacity = '1';
+    }
+
+    // ── Noise breathes ──────────────────────────────────────────
+    if (noise) noise.style.opacity = (0.04 + energy * 0.14).toFixed(3);
+
+    // ── RPM — driven by instantaneous energy so it truly oscillates
+    // Use raw (unsmoothed) band average for maximum responsiveness
+    const instantEnergy = (bass * 0.55 + mid * 0.30 + high * 0.15);
+    const targetRPM = 800 + instantEnergy * 7700;
+    // Fast attack (0.4), faster decay (0.18) so it follows the waveform up AND down
+    rpmSmooth += targetRPM > rpmSmooth
+      ? (targetRPM - rpmSmooth) * 0.40
+      : (targetRPM - rpmSmooth) * 0.18;
+    if (rpmNumber) rpmNumber.textContent = Math.round(rpmSmooth).toLocaleString();
+
+    // ── Exhaust heat shimmer ─────────────────────────────────────
+    if (shimmer) {
+      const blurAmt = (bassS * 6 + midS * 3).toFixed(2);
+      shimmer.style.backdropFilter = `blur(${blurAmt}px)`;
+      (shimmer.style as any).webkitBackdropFilter = `blur(${blurAmt}px)`;
+      shimmer.style.opacity = (0.3 + energy * 0.7).toFixed(2);
+    }
+
+    rafId = requestAnimationFrame(animate);
+  }
+
+  function restoreBackground() {
+    root.style.setProperty('--canvas-g1', origG1);
+    root.style.setProperty('--canvas-g2', origG2);
+    root.style.setProperty('--canvas-g3', origG3);
+    if (overlay)    { overlay.style.background = ''; overlay.style.opacity = '0'; }
+    if (rpmOverlay) rpmOverlay.style.opacity = '0';
+    if (noise)      noise.style.opacity = '0.04';
+    if (shimmer)    { shimmer.style.backdropFilter = 'blur(0px)'; shimmer.style.opacity = '0'; }
+    rpmSmooth = 800;
+  }
+
+  function stopEngine() {
+    playing = false;
+    audio?.pause();
+    if (rafId !== null) cancelAnimationFrame(rafId);
+    rafId = null;
+    restoreBackground();
+    if (iconPlay) iconPlay.classList.remove('hidden');
+    if (iconStop) iconStop.classList.add('hidden');
+    if (label)    label.textContent = 'Wake the beast';
+    if (btn)      { btn.style.borderColor = 'var(--color-accent-amber)'; btn.style.color = 'var(--color-accent-amber)'; }
+  }
+
+  function startEngine() {
+    if (!actx) {
+      actx  = new AudioContext();
+      audio = new Audio('/engine.mp3');
+      audio.loop = false;
+      const source = actx.createMediaElementSource(audio);
+      analyser = actx.createAnalyser();
+      analyser.fftSize = 2048;
+      analyser.smoothingTimeConstant = 0.75;
+      source.connect(analyser);
+      analyser.connect(actx.destination);
+      audio.addEventListener('ended', stopEngine);
+    }
+    actx.resume().then(() => {
+      audio!.play();
+      playing = true;
+      if (iconPlay) iconPlay.classList.add('hidden');
+      if (iconStop) iconStop.classList.remove('hidden');
+      if (label)      label.textContent = 'Kill it';
+      if (btn)        { btn.style.borderColor = 'var(--color-accent-cyan)'; btn.style.color = 'var(--color-accent-cyan)'; }
+      if (rpmOverlay) rpmOverlay.style.opacity = '1';
+      animate();
+    });
+  }
+
+  btn?.addEventListener('click', () => playing ? stopEngine() : startEngine());
+</script>
 
 </Layout>
 
