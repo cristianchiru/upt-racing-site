@@ -1,20 +1,46 @@
 ---
-title: "TSR 4 Hybrid"
+title: "TSR 4"
 year: 2025
+years: "2024–2025"
+tagline: "A new generation begins"
 coverImage: "/tsr4hybrid.jpg"
-specs:
-  engine: "KTM 690 Duke — Single Cylinder 4-stroke + Electric Hybrid"
-  power: "65 hp @ 7500 rpm"
-  weight: "195 kg"
-  acceleration: "3.8 s (0–75 m)"
-  topSpeed: "~120 km/h"
-  wheelbase: "1530 mm"
-  suspension: "Double wishbone, pushrod actuated"
+
+engine: "Yamaha R6 — Inline 4, 599 cm³"
+weight: "256 kg"
+
+dimensions:
+  length: "2924 mm"
+  width: "1351 mm"
+  height: "1170 mm"
+  wheelbase: "1525 mm"
+  trackFront: "1157 mm"
+  trackRear: "1121 mm"
+
+powertrain:
+  engine: "Yamaha R6"
+  displacement: "599 cm³"
+  ecu: "Haltech Nexus S2"
+  drivetrain: "Chain drive, sequential gearbox"
+
+chassis:
+  type: "Steel spaceframe"
+
+suspension:
+  front: "Double wishbone, push-rod, aluminium uprights"
+  rear: "Double wishbone, push-rod, aluminium uprights"
+
+seasons:
+  - "FS Balkans 2025"
+  - "FS Alpe Adria 2025"
+
 results:
+  - event: "Formula Student Balkans 2025"
+    placement: 0
+    year: 2025
   - event: "Formula Student Alpe Adria 2025"
     location: "Alpe Adria Circuit, Croatia"
     placement: 14
     year: 2025
 ---
 
-The TSR 4 Hybrid is the most ambitious car the team has produced to date — incorporating a hybrid powertrain for the first time alongside a lighter, stiffer chassis and a more aerodynamically efficient body. Every system was redesigned from scratch with lessons learned across all prior cars.
+TSR4 marks a new chapter for UPT Racing — a full clean-sheet design built on the lessons of TSR3 EVO. The car switches to the Yamaha R6 inline-four, paired with the Haltech Nexus S2 ECU for advanced engine management and data acquisition. Every subsystem was re-evaluated to reduce weight and improve dynamic performance, resulting in a sharper, more competitive package for the 2025 season.

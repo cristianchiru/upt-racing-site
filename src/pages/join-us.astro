@@ -177,17 +177,60 @@ const faqs = [
     <div class="max-w-[720px] mx-auto px-4 sm:px-6 lg:px-8">
       <SectionLabel label="FAQ" />
       <h2 class="font-display font-black uppercase text-5xl mb-10" style="color: var(--color-text);">Common Questions</h2>
-      <div class="space-y-2">
-        {faqs.map(f => (
-          <details class="group border-b" style="border-color: var(--color-border);">
-            <summary class="flex items-center justify-between py-5 cursor-pointer font-display font-bold uppercase text-xl list-none" style="color: var(--color-text);">
-              {f.q}
-              <span class="text-2xl transition-transform group-open:rotate-45" style="color: var(--color-primary);">+</span>
-            </summary>
-            <p class="pb-5 text-sm leading-relaxed" style="color: var(--color-text-muted);">{f.a}</p>
-          </details>
+      <div class="space-y-0" id="faq-list">
+        {faqs.map((f, i) => (
+          <div class="faq-item border-b" style="border-color: var(--color-border);">
+            <button
+              class="faq-trigger w-full flex items-center justify-between py-5 text-left font-display font-bold uppercase text-xl"
+              style="color: var(--color-text); background: none; border: none; cursor: pointer;"
+              aria-expanded="false"
+            >
+              <span>{f.q}</span>
+              <span class="faq-icon text-2xl shrink-0 ml-4 transition-transform duration-300" style="color: var(--color-primary);">+</span>
+            </button>
+            <div class="faq-body overflow-hidden" style="max-height: 0; transition: max-height 0.35s ease;">
+              <p class="pb-5 text-sm leading-relaxed" style="color: var(--color-text-muted);">{f.a}</p>
+            </div>
+          </div>
         ))}
       </div>
     </div>
   </section>
+
+  <script>
+    (function () {
+      const items = document.querySelectorAll<HTMLElement>('.faq-item');
+      items.forEach(item => {
+        const trigger = item.querySelector<HTMLElement>('.faq-trigger');
+        const body    = item.querySelector<HTMLElement>('.faq-body');
+        const icon    = item.querySelector<HTMLElement>('.faq-icon');
+        if (!trigger || !body || !icon) return;
+
+        trigger.addEventListener('click', () => {
+          const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+          // Close all others
+          items.forEach(other => {
+            if (other === item) return;
+            const ob = other.querySelector<HTMLElement>('.faq-body');
+            const oi = other.querySelector<HTMLElement>('.faq-icon');
+            const ot = other.querySelector<HTMLElement>('.faq-trigger');
+            if (ob) ob.style.maxHeight = '0';
+            if (oi) oi.style.transform = 'rotate(0deg)';
+            if (ot) ot.setAttribute('aria-expanded', 'false');
+          });
+
+          if (isOpen) {
+            body.style.maxHeight = '0';
+            icon.style.transform = 'rotate(0deg)';
+            trigger.setAttribute('aria-expanded', 'false');
+          } else {
+            body.style.maxHeight = body.scrollHeight + 'px';
+            icon.style.transform = 'rotate(45deg)';
+            trigger.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    })();
+  </script>
 </Layout>
