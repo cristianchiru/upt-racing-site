@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPT Racing — Website Design Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:   #071A2F;
+      --cobalt: #0047AB;
+      --cyan:   #00D4FF;
+      --amber:  #FFB000;
+      --white:  #FFFFFF;
+      --muted:  rgba(255,255,255,0.55);
+      --border: rgba(255,255,255,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10pt; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: var(--white); }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 4mm;
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+      page-break-after: always;
+    }
+    @page { size: A4 portrait; margin: 0; }
+    @media print { body { background: transparent; } .page { margin: 0; } }
+
+    /* ── TYPE ── */
+    .display { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+    .mono    { font-family: 'JetBrains Mono', monospace; }
+    .label   { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); display: flex; align-items: center; gap: 8px; }
+    .label-c { color: var(--cyan); }
+
+    /* ── DECOR ── */
+    .grid-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px), linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);
+      background-size: 12mm 12mm;
+    }
+    .corner { position: absolute; width: 16px; height: 16px; border-color: var(--cyan); border-style: solid; opacity: 0.4; }
+    .tl { top:14px; left:14px; border-width: 1.5px 0 0 1.5px; }
+    .tr { top:14px; right:14px; border-width: 1.5px 1.5px 0 0; }
+    .bl { bottom:14px; left:14px; border-width: 0 0 1.5px 1.5px; }
+    .br { bottom:14px; right:14px; border-width: 0 1.5px 1.5px 0; }
+    .accent-line { display: inline-block; width: 28px; height: 2px; background: var(--cyan); flex-shrink: 0; }
+    .page-num { position:absolute; bottom:10mm; right:12mm; font-family:'JetBrains Mono',monospace; font-size:7pt; color:rgba(255,255,255,0.2); letter-spacing:0.15em; }
+
+    .ph { display:flex; align-items:center; justify-content:space-between; padding:4mm 14mm; border-bottom:1px solid var(--border); position:relative; z-index:2; }
+    .ph img { height:5.5mm; width:auto; filter:brightness(0) invert(1); opacity:0.5; }
+    .ph span { font-family:'JetBrains Mono',monospace; font-size:6.5pt; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.22); }
+
+    .pi { padding: 10mm 14mm 14mm; position:relative; z-index:2; }
+
+    /* ── COVER ── */
+    #cover { display:flex; flex-direction:column; justify-content:flex-end; padding:14mm; }
+    #cover .bg {
+      position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(0,71,171,0.18) 0%, transparent 50%), linear-gradient(to top, rgba(7,26,47,0.98) 0%, rgba(7,26,47,0.6) 50%, rgba(7,26,47,0.25) 100%);
+    }
+    /* Abstract "browser window" silhouette on cover */
+    #cover .browser-ghost {
+      position:absolute;
+      top: 14mm; right: 8mm;
+      width: 88mm; height: 64mm;
+      border: 1px solid rgba(0,212,255,0.12);
+      background: rgba(7,26,47,0.5);
+      overflow: hidden;
+    }
+    #cover .browser-ghost .bar {
+      height: 7mm;
+      background: rgba(0,0,0,0.35);
+      border-bottom: 1px solid rgba(0,212,255,0.1);
+      display: flex; align-items: center; padding: 0 3mm; gap: 2mm;
+    }
+    #cover .browser-ghost .dot { width:5px;height:5px;border-radius:50%; }
+    #cover .browser-ghost .url {
+      margin-left: 2mm; flex:1; height: 4mm;
+      background: rgba(255,255,255,0.06); border-radius: 1px;
+      display:flex; align-items:center; padding: 0 3mm;
+      font-family:'JetBrains Mono',monospace; font-size:5.5pt; color:rgba(255,255,255,0.3);
+    }
+    #cover .browser-ghost .content-mock {
+      padding: 3mm;
+    }
+    .mock-hero { width:100%; height:28mm; background:linear-gradient(to bottom, rgba(0,71,171,0.3),rgba(7,26,47,0.9)); position:relative; overflow:hidden; display:flex; align-items:flex-end; padding:2.5mm; }
+    .mock-h1 { font-family:'Oswald',sans-serif; font-size:18pt; font-weight:700; text-transform:uppercase; color:white; line-height:0.9; letter-spacing:-0.02em; }
+    .mock-h1 span { color: var(--cyan); }
+    .mock-eyebrow { font-family:'JetBrains Mono',monospace; font-size:5pt; color:var(--amber); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:1.5mm; }
+    .mock-bar { height:1.5px; width:100%; background:linear-gradient(90deg,var(--cyan),var(--amber)); position:absolute; top:0; left:0; }
+
+    #cover .content { position:relative; z-index:2; }
+    #cover h1 { font-family:'Oswald',sans-serif; text-transform:uppercase; font-size:48pt; font-weight:700; letter-spacing:-0.02em; line-height:0.9; margin-bottom:5mm; }
+    #cover h1 em { font-style:normal; color:var(--cyan); }
+    #cover .sub { font-size:10.5pt; font-weight:300; color:rgba(255,255,255,0.6); max-width:110mm; line-height:1.6; margin-bottom:8mm; }
+    #cover .pills { display:flex; gap:3mm; flex-wrap:wrap; }
+    #cover .pill { padding:2mm 4.5mm; border:1px solid rgba(255,255,255,0.2); font-family:'JetBrains Mono',monospace; font-size:7pt; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:rgba(255,255,255,0.6); }
+    #cover .pill.hi { border-color:var(--amber); color:var(--amber); }
+
+    /* ── DESIGN SYSTEM PAGE ── */
+    .ds-grid { display:grid; grid-template-columns:1fr 1fr; gap:6mm; }
+
+    .color-row { display:flex; gap:2.5mm; margin-bottom:5mm; }
+    .swatch {
+      flex:1; border-radius:0;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding:2.5mm; height:16mm; position:relative; overflow:hidden;
+    }
+    .swatch .s-name { font-family:'JetBrains Mono',monospace; font-size:7pt; font-weight:700; letter-spacing:0.08em; }
+    .swatch .s-hex  { font-family:'JetBrains Mono',monospace; font-size:6.5pt; opacity:0.6; margin-top:0.5mm; }
+
+    .type-sample { margin-bottom:3mm; padding:3.5mm; border:1px solid var(--border); }
+    .type-sample .t-meta { font-family:'JetBrains Mono',monospace; font-size:6pt; color:rgba(255,255,255,0.3); margin-bottom:2mm; letter-spacing:0.12em; text-transform:uppercase; }
+    .type-sample .t-show { line-height:1.1; }
+
+    .ui-chips { display:flex; flex-wrap:wrap; gap:2mm; margin-top:3mm; }
+    .chip { padding:2mm 4mm; font-family:'JetBrains Mono',monospace; font-size:7pt; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+    .chip.cyan { background:rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3); color:var(--cyan); }
+    .chip.amber { background:rgba(255,176,0,0.1); border:1px solid rgba(255,176,0,0.3); color:var(--amber); }
+    .chip.white { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.6); }
+
+    /* ── FEATURE MOCKUPS ── */
+    .mockup-frame {
+      border:1px solid rgba(0,212,255,0.18);
+      background: rgba(0,0,0,0.25);
+      overflow:hidden;
+      position:relative;
+    }
+    .mockup-topbar {
+      height:6mm; background:rgba(0,0,0,0.4); border-bottom:1px solid rgba(255,255,255,0.06);
+      display:flex; align-items:center; padding:0 3mm; gap:1.5mm;
+    }
+    .topbar-dot { width:4.5px; height:4.5px; border-radius:50%; }
+
+    /* Progress bar mockup */
+    .pbar-demo { height:2px; width:100%; background:rgba(255,255,255,0.06); position:relative; margin-bottom:3mm; }
+    .pbar-fill { height:100%; width:67%; background:linear-gradient(90deg,var(--cyan),var(--amber)); }
+
+    /* Nav mockup */
+    .nav-mock {
+      height:9mm; background:rgba(7,26,47,0.8); backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,0.07);
+      display:flex; align-items:center; padding:0 4mm; gap:5mm;
+    }
+    .nav-mock .nm-logo { height:4.5mm; width:4.5mm; background:white; opacity:0.8; border-radius:0; }
+    .nav-mock .nm-link { font-family:'Inter',sans-serif; font-size:6.5pt; font-weight:500; color:rgba(255,255,255,0.6); }
+    .nav-mock .nm-link.active { color:var(--amber); }
+    .nav-mock .nm-cta { margin-left:auto; padding:1.5mm 3mm; background:var(--amber); font-family:'JetBrains Mono',monospace; font-size:6pt; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--navy); }
+
+    /* Card mockup */
+    .card-mock { padding:3.5mm; border:1px solid rgba(255,255,255,0.08); background:rgba(0,0,0,0.2); }
+    .card-mock .cm-img { width:100%; height:14mm; background:linear-gradient(135deg,rgba(0,71,171,0.4),rgba(7,26,47,0.9)); margin-bottom:2.5mm; }
+    .card-mock .cm-label { font-family:'JetBrains Mono',monospace; font-size:6pt; color:var(--cyan); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1mm; }
+    .card-mock .cm-title { font-family:'Oswald',sans-serif; font-size:10pt; font-weight:700; text-transform:uppercase; color:white; margin-bottom:1.5mm; }
+    .card-mock .cm-body { font-size:7pt; color:rgba(255,255,255,0.5); line-height:1.5; }
+
+    /* Cursor mockup */
+    .cursor-demo { display:flex; align-items:center; justify-content:center; height:22mm; position:relative; gap:8mm; }
+    .c-dot { width:6px; height:6px; border-radius:50%; background:var(--amber); position:relative; }
+    .c-ring { width:28px; height:28px; border-radius:50%; border:1.5px solid var(--cyan); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0.7; }
+    .c-state { display:flex; flex-direction:column; align-items:center; gap:4mm; }
+    .c-state-label { font-family:'JetBrains Mono',monospace; font-size:6pt; color:rgba(255,255,255,0.35); letter-spacing:0.1em; text-transform:uppercase; }
+    .c-hover-demo { position:relative; width:16mm; height:16mm; display:flex; align-items:center; justify-content:center; }
+    .c-dot-hover { width:6px; height:6px; border-radius:50%; background:var(--cyan); }
+    .c-ring-hover { width:34px; height:34px; border-radius:50%; border:1.5px solid var(--amber); position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0.85; background:rgba(255,176,0,0.04); }
+
+    /* Banner mockup */
+    .banner-mock {
+      background:var(--amber); color:var(--navy);
+      padding:2mm 4mm; display:flex; align-items:center; justify-content:center; gap:4mm;
+      font-size:7pt; font-weight:700; position:relative;
+    }
+    .banner-mock .live-dot { width:5px; height:5px; border-radius:50%; background:#ef4444; flex-shrink:0; }
+    .banner-mock .bm-label { font-family:'JetBrains Mono',monospace; font-size:5.5pt; font-weight:700; letter-spacing:0.15em; background:var(--navy); color:var(--amber); padding:1mm 2mm; }
+    .banner-mock .bm-cta { font-family:'JetBrains Mono',monospace; font-size:6pt; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; text-decoration:underline; }
+    .banner-mock .bm-x { position:absolute; right:3mm; top:50%; transform:translateY(-50%); opacity:0.5; font-size:8pt; }
+
+    /* Form mockup */
+    .form-mock { display:flex; flex-direction:column; gap:2mm; }
+    .fm-field { display:flex; flex-direction:column; gap:1mm; }
+    .fm-label { font-family:'JetBrains Mono',monospace; font-size:6pt; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+    .fm-input { height:7mm; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); padding:0 2.5mm; font-size:8pt; color:white; font-family:'Inter',sans-serif; }
+    .fm-input.err { border-color:rgba(239,68,68,0.7); background:rgba(239,68,68,0.05); }
+    .fm-err { font-size:6.5pt; color:#ef4444; font-family:'JetBrains Mono',monospace; }
+    .fm-input.ok { border-color:rgba(0,212,255,0.5); }
+    .fm-btn { height:8mm; background:var(--amber); color:var(--navy); font-family:'JetBrains Mono',monospace; font-size:7pt; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; border:none; display:flex; align-items:center; justify-content:center; margin-top:1mm; }
+
+    /* Accordion mockup */
+    .faq-mock { display:flex; flex-direction:column; }
+    .faq-item { border-bottom:1px solid rgba(255,255,255,0.08); }
+    .faq-q { display:flex; align-items:center; justify-content:space-between; padding:2.5mm 0; }
+    .faq-q span { font-size:8pt; font-weight:600; color:white; }
+    .faq-q .plus { font-family:'JetBrains Mono',monospace; font-size:12pt; color:var(--cyan); transition:transform 0.35s; }
+    .faq-q .plus.open { transform:rotate(45deg); color:var(--amber); }
+    .faq-a { font-size:7.5pt; color:rgba(255,255,255,0.55); line-height:1.55; padding-bottom:2.5mm; }
+
+    /* ── PAGES LIST ── */
+    .pages-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3mm; }
+    .page-card { border:1px solid var(--border); overflow:hidden; }
+    .page-card .pc-thumb {
+      height:18mm; position:relative; overflow:hidden;
+      background:linear-gradient(to bottom, rgba(0,71,171,0.25), rgba(7,26,47,0.95));
+    }
+    .page-card .pc-title-bg {
+      position:absolute; bottom:0; left:0; right:0; padding:2.5mm 3mm;
+      background:linear-gradient(to top, rgba(7,26,47,1),transparent);
+    }
+    .page-card .pc-page-name { font-family:'Oswald',sans-serif; font-size:11pt; font-weight:700; text-transform:uppercase; color:white; line-height:1; }
+    .page-card .pc-info { padding:2.5mm 3mm; }
+    .page-card .pc-desc { font-size:7.5pt; color:rgba(255,255,255,0.5); line-height:1.5; }
+    .page-card .pc-tags { display:flex; flex-wrap:wrap; gap:1.5mm; margin-top:2mm; }
+    .page-card .pc-tag { font-family:'JetBrains Mono',monospace; font-size:6pt; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:1mm 2mm; background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.2); color:var(--cyan); }
+
+    /* ── TECH STACK ── */
+    .stack-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3mm; margin-bottom:5mm; }
+    .stack-item { padding:4mm; border:1px solid var(--border); text-align:center; }
+    .stack-item .si-icon { font-size:14pt; margin-bottom:2mm; }
+    .stack-item .si-name { font-family:'Oswald',sans-serif; font-size:11pt; font-weight:700; text-transform:uppercase; color:white; }
+    .stack-item .si-sub { font-size:7pt; color:rgba(255,255,255,0.38); font-family:'JetBrains Mono',monospace; letter-spacing:0.05em; margin-top:1mm; }
+
+    .perf-row { display:grid; grid-template-columns:repeat(3,1fr); gap:3mm; }
+    .perf-item { padding:3.5mm; border:1px solid var(--border); }
+    .perf-item .pi-key { font-family:'JetBrains Mono',monospace; font-size:6.5pt; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:1.5mm; }
+    .perf-item .pi-val { font-family:'Oswald',sans-serif; font-size:18pt; font-weight:700; color:var(--cyan); line-height:1; }
+    .perf-item .pi-val.amber { color:var(--amber); }
+    .perf-item .pi-note { font-size:7pt; color:rgba(255,255,255,0.4); margin-top:1mm; line-height:1.4; }
+
+    /* ── CLOSE ── */
+    #web-close {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:18mm 14mm; min-height:297mm;
+    }
+    #web-close h2 { font-family:'Oswald',sans-serif; font-size:38pt; font-weight:700; text-transform:uppercase; color:white; line-height:0.95; letter-spacing:-0.02em; margin-bottom:5mm; }
+    #web-close h2 em { font-style:normal; color:var(--amber); }
+    #web-close p { font-size:10pt; color:rgba(255,255,255,0.55); max-width:115mm; line-height:1.65; margin-bottom:8mm; }
+    .divider-gradient { width:32mm; height:1.5px; background:linear-gradient(to right,var(--cyan),var(--amber)); margin:0 auto 7mm; }
+
+    .detail-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:3mm; width:100%; max-width:135mm; }
+    .detail-box { padding:3.5mm; border:1px solid var(--border); text-align:left; }
+    .detail-box .db-k { font-family:'JetBrains Mono',monospace; font-size:6pt; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:1.5mm; }
+    .detail-box .db-v { font-size:8.5pt; font-weight:500; color:white; }
+    .detail-box .db-v a { color:var(--cyan); text-decoration:none; }
+
+    .watermark-bg {
+      position:absolute; bottom:8mm; right:6mm; z-index:0;
+      font-family:'Oswald',sans-serif; font-size:90pt; font-weight:700;
+      text-transform:uppercase; color:rgba(0,71,171,0.09); letter-spacing:-0.04em; line-height:1;
+      pointer-events:none; user-select:none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ PAGE 1 — COVER ══════════════════ -->
+<section class="page" id="cover">
+  <div class="grid-overlay"></div>
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+
+  <div class="bg"></div>
+
+  <!-- Browser window silhouette -->
+  <div class="browser-ghost">
+    <div class="bar">
+      <div class="dot" style="background:#ff5f57;"></div>
+      <div class="dot" style="background:#febc2e;"></div>
+      <div class="dot" style="background:#28c840;"></div>
+      <div class="url">uptracing.ro</div>
+    </div>
+    <div style="position:relative;">
+      <div class="mock-bar"></div>
+      <div class="mock-hero">
+        <div>
+          <div class="mock-eyebrow">Formula Student // Politehnica Timișoara</div>
+          <div class="mock-h1">BUILT<br />TO<br /><span>RACE.</span></div>
+        </div>
+      </div>
+      <!-- Simulated nav below hero -->
+      <div class="nav-mock" style="margin-top:-0.5mm;">
+        <div class="nm-logo"></div>
+        <span class="nm-link active">About Us</span>
+        <span class="nm-link">Our Car</span>
+        <span class="nm-link">News</span>
+        <div class="nm-cta">Apply Now</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="label" style="margin-bottom:6mm;"><span class="accent-line"></span>UPT Racing — Digital Presence</div>
+    <h1>A Website<br />That <em>Races</em><br />Too.</h1>
+    <p class="sub">
+      A look inside the design decisions, interactions and architecture that make
+      the new UPT Racing website stand out from every other Formula Student team online.
+    </p>
+    <div class="pills">
+      <span class="pill hi">Design Presentation</span>
+      <span class="pill">For Faculty Review</span>
+      <span class="pill">Astro v6 + Tailwind v4</span>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / WEBSITE / 01</div>
+</section>
+
+
+<!-- ══════════════════ PAGE 2 — DESIGN SYSTEM ══════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner tl"></div><div class="corner br"></div>
+  <div class="ph"><img src="/logo.png" alt="" onerror="this.style.display='none'" /><span>Design System</span></div>
+  <div class="pi">
+    <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Colours &amp; Identity</div>
+    <h2 style="font-family:'Oswald',sans-serif;font-size:26pt;font-weight:700;text-transform:uppercase;margin-bottom:6mm;line-height:1;">
+      Built on a <span style="color:var(--cyan);">Purposeful</span><br />Design System
+    </h2>
+
+    <!-- Colour swatches -->
+    <div class="color-row">
+      <div class="swatch" style="background:#071A2F;border:1px solid rgba(255,255,255,0.08);">
+        <div class="s-name" style="color:rgba(255,255,255,0.7);">Race Night</div>
+        <div class="s-hex" style="color:rgba(255,255,255,0.4);">#071A2F</div>
+      </div>
+      <div class="swatch" style="background:#0047AB;">
+        <div class="s-name" style="color:rgba(255,255,255,0.85);">Cobalt Blue</div>
+        <div class="s-hex" style="color:rgba(255,255,255,0.5);">#0047AB</div>
+      </div>
+      <div class="swatch" style="background:linear-gradient(135deg,#0093B2,#00D4FF);">
+        <div class="s-name">Plasma Cyan</div>
+        <div class="s-hex" style="color:rgba(0,0,0,0.45);">#00D4FF</div>
+      </div>
+      <div class="swatch" style="background:linear-gradient(135deg,#CC8800,#FFB000);">
+        <div class="s-name" style="color:rgba(0,0,0,0.7);">Throttle Amber</div>
+        <div class="s-hex" style="color:rgba(0,0,0,0.45);">#FFB000</div>
+      </div>
+      <div class="swatch" style="background:#F5F7FA;border:1px solid rgba(0,0,0,0.08);">
+        <div class="s-name" style="color:rgba(0,0,0,0.55);">Light Mode BG</div>
+        <div class="s-hex" style="color:rgba(0,0,0,0.35);">#F5F7FA</div>
+      </div>
+    </div>
+
+    <div class="ds-grid">
+      <!-- Typography -->
+      <div>
+        <div class="label label-c" style="margin-bottom:3.5mm;"><span class="accent-line" style="background:var(--cyan);"></span>Typography</div>
+        <div class="type-sample">
+          <div class="t-meta">Display · Oswald 700</div>
+          <div class="t-show" style="font-family:'Oswald',sans-serif;font-size:20pt;font-weight:700;text-transform:uppercase;letter-spacing:-0.02em;color:white;line-height:1;">TSR 4</div>
+        </div>
+        <div class="type-sample">
+          <div class="t-meta">Body · Inter 400</div>
+          <div class="t-show" style="font-size:8.5pt;color:rgba(255,255,255,0.6);line-height:1.6;">Engineering the future of motorsport — designed, built and raced by students of UPT.</div>
+        </div>
+        <div class="type-sample">
+          <div class="t-meta">Labels · JetBrains Mono 700</div>
+          <div class="t-show" style="font-family:'JetBrains Mono',monospace;font-size:7.5pt;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);">Formula Student // 2025</div>
+        </div>
+      </div>
+
+      <!-- UI Tokens -->
+      <div>
+        <div class="label" style="margin-bottom:3.5mm;"><span class="accent-line"></span>UI Tokens &amp; Theming</div>
+        <p style="font-size:8pt;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:3.5mm;">
+          The site ships with a full <strong style="color:white;">dark/light mode</strong> toggle.
+          All colours are CSS custom properties — switching themes requires zero JavaScript
+          re-renders, just a class on <code style="font-family:'JetBrains Mono',monospace;font-size:7pt;color:var(--cyan);">&lt;html&gt;</code>.
+        </p>
+        <!-- Mini theme demo -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin-bottom:3.5mm;">
+          <div style="padding:3mm;background:#071A2F;border:1px solid rgba(255,255,255,0.1);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:6pt;color:rgba(255,255,255,0.35);margin-bottom:1.5mm;letter-spacing:0.12em;text-transform:uppercase;">Dark Mode</div>
+            <div style="height:4mm;background:linear-gradient(90deg,#00D4FF,#0047AB);margin-bottom:1.5mm;"></div>
+            <div style="font-family:'Oswald',sans-serif;font-size:9pt;font-weight:700;text-transform:uppercase;color:white;">UPT Racing</div>
+            <div style="font-size:7pt;color:rgba(255,255,255,0.4);margin-top:1mm;">Deep navy background, bright accents</div>
+          </div>
+          <div style="padding:3mm;background:#F5F7FA;border:1px solid rgba(0,0,0,0.08);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:6pt;color:rgba(0,0,0,0.35);margin-bottom:1.5mm;letter-spacing:0.12em;text-transform:uppercase;">Light Mode</div>
+            <div style="height:4mm;background:linear-gradient(90deg,#0047AB,#00D4FF);margin-bottom:1.5mm;"></div>
+            <div style="font-family:'Oswald',sans-serif;font-size:9pt;font-weight:700;text-transform:uppercase;color:#071A2F;">UPT Racing</div>
+            <div style="font-size:7pt;color:rgba(0,0,0,0.4);margin-top:1mm;">Clean off-white, saturated blues</div>
+          </div>
+        </div>
+        <div class="ui-chips">
+          <span class="chip cyan">Scroll Reveal</span>
+          <span class="chip amber">Magnetic Button</span>
+          <span class="chip white">Hover States</span>
+          <span class="chip cyan">Page Transitions</span>
+          <span class="chip amber">Custom Cursor</span>
+          <span class="chip white">Animated Banner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">UPT RACING / WEBSITE / 02</div>
+</section>
+
+
+<!-- ══════════════════ PAGE 3 — INTERACTIVE FEATURES ══════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner tl"></div><div class="corner br"></div>
+  <div class="ph"><img src="/logo.png" alt="" onerror="this.style.display='none'" /><span>Interactions</span></div>
+  <div class="pi">
+    <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Interactive Features</div>
+    <h2 style="font-family:'Oswald',sans-serif;font-size:26pt;font-weight:700;text-transform:uppercase;margin-bottom:6mm;line-height:1;">
+      Details That Make the<br /><span style="color:var(--cyan);">Difference</span>
+    </h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5mm;">
+
+      <!-- Left column -->
+      <div style="display:flex;flex-direction:column;gap:4mm;">
+
+        <!-- Progress bar -->
+        <div>
+          <div class="label" style="margin-bottom:2.5mm;font-size:7pt;"><span class="accent-line" style="width:18px;"></span>GPU-Smooth Scroll Bar</div>
+          <div class="mockup-frame">
+            <div class="mockup-topbar">
+              <div class="topbar-dot" style="background:#ff5f57;"></div>
+              <div class="topbar-dot" style="background:#febc2e;"></div>
+              <div class="topbar-dot" style="background:#28c840;"></div>
+            </div>
+            <div style="padding:2.5mm 3mm;">
+              <div class="pbar-demo"><div class="pbar-fill"></div></div>
+              <p style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.5;">
+                A 3px progress indicator fixed at the top of every page. Powered by <code style="font-family:'JetBrains Mono',monospace;font-size:6.5pt;color:var(--cyan);">transform: scaleX()</code> and a <code style="font-family:'JetBrains Mono',monospace;font-size:6.5pt;color:var(--cyan);">requestAnimationFrame</code> lerp loop — 100% GPU-composited, zero layout reflow. Silky smooth at any framerate.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom cursor -->
+        <div>
+          <div class="label" style="margin-bottom:2.5mm;font-size:7pt;"><span class="accent-line" style="width:18px;"></span>Dual-Ring Custom Cursor</div>
+          <div class="mockup-frame">
+            <div style="padding:3mm;">
+              <div class="cursor-demo">
+                <div class="c-state">
+                  <div style="position:relative;width:16mm;height:16mm;display:flex;align-items:center;justify-content:center;">
+                    <div class="c-dot"></div>
+                    <div class="c-ring"></div>
+                  </div>
+                  <div class="c-state-label">Default</div>
+                </div>
+                <div class="c-state">
+                  <div class="c-hover-demo">
+                    <div class="c-dot-hover"></div>
+                    <div class="c-ring-hover"></div>
+                  </div>
+                  <div class="c-state-label">Hover</div>
+                </div>
+                <div class="c-state">
+                  <div style="position:relative;width:16mm;height:16mm;display:flex;align-items:center;justify-content:center;">
+                    <div style="width:6px;height:6px;border-radius:50%;background:var(--amber);"></div>
+                    <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid var(--cyan);background:rgba(0,212,255,0.14);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+                  </div>
+                  <div class="c-state-label">Click</div>
+                </div>
+              </div>
+              <p style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.5;margin-top:0;">
+                Amber dot snaps to the pointer. Cyan ring lerps at 14%/frame — a physical spring feel. Colour-flips to amber on hover. Only on desktop (fine-pointer devices).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Animated banner -->
+        <div>
+          <div class="label" style="margin-bottom:2.5mm;font-size:7pt;"><span class="accent-line" style="width:18px;"></span>Animated Event Banner</div>
+          <div class="mockup-frame">
+            <div class="banner-mock">
+              <div class="live-dot"></div>
+              <div class="bm-label">LIVE EVENT</div>
+              <span style="font-family:'Oswald',sans-serif;font-size:8pt;font-weight:700;text-transform:uppercase;">TSR4 EVO Launch — ARChA / UPT</span>
+              <span class="bm-cta">YouTube Live ↗</span>
+              <span class="bm-x">✕</span>
+            </div>
+            <div style="padding:2.5mm 3mm;">
+              <p style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.5;">
+                Shimmer sweep animation, pulsing red live dot, flickering CTA. Fixed above the header. Dismiss persists via <code style="font-family:'JetBrains Mono',monospace;font-size:6.5pt;color:var(--cyan);">localStorage</code>. Pushes header and page content down automatically — zero content overlap.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column -->
+      <div style="display:flex;flex-direction:column;gap:4mm;">
+
+        <!-- Magnetic button -->
+        <div>
+          <div class="label" style="margin-bottom:2.5mm;font-size:7pt;"><span class="accent-line" style="width:18px;"></span>Magnetic "Wake the Beast" Button</div>
+          <div class="mockup-frame">
+            <div style="padding:3mm;display:flex;gap:4mm;align-items:flex-start;">
+              <div style="width:12mm;height:12mm;border-radius:50%;background:rgba(255,176,0,0.12);border:1.5px solid rgba(255,176,0,0.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:10pt;">⚡</span>
+              </div>
+              <p style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.5;">
+                A persistent engine sound button on the homepage. On hover, the button physically follows the cursor with a spring bounce — 30% pull factor, snapping back with cubic-bezier overshoot on leave. Plays a real engine rev sample.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form validation -->
+        <div>
+          <div class="label" style="margin-bottom:2.5mm;font-size:7pt;"><span class="accent-line" style="width:18px;"></span>Real-Time Form Validation</div>
+          <div class="mockup-frame">
+            <div style="padding:3mm;">
+              <div class="form-mock">
+                <div class="fm-field">
+                  <div class="fm-label">Full Name</div>
+                  <div class="fm-input ok" style="display:flex;align-items:center;font-size:8pt;color:rgba(255,255,255,0.7);">Cristian Chiru</div>
+                </div>
+                <div class="fm-field">
+                  <div class="fm-label">Email</div>
+                  <div class="fm-input err" style="display:flex;align-items:center;font-size:8pt;color:rgba(255,255,255,0.5);">cristian@</div>
+                  <div class="fm-err">→ Enter a valid email address</div>
+                </div>
+                <div class="fm-btn">Send Message →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ accordion -->
+        <div>
+          <div class="label" style="margin-bottom:2.5mm;font-size:7pt;"><span class="accent-line" style="width:18px;"></span>Smooth FAQ Accordion</div>
+          <div class="mockup-frame">
+            <div style="padding:3mm;">
+              <div class="faq-mock">
+                <div class="faq-item">
+                  <div class="faq-q">
+                    <span>Who can join UPT Racing?</span>
+                    <span class="plus open">+</span>
+                  </div>
+                  <div class="faq-a">Any student enrolled at Politehnica Timișoara is welcome — no prior racing experience required.</div>
+                </div>
+                <div class="faq-item">
+                  <div class="faq-q">
+                    <span>What departments are available?</span>
+                    <span class="plus">+</span>
+                  </div>
+                </div>
+                <div class="faq-item" style="border-bottom:none;">
+                  <div class="faq-q">
+                    <span>When are applications open?</span>
+                    <span class="plus">+</span>
+                  </div>
+                </div>
+              </div>
+              <p style="font-size:7pt;color:rgba(255,255,255,0.4);line-height:1.4;margin-top:2.5mm;">
+                Animated via <code style="font-family:'JetBrains Mono',monospace;font-size:6pt;color:var(--cyan);">max-height: 0 → scrollHeight</code> at 0.35s ease. One item open at a time.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="page-num">UPT RACING / WEBSITE / 03</div>
+</section>
+
+
+<!-- ══════════════════ PAGE 4 — PAGES OVERVIEW ══════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner tl"></div><div class="corner br"></div>
+  <div class="ph"><img src="/logo.png" alt="" onerror="this.style.display='none'" /><span>Pages</span></div>
+  <div class="pi">
+    <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Site Structure</div>
+    <h2 style="font-family:'Oswald',sans-serif;font-size:26pt;font-weight:700;text-transform:uppercase;margin-bottom:6mm;line-height:1;">
+      Every Page<br />Tells a <span style="color:var(--amber);">Story</span>
+    </h2>
+
+    <div class="pages-grid">
+
+      <div class="page-card">
+        <div class="pc-thumb" style="background:linear-gradient(135deg,rgba(0,71,171,0.5),rgba(7,26,47,0.98));">
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:3mm;">
+            <div style="font-family:'Oswald',sans-serif;font-size:22pt;font-weight:700;text-transform:uppercase;color:white;line-height:0.9;">BUILT<br />TO <span style="color:var(--cyan);">RACE</span></div>
+          </div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-page-name">Home</div>
+          <div class="pc-desc">Hero section, live stat counters, news feed, sponsor marquee, upcoming event countdown.</div>
+          <div class="pc-tags"><span class="pc-tag">Hero</span><span class="pc-tag">Animated Stats</span><span class="pc-tag">News</span></div>
+        </div>
+      </div>
+
+      <div class="page-card">
+        <div class="pc-thumb" style="background:linear-gradient(to bottom right,rgba(0,212,255,0.12),rgba(7,26,47,0.95));">
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:3mm;">
+            <div style="font-family:'Oswald',sans-serif;font-size:16pt;font-weight:700;text-transform:uppercase;color:white;">About<br /><span style="color:var(--cyan);">UPT Racing</span></div>
+          </div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-page-name">About Us</div>
+          <div class="pc-desc">Mission, animated timeline milestones, values grid, team photo.</div>
+          <div class="pc-tags"><span class="pc-tag">Timeline</span><span class="pc-tag">Values</span></div>
+        </div>
+      </div>
+
+      <div class="page-card">
+        <div class="pc-thumb" style="background:linear-gradient(135deg,rgba(0,71,171,0.4),rgba(7,26,47,0.97));">
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:3mm;">
+            <div style="font-family:'Oswald',sans-serif;font-size:22pt;font-weight:700;text-transform:uppercase;color:white;line-height:0.9;">TSR <span style="color:var(--amber);">4</span></div>
+          </div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-page-name">Our Car</div>
+          <div class="pc-desc">Full tabbed spec sheet, gallery, car archive with every generation.</div>
+          <div class="pc-tags"><span class="pc-tag">Tabs</span><span class="pc-tag">Gallery</span><span class="pc-tag">Archive</span></div>
+        </div>
+      </div>
+
+      <div class="page-card">
+        <div class="pc-thumb" style="background:linear-gradient(to bottom right,rgba(255,176,0,0.1),rgba(7,26,47,0.98));">
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:3mm;">
+            <div style="font-family:'Oswald',sans-serif;font-size:16pt;font-weight:700;text-transform:uppercase;color:white;">Meet the <span style="color:var(--amber);">Team</span></div>
+          </div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-page-name">Team</div>
+          <div class="pc-desc">Department-filtered roster, member cards, leadership section.</div>
+          <div class="pc-tags"><span class="pc-tag">Filter</span><span class="pc-tag">Cards</span></div>
+        </div>
+      </div>
+
+      <div class="page-card">
+        <div class="pc-thumb" style="background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(7,26,47,0.97));">
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:3mm;">
+            <div style="font-family:'Oswald',sans-serif;font-size:16pt;font-weight:700;text-transform:uppercase;color:white;">Join <span style="color:var(--cyan);">Us</span></div>
+          </div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-page-name">Join Us</div>
+          <div class="pc-desc">Department overview, animated FAQ accordion, validated application form.</div>
+          <div class="pc-tags"><span class="pc-tag">FAQ</span><span class="pc-tag">Form</span></div>
+        </div>
+      </div>
+
+      <div class="page-card">
+        <div class="pc-thumb" style="background:linear-gradient(135deg,rgba(255,176,0,0.08),rgba(7,26,47,0.97));">
+          <div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:3mm;">
+            <div style="font-family:'Oswald',sans-serif;font-size:16pt;font-weight:700;text-transform:uppercase;color:white;">News &amp; <span style="color:var(--amber);">Sponsors</span></div>
+          </div>
+        </div>
+        <div class="pc-info">
+          <div class="pc-page-name">News + Sponsors</div>
+          <div class="pc-desc">Markdown-powered news feed, auto-sorted. Animated sponsor logo marquee.</div>
+          <div class="pc-tags"><span class="pc-tag">CMS</span><span class="pc-tag">Marquee</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll reveal note -->
+    <div style="margin-top:5mm;padding:4mm 5mm;border:1px solid rgba(0,212,255,0.15);background:rgba(0,212,255,0.03);display:flex;align-items:flex-start;gap:4mm;">
+      <div style="flex-shrink:0;margin-top:0.5mm;">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);"></div>
+      </div>
+      <div>
+        <div class="label label-c" style="margin-bottom:2mm;font-size:7pt;"><span class="accent-line" style="background:var(--cyan);width:14px;"></span>Scroll-Reveal on Every Section</div>
+        <p style="font-size:8pt;color:rgba(255,255,255,0.55);line-height:1.6;">
+          Every section fades and slides up as it enters the viewport, powered by a lightweight
+          <code style="font-family:'JetBrains Mono',monospace;font-size:7pt;color:var(--cyan);">IntersectionObserver</code> — no external library, no layout jank.
+          Staggered delay classes (<code style="font-family:'JetBrains Mono',monospace;font-size:7pt;color:var(--cyan);">data-delay="1"</code> … <code style="font-family:'JetBrains Mono',monospace;font-size:7pt;color:var(--cyan);">data-delay="3"</code>) give each card its own rhythm.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">UPT RACING / WEBSITE / 04</div>
+</section>
+
+
+<!-- ══════════════════ PAGE 5 — TECH + PERFORMANCE ══════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner tl"></div><div class="corner br"></div>
+  <div class="ph"><img src="/logo.png" alt="" onerror="this.style.display='none'" /><span>Technology</span></div>
+  <div class="pi">
+    <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Stack &amp; Performance</div>
+    <h2 style="font-family:'Oswald',sans-serif;font-size:26pt;font-weight:700;text-transform:uppercase;margin-bottom:5mm;line-height:1;">
+      Fast by Design,<br /><span style="color:var(--cyan);">Static by Default</span>
+    </h2>
+
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="si-icon">🚀</div>
+        <div class="si-name">Astro</div>
+        <div class="si-sub">v6 · Zero JS<br />by default</div>
+      </div>
+      <div class="stack-item">
+        <div class="si-icon">🎨</div>
+        <div class="si-name">Tailwind</div>
+        <div class="si-sub">v4 · CSS-native<br />design tokens</div>
+      </div>
+      <div class="stack-item">
+        <div class="si-icon">🖥️</div>
+        <div class="si-name">UPT Server</div>
+        <div class="si-sub">Hosted on UPT<br />infrastructure</div>
+      </div>
+      <div class="stack-item">
+        <div class="si-icon">📝</div>
+        <div class="si-name">Content</div>
+        <div class="si-sub">Markdown CMS<br />type-safe schema</div>
+      </div>
+    </div>
+
+    <div class="perf-row" style="margin-bottom:5mm;">
+      <div class="perf-item">
+        <div class="pi-key">Build Output</div>
+        <div class="pi-val">Static</div>
+        <div class="pi-note">Pre-rendered HTML. No server needed. Survives traffic spikes without a sweat.</div>
+      </div>
+      <div class="perf-item">
+        <div class="pi-key">JavaScript Sent</div>
+        <div class="pi-val amber">Minimal</div>
+        <div class="pi-note">Astro ships zero component JS by default. Only small inline scripts for interactions.</div>
+      </div>
+      <div class="perf-item">
+        <div class="pi-key">Hosting</div>
+        <div class="pi-val">UPT</div>
+        <div class="pi-note">Served from university infrastructure at formulastudent.upt.ro — no third-party dependency.</div>
+      </div>
+    </div>
+
+    <div class="label" style="margin-bottom:3.5mm;"><span class="accent-line"></span>Why This Matters for the Team</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3mm;">
+      <div style="padding:3.5mm;border:1px solid var(--border);">
+        <div style="font-family:'Oswald',sans-serif;font-size:11pt;font-weight:700;text-transform:uppercase;color:var(--cyan);margin-bottom:2mm;">Easy to Update</div>
+        <p style="font-size:8pt;color:rgba(255,255,255,0.55);line-height:1.6;">News articles are plain <code style="font-family:'JetBrains Mono',monospace;font-size:7pt;color:var(--cyan);">.md</code> files. Any team member can add a post without touching code — just write Markdown, push to Git, site rebuilds automatically.</p>
+      </div>
+      <div style="padding:3.5mm;border:1px solid var(--border);">
+        <div style="font-family:'Oswald',sans-serif;font-size:11pt;font-weight:700;text-transform:uppercase;color:var(--amber);margin-bottom:2mm;">Sponsor-Ready</div>
+        <p style="font-size:8pt;color:rgba(255,255,255,0.55);line-height:1.6;">A fast, professional, mobile-perfect website is a tangible asset for sponsor pitches. First impression matters — slow or outdated sites cost the team credibility before the conversation starts.</p>
+      </div>
+
+      <div style="padding:3.5mm;border:1px solid var(--border);">
+        <div style="font-family:'Oswald',sans-serif;font-size:11pt;font-weight:700;text-transform:uppercase;color:var(--cyan);margin-bottom:2mm;">Mobile-First</div>
+        <p style="font-size:8pt;color:rgba(255,255,255,0.55);line-height:1.6;">Every layout is tested at 375px and up. The mobile menu, engine button, stats and sponsor marquee are all carefully adapted — no pinch-to-zoom required.</p>
+      </div>
+      <div style="padding:3.5mm;border:1px solid var(--border);">
+        <div style="font-family:'Oswald',sans-serif;font-size:11pt;font-weight:700;text-transform:uppercase;color:var(--amber);margin-bottom:2mm;">Future-Proof</div>
+        <p style="font-size:8pt;color:rgba(255,255,255,0.55);line-height:1.6;">Astro's content collections make adding new cars, team members, results or news a structured, type-safe process. The codebase hands off cleanly to the next generation of the team.</p>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">UPT RACING / WEBSITE / 05</div>
+</section>
+
+
+<!-- ══════════════════ PAGE 6 — CLOSE ══════════════════ -->
+<section class="page" id="web-close">
+  <div class="grid-overlay"></div>
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 50% at 50% 40%,rgba(0,71,171,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+  <div class="watermark-bg">WEB</div>
+
+  <div style="position:relative;z-index:2;text-align:center;width:100%;display:flex;flex-direction:column;align-items:center;">
+    <div class="label" style="justify-content:center;margin-bottom:6mm;"><span class="accent-line"></span>Summary<span class="accent-line" style="margin-left:8px;margin-right:0;"></span></div>
+    <h2>Not Just a Website.<br />A <em>Racing Asset.</em></h2>
+    <p>
+      This website was designed from the ground up to represent UPT Racing the same way
+      the car does — with precision, intention and no wasted weight.
+      Every feature earns its place. Every interaction serves a purpose.
+    </p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:2.5mm;justify-content:center;margin-bottom:8mm;max-width:140mm;">
+      <span class="chip cyan">GPU-Smooth Progress Bar</span>
+      <span class="chip amber">Magnetic Cursor</span>
+      <span class="chip cyan">Dark / Light Mode</span>
+      <span class="chip amber">Form Validation</span>
+      <span class="chip cyan">Animated Banner</span>
+      <span class="chip white">Scroll Reveal</span>
+      <span class="chip cyan">FAQ Accordion</span>
+      <span class="chip amber">Mobile-First</span>
+      <span class="chip white">Static · Hosted on UPT</span>
+      <span class="chip cyan">Markdown CMS</span>
+      <span class="chip amber">Type-Safe Content</span>
+      <span class="chip white">formulastudent.upt.ro</span>
+    </div>
+
+    <div class="divider-gradient"></div>
+
+    <div class="detail-grid">
+      <div class="detail-box">
+        <div class="db-k">Live URL</div>
+        <div class="db-v"><a href="https://formulastudent.upt.ro">formulastudent.upt.ro</a></div>
+      </div>
+      <div class="detail-box">
+        <div class="db-k">Stack</div>
+        <div class="db-v">Astro v6 + Tailwind v4</div>
+      </div>
+      <div class="detail-box">
+        <div class="db-k">Hosting</div>
+        <div class="db-v">UPT University Server</div>
+      </div>
+    </div>
+
+    <div style="margin-top:10mm;">
+      <img src="/logo.png" alt="UPT Racing" style="height:11mm;width:auto;filter:brightness(0) invert(1);opacity:0.2;" onerror="this.style.display='none'" />
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / WEBSITE / 06</div>
+</section>
+
+</body>
+</html>

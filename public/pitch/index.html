@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPT Racing — Sponsorship & Partnership Pitch 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --navy:   #071A2F;
+      --cobalt: #0047AB;
+      --cyan:   #00D4FF;
+      --amber:  #FFB000;
+      --white:  #FFFFFF;
+      --muted:  rgba(255,255,255,0.55);
+      --border: rgba(255,255,255,0.12);
+      --page-w: 210mm;
+      --page-h: 297mm;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10pt; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: var(--white); }
+
+    /* ─── PAGE SHELL ─────────────────────────────────────────── */
+    .page {
+      width: var(--page-w);
+      min-height: var(--page-h);
+      margin: 0 auto 4mm;
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+      page-break-after: always;
+    }
+
+    /* ─── PRINT ──────────────────────────────────────────────── */
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    @media print {
+      body { background: transparent; }
+      .page { margin: 0; box-shadow: none; }
+    }
+
+    /* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+    .display    { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+    .mono       { font-family: 'JetBrains Mono', monospace; }
+    .label      { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); }
+    .label-cyan { color: var(--cyan); }
+    h1 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+    h2 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+    h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+
+    /* ─── DECORATIVE ─────────────────────────────────────────── */
+    .accent-line {
+      display: inline-block;
+      width: 32px; height: 2px;
+      background: var(--cyan);
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    .corner-mark {
+      position: absolute;
+      width: 18px; height: 18px;
+      border-color: var(--cyan);
+      border-style: solid;
+      opacity: 0.45;
+    }
+    .corner-mark.tl { top: 16px; left: 16px; border-width: 1.5px 0 0 1.5px; }
+    .corner-mark.tr { top: 16px; right: 16px; border-width: 1.5px 1.5px 0 0; }
+    .corner-mark.bl { bottom: 16px; left: 16px; border-width: 0 0 1.5px 1.5px; }
+    .corner-mark.br { bottom: 16px; right: 16px; border-width: 0 1.5px 1.5px 0; }
+
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 12mm 12mm;
+      pointer-events: none;
+    }
+
+    .page-num {
+      position: absolute;
+      bottom: 10mm;
+      right: 12mm;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.15em;
+    }
+
+    /* ─── COVER PAGE ─────────────────────────────────────────── */
+    #cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 14mm 14mm 18mm;
+    }
+    #cover .bg-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top,  rgba(7,26,47,0.97) 0%, rgba(7,26,47,0.6) 45%, rgba(7,26,47,0.2) 80%, transparent 100%),
+        linear-gradient(to right, rgba(7,26,47,0.7) 0%, transparent 55%);
+    }
+    #cover .bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.52;
+    }
+    #cover .content { position: relative; z-index: 2; }
+    #cover .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6mm;
+    }
+    #cover h1 {
+      font-size: 52pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+      color: var(--white);
+      margin-bottom: 5mm;
+    }
+    #cover h1 span { color: var(--cyan); }
+    #cover .sub {
+      font-size: 11pt;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      max-width: 105mm;
+      line-height: 1.55;
+      margin-bottom: 10mm;
+    }
+    #cover .pill-row { display: flex; gap: 3mm; flex-wrap: wrap; }
+    #cover .pill {
+      padding: 2.5mm 5mm;
+      border: 1px solid rgba(255,255,255,0.25);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+    #cover .pill.amber { border-color: var(--amber); color: var(--amber); }
+    #cover .watermark {
+      position: absolute;
+      right: 8mm;
+      bottom: 8mm;
+      font-family: 'Oswald', sans-serif;
+      font-size: 108pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: rgba(0,71,171,0.10);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 1;
+    }
+    #cover .year-badge {
+      position: absolute;
+      top: 14mm;
+      right: 14mm;
+      z-index: 3;
+    }
+    #cover .year-badge .inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.5mm;
+    }
+    #cover .logo {
+      height: 9mm;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+    #cover .year-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ─── CONTENT PAGES COMMON ───────────────────────────────── */
+    .page-inner { padding: 12mm 14mm 14mm; position: relative; z-index: 2; }
+    .section-header { margin-bottom: 7mm; }
+    .section-header h2 { font-size: 28pt; font-weight: 700; letter-spacing: -0.01em; color: var(--white); line-height: 1; }
+    .section-header h2 em { color: var(--cyan); font-style: normal; }
+
+    /* ─── HEADER STRIP ───────────────────────────────────────── */
+    .page-header-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4mm 14mm;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 2;
+    }
+    .page-header-strip .ph-logo {
+      height: 5.5mm;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.55;
+    }
+    .page-header-strip .ph-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6.5pt;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ─── ABOUT PAGE ─────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7mm;
+      margin-bottom: 7mm;
+    }
+    .about-text p { font-size: 9pt; line-height: 1.65; color: rgba(255,255,255,0.7); margin-bottom: 3.5mm; }
+    .about-text strong { color: var(--amber); font-weight: 600; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3mm;
+    }
+    .stat-box {
+      padding: 4mm;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .stat-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--cyan);
+    }
+    .stat-box .num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28pt;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+    }
+    .stat-box .num sup { font-size: 13pt; color: var(--cyan); }
+    .stat-box .stat-label { font-size: 7pt; color: rgba(255,255,255,0.45); line-height: 1.4; margin-top: 1mm; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+
+    .timeline-compact { margin-top: 5mm; }
+    .timeline-compact h3 { font-size: 11pt; font-weight: 600; color: var(--white); margin-bottom: 4mm; }
+    .tl-row { display: flex; gap: 4mm; align-items: flex-start; margin-bottom: 3mm; }
+    .tl-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--amber);
+      width: 12mm;
+      flex-shrink: 0;
+      padding-top: 0.5mm;
+    }
+    .tl-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; margin-top: 2.5mm; }
+    .tl-text { font-size: 8.5pt; color: rgba(255,255,255,0.62); line-height: 1.5; }
+
+    /* ─── RESULTS PAGE ───────────────────────────────────────── */
+    .results-hero-img {
+      width: 100%;
+      height: 38mm;
+      object-fit: cover;
+      object-position: center 30%;
+      opacity: 0.6;
+      display: block;
+    }
+    .results-img-overlay {
+      position: relative;
+      margin-bottom: 6mm;
+    }
+    .results-img-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(7,26,47,0.85) 0%, transparent 60%),
+                  linear-gradient(to top, rgba(7,26,47,0.9) 0%, transparent 50%);
+    }
+    .results-img-caption {
+      position: absolute;
+      bottom: 4mm;
+      left: 6mm;
+      z-index: 2;
+      font-family: 'Oswald', sans-serif;
+      font-size: 22pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+    }
+    .results-img-caption span { color: var(--amber); }
+
+    .results-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+    .results-table thead tr { border-bottom: 1px solid var(--cyan); }
+    .results-table thead th { font-family: 'JetBrains Mono', monospace; font-size: 7pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); padding: 2mm 3mm; text-align: left; }
+    .results-table tbody tr { border-bottom: 1px solid var(--border); }
+    .results-table tbody tr:last-child { border-bottom: none; }
+    .results-table tbody td { padding: 3mm 3mm; color: rgba(255,255,255,0.75); vertical-align: middle; }
+    .results-table .pos { font-family: 'Oswald', sans-serif; font-size: 14pt; font-weight: 700; }
+    .pos.gold   { color: #FFD700; }
+    .pos.silver { color: #C0C0C0; }
+    .pos.other  { color: var(--white); }
+
+    .car-tag {
+      display: inline-block;
+      padding: 0.8mm 2mm;
+      background: rgba(0,71,171,0.35);
+      border: 1px solid rgba(0,71,171,0.6);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6.5pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+    }
+
+    /* ─── TSR4 TECH PAGE ─────────────────────────────────────── */
+    .tech-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 8mm; align-items: start; }
+    .car-preview {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+    }
+    .car-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .car-preview::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(7,26,47,0.3) 0%, transparent 60%),
+                  linear-gradient(to top, rgba(7,26,47,0.7) 0%, transparent 40%);
+    }
+    .car-callout {
+      position: absolute;
+      z-index: 2;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .car-callout.bottom { bottom: 4mm; left: 4mm; color: var(--amber); }
+
+    .spec-list { display: flex; flex-direction: column; gap: 0; }
+    .spec-row {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      padding: 2.8mm 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .spec-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      width: 28mm;
+      flex-shrink: 0;
+    }
+    .spec-val {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11.5pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--white);
+      letter-spacing: 0.02em;
+    }
+    .spec-val em { font-style: normal; color: var(--cyan); }
+
+    .highlight-tags { display: flex; flex-wrap: wrap; gap: 2mm; margin-top: 5mm; }
+    .htag {
+      padding: 1.5mm 3mm;
+      border: 1px solid rgba(0,212,255,0.3);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0,212,255,0.04);
+    }
+    .htag.amber { border-color: rgba(255,176,0,0.35); color: var(--amber); background: rgba(255,176,0,0.04); }
+
+    /* ─── SPONSORSHIP PAGE ───────────────────────────────────── */
+    .sponsor-intro { font-size: 9pt; color: rgba(255,255,255,0.65); line-height: 1.65; max-width: 145mm; margin-bottom: 7mm; }
+    .sponsor-intro strong { color: var(--white); }
+
+    .tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3.5mm; margin-bottom: 6mm; }
+    .tier {
+      padding: 5mm;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .tier.featured {
+      border-color: var(--amber);
+      background: rgba(255,176,0,0.04);
+    }
+    .tier-badge {
+      display: inline-block;
+      padding: 1mm 2.5mm;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6pt;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 2.5mm;
+    }
+    .tier.featured .tier-badge { background: var(--amber); color: var(--navy); }
+    .tier:not(.featured) .tier-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+    .tier-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 17pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 3mm;
+    }
+    .tier.featured .tier-name { color: var(--amber); }
+    .tier-perks { list-style: none; }
+    .tier-perks li {
+      font-size: 8pt;
+      color: rgba(255,255,255,0.62);
+      padding: 1.2mm 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      gap: 2.5mm;
+    }
+    .tier-perks li:last-child { border-bottom: none; }
+    .tier-perks li::before {
+      content: '—';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+    .tier.featured .tier-perks li::before { color: var(--amber); }
+
+    .exposure-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+    .exp-box {
+      padding: 3.5mm;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .exp-box .ico { font-size: 14pt; margin-bottom: 2mm; }
+    .exp-box .exp-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14pt;
+      font-weight: 700;
+      color: var(--cyan);
+      line-height: 1;
+    }
+    .exp-box .exp-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6.5pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-top: 1mm;
+      line-height: 1.35;
+    }
+
+    /* ─── FACULTY / INSTITUTIONAL PAGE ──────────────────────── */
+    .inst-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+    .inst-block h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 14pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 3mm;
+    }
+    .inst-block h3 em { font-style: normal; color: var(--cyan); }
+    .inst-block p { font-size: 8.5pt; line-height: 1.65; color: rgba(255,255,255,0.62); margin-bottom: 3mm; }
+    .inst-block ul { list-style: none; }
+    .inst-block ul li {
+      font-size: 8.5pt;
+      color: rgba(255,255,255,0.62);
+      padding: 1.8mm 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      gap: 2.5mm;
+      align-items: flex-start;
+    }
+    .inst-block ul li::before { content: '→'; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; color: var(--amber); flex-shrink: 0; margin-top: 0.3mm; }
+
+    .quote-block {
+      margin-top: 6mm;
+      padding: 5mm 6mm;
+      border-left: 3px solid var(--cyan);
+      background: rgba(0,212,255,0.04);
+    }
+    .quote-block p {
+      font-size: 10pt;
+      font-style: italic;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+      margin-bottom: 2.5mm;
+    }
+    .quote-block cite {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-style: normal;
+    }
+
+    /* ─── CONTACT / CLOSE PAGE ───────────────────────────────── */
+    #close {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 18mm 14mm;
+    }
+    #close .big-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 96pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: rgba(0,71,171,0.12);
+      line-height: 1;
+      position: absolute;
+      bottom: 12mm;
+      right: 8mm;
+      letter-spacing: -0.04em;
+    }
+    #close h2 {
+      font-size: 36pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 5mm;
+    }
+    #close h2 em { font-style: normal; color: var(--amber); }
+    #close .sub { font-size: 10pt; color: rgba(255,255,255,0.55); max-width: 110mm; line-height: 1.6; margin-bottom: 10mm; }
+    .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; width: 100%; max-width: 130mm; }
+    .contact-item {
+      padding: 4mm;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .contact-item .c-label { font-family: 'JetBrains Mono', monospace; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 1.5mm; }
+    .contact-item .c-val { font-size: 8.5pt; font-weight: 500; color: var(--white); }
+    .contact-item .c-val a { color: var(--cyan); text-decoration: none; }
+    .divider-line {
+      width: 30mm; height: 1px;
+      background: linear-gradient(to right, var(--cyan), var(--amber));
+      margin: 6mm auto;
+    }
+    .social-row { display: flex; gap: 4mm; justify-content: center; margin-top: 5mm; }
+    .social-pill {
+      padding: 2mm 4.5mm;
+      border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1 — COVER
+══════════════════════════════════════════════ -->
+<section class="page" id="cover">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark tr"></div>
+  <div class="corner-mark bl"></div>
+  <div class="corner-mark br"></div>
+
+  <!-- Background image -->
+  <img class="bg-img" src="/hero-image.jpg" alt="UPT Racing" onerror="this.style.display='none'" />
+  <div class="bg-gradient"></div>
+
+  <!-- Top-right logo + year -->
+  <div class="year-badge">
+    <div class="inner">
+      <img class="logo" src="/logo.png" alt="UPT Racing" onerror="this.style.display='none'" />
+      <span class="year-text">Season 2025 / 2026</span>
+    </div>
+  </div>
+
+  <!-- Watermark -->
+  <div class="watermark">UPT</div>
+
+  <!-- Main content -->
+  <div class="content">
+    <div class="eyebrow">
+      <span class="accent-line"></span>
+      <span class="label">Formula Student &nbsp;<span class="label-cyan">//</span>&nbsp; Politehnica Timișoara</span>
+    </div>
+
+    <h1>Built<br />to<br /><span>Race.</span></h1>
+
+    <p class="sub">
+      A decade of engineering passion. Four cars. Podiums across Europe.
+      This is UPT Racing — and we're just getting started.
+    </p>
+
+    <div class="pill-row">
+      <span class="pill amber">Partnership &amp; Sponsorship Deck</span>
+      <span class="pill">Timișoara, Romania</span>
+      <span class="pill">Est. 2013</span>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 01</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2 — WHO WE ARE
+══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark br"></div>
+  <div class="page-header-strip">
+    <img class="ph-logo" src="/logo.png" alt="UPT Racing" onerror="this.style.display='none'" />
+    <span class="ph-label">Who We Are</span>
+  </div>
+
+  <div class="page-inner">
+    <div class="section-header">
+      <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>About UPT Racing</div>
+      <h2 style="font-size:30pt;">A Team Built on<br /><em>Passion &amp; Precision</em></h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          UPT Racing is Politehnica Timișoara's Formula Student team — a fully student-run engineering organisation founded in <strong>2013</strong>. Every year, our team designs, manufactures and races a single-seat Formula Student car at international competitions across Europe.
+        </p>
+        <p>
+          We operate across four departments: <strong>Mechanical Engineering, Electronics, Aerodynamics</strong> and <strong>Business & Marketing</strong>. Every member — from first-year students to senior engineers — contributes to the full product development cycle.
+        </p>
+        <p>
+          Formula Student is the <strong>world's largest engineering competition</strong>, run by the IMechE and SAE International. Teams are judged not only on lap times, but on design innovation, cost analysis, business planning and sustainability.
+        </p>
+      </div>
+      <div>
+        <div class="stat-row" style="grid-template-columns: 1fr 1fr; gap: 3mm;">
+          <div class="stat-box">
+            <div class="num">10<sup>+</sup></div>
+            <div class="stat-label">Years of<br />Engineering Passion</div>
+          </div>
+          <div class="stat-box">
+            <div class="num">4</div>
+            <div class="stat-label">Car<br />Generations Built</div>
+          </div>
+          <div class="stat-box">
+            <div class="num">2<sup>nd</sup></div>
+            <div class="stat-label">Back-to-Back<br />FS Balkans Podiums</div>
+          </div>
+          <div class="stat-box" style="--cyan: #FFB000;">
+            <div class="num" style="color:var(--amber);">5<sup style="color:var(--amber);font-size:11pt;">th</sup></div>
+            <div class="stat-label">Best Overall<br />FS Balkans 2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-compact">
+      <div class="label" style="margin-bottom:4mm;"><span class="accent-line"></span>Key Milestones</div>
+      <div class="tl-row">
+        <span class="tl-year">2013</span>
+        <div class="tl-dot"></div>
+        <span class="tl-text">Team founded at Politehnica Timișoara. First workshop, first regulations, first generation of engineers.</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2016</span>
+        <div class="tl-dot"></div>
+        <span class="tl-text">TSR1 makes its international debut at Formula SAE Italy — the team's first ever competition start.</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2023</span>
+        <div class="tl-dot" style="background: var(--amber);"></div>
+        <span class="tl-text">TSR3 claims <strong style="color:var(--amber);">P2 at FS Balkans 2023</strong> — the team's first international podium, with full carbon aero package.</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2024</span>
+        <div class="tl-dot" style="background: var(--amber);"></div>
+        <span class="tl-text">TSR3 EVO defends with another <strong style="color:var(--amber);">P2 at FS Balkans</strong>, plus P10 at FS Czech Republic. 33 kg lighter than TSR3.</span>
+      </div>
+      <div class="tl-row">
+        <span class="tl-year">2025</span>
+        <div class="tl-dot" style="background: var(--cyan);"></div>
+        <span class="tl-text">TSR4 — full clean-sheet redesign. Yamaha R6 engine, Haltech Nexus S2 ECU, 256 kg. P5 at FS Balkans 2025.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 02</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3 — THE CAR: TSR4
+══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark br"></div>
+  <div class="page-header-strip">
+    <img class="ph-logo" src="/logo.png" alt="UPT Racing" onerror="this.style.display='none'" />
+    <span class="ph-label">The Machine</span>
+  </div>
+
+  <div class="page-inner">
+    <div class="section-header" style="margin-bottom:5mm;">
+      <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Current Car</div>
+      <h2 style="font-size:30pt;">TSR 4 — Season <em>2025</em></h2>
+    </div>
+
+    <div class="tech-layout">
+      <!-- Left: image + highlights -->
+      <div>
+        <div class="car-preview" style="margin-bottom:4mm;">
+          <img src="/tsr4hybrid.jpg" alt="TSR 4" onerror="this.style.background='rgba(0,71,171,0.2)'" />
+          <div class="car-callout bottom">TSR 4 · Season 2025</div>
+        </div>
+        <p style="font-size:8.5pt;line-height:1.6;color:rgba(255,255,255,0.6);">
+          TSR4 is a full clean-sheet design that consolidates a decade of in-house knowledge.
+          Every subsystem — from the spaceframe to the aerodynamic surfaces — was designed,
+          analysed and manufactured in-house by our students.
+        </p>
+        <div class="highlight-tags">
+          <span class="htag">Inline-4 Engine</span>
+          <span class="htag">Carbon Aero</span>
+          <span class="htag">Custom ECU Map</span>
+          <span class="htag amber">256 kg</span>
+          <span class="htag">Haltech Nexus S2</span>
+          <span class="htag amber">Yamaha R6</span>
+          <span class="htag">Push-rod Suspension</span>
+          <span class="htag">Chain Drive RWD</span>
+        </div>
+      </div>
+
+      <!-- Right: spec list -->
+      <div>
+        <div class="label" style="margin-bottom:4mm;"><span class="accent-line"></span>Technical Specs</div>
+        <div class="spec-list">
+          <div class="spec-row">
+            <span class="spec-key">Engine</span>
+            <span class="spec-val">Yamaha <em>R6</em></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Displacement</span>
+            <span class="spec-val"><em>599</em> cm³</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">ECU</span>
+            <span class="spec-val">Haltech <em>Nexus S2</em></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Drivetrain</span>
+            <span class="spec-val">RWD <em>Chain</em></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Gearbox</span>
+            <span class="spec-val"><em>Sequential</em></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Frame</span>
+            <span class="spec-val">Steel <em>Spaceframe</em></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Weight</span>
+            <span class="spec-val"><em>256</em> kg</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Wheelbase</span>
+            <span class="spec-val"><em>1525</em> mm</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Track F/R</span>
+            <span class="spec-val"><em>1157 / 1121</em> mm</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Suspension</span>
+            <span class="spec-val">Double <em>Wishbone</em></span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Aerodynamics</span>
+            <span class="spec-val">Carbon <em>F+R Wing</em></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 03</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4 — COMPETITION RESULTS
+══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark br"></div>
+  <div class="page-header-strip">
+    <img class="ph-logo" src="/logo.png" alt="UPT Racing" onerror="this.style.display:'none'" />
+    <span class="ph-label">Competition Record</span>
+  </div>
+
+  <div class="page-inner" style="padding-top:8mm;">
+    <div class="section-header" style="margin-bottom:6mm;">
+      <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Results</div>
+      <h2 style="font-size:30pt;">Competing at the<br /><em>Highest Level</em></h2>
+    </div>
+
+    <!-- Results table -->
+    <table class="results-table" style="margin-bottom:7mm;">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Competition</th>
+          <th>Location</th>
+          <th>Car</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2016</td>
+          <td>Formula SAE Italy</td>
+          <td>Varano de' Melegari, IT</td>
+          <td><span class="car-tag">TSR1</span></td>
+          <td><span class="pos other">Debut</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2021</td>
+          <td>Formula Student Netherlands</td>
+          <td>TT Circuit Assen, NL</td>
+          <td><span class="car-tag">TSR2</span></td>
+          <td><span class="pos other">Competed</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2023</td>
+          <td>Formula Student Balkans</td>
+          <td>Dej, Romania</td>
+          <td><span class="car-tag">TSR3</span></td>
+          <td><span class="pos silver">P2 🥈</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2024</td>
+          <td>Formula Student Balkans</td>
+          <td>Dej, Romania</td>
+          <td><span class="car-tag">TSR3 EVO</span></td>
+          <td><span class="pos silver">P2 🥈</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2024</td>
+          <td>Formula Student Czech Republic</td>
+          <td>Most, Czech Republic</td>
+          <td><span class="car-tag">TSR3 EVO</span></td>
+          <td><span class="pos other">P10</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2025</td>
+          <td>Formula Student Balkans</td>
+          <td>Dej, Romania</td>
+          <td><span class="car-tag">TSR4</span></td>
+          <td><span class="pos other" style="color:var(--amber);">P5</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2025</td>
+          <td>Formula Student Alpe Adria</td>
+          <td>Italy</td>
+          <td><span class="car-tag">TSR4</span></td>
+          <td><span class="pos other">Competed</span></td>
+        </tr>
+        <tr>
+          <td style="color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;font-size:8pt;">2026</td>
+          <td>Formula Student Balkans</td>
+          <td>Dej, Romania</td>
+          <td><span class="car-tag" style="border-color:rgba(255,176,0,0.6);color:var(--amber);background:rgba(255,176,0,0.06);">TSR4 EVO</span></td>
+          <td><span class="pos other" style="color:rgba(255,255,255,0.35);font-size:8pt;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;">UPCOMING</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Exposure metrics -->
+    <div class="label" style="margin-bottom:4mm;"><span class="accent-line"></span>Reach &amp; Exposure</div>
+    <div class="exposure-grid">
+      <div class="exp-box">
+        <div class="exp-num">7+</div>
+        <div class="exp-lbl">International<br />Competitions</div>
+      </div>
+      <div class="exp-box">
+        <div class="exp-num">5+</div>
+        <div class="exp-lbl">Countries<br />Competed In</div>
+      </div>
+      <div class="exp-box">
+        <div class="exp-num">Live</div>
+        <div class="exp-lbl">TSR4 EVO<br />Launch Event</div>
+      </div>
+      <div class="exp-box">
+        <div class="exp-num">3</div>
+        <div class="exp-lbl">Active Social<br />Media Channels</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 04</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 5 — INSTITUTIONAL VALUE (FACULTY/UPT)
+══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark br"></div>
+  <div class="page-header-strip">
+    <img class="ph-logo" src="/logo.png" alt="UPT Racing" onerror="this.style.display:'none'" />
+    <span class="ph-label">For the Faculty &amp; University</span>
+  </div>
+
+  <div class="page-inner">
+    <div class="section-header" style="margin-bottom:5mm;">
+      <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Institutional Value</div>
+      <h2 style="font-size:28pt;">Why Supporting UPT Racing<br /><em>Pays Off for the University</em></h2>
+    </div>
+
+    <div class="inst-two-col">
+      <div class="inst-block">
+        <h3>Student <em>Development</em></h3>
+        <p>
+          UPT Racing is a living laboratory. Students work on real engineering challenges with
+          real consequences — deadlines, budgets, safety regulations and international
+          competition pressure that no classroom can replicate.
+        </p>
+        <ul>
+          <li>Full product lifecycle: design → simulation → manufacturing → testing → competition</li>
+          <li>Cross-disciplinary collaboration: mechanical, electrical, composites, electronics, business</li>
+          <li>Direct application of CAD (SolidWorks, Ansys), FEA and CFD at university level</li>
+          <li>Project management, budgeting and stakeholder communication skills</li>
+          <li>Accelerates graduate employability — alumni placed at Continental, Bosch, Dassault Systèmes</li>
+        </ul>
+      </div>
+
+      <div class="inst-block">
+        <h3>University <em>Visibility</em></h3>
+        <p>
+          Every competition appearance is a branded opportunity for Politehnica Timișoara
+          on an international stage, attracting prospective students, academic partners and
+          industrial collaborators.
+        </p>
+        <ul>
+          <li>UPT name on car livery, helmets, race suits and pit equipment at European events</li>
+          <li>Media coverage at FS Balkans, FS Czech Republic, FS Alpe Adria and FS Italy</li>
+          <li>Online content: Instagram, Facebook, LinkedIn — active documentation of engineering work</li>
+          <li>Live launch event broadcast: TSR4 EVO reveal at ARChA / UPT Timișoara</li>
+          <li>Network of partner companies: Ansys, Haltech, Continental, Schaeffler, Hexagon, Motul…</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>
+        "Formula Student is recognised by industry as one of the best indicators of engineering
+        readiness in a graduate. The skills developed — systems thinking, iterative design under
+        constraint, teamwork — are exactly what engineering employers seek."
+      </p>
+      <cite>— Formula Student Germany / IMechE</cite>
+    </div>
+
+    <div style="margin-top:6mm; display:grid; grid-template-columns: repeat(3,1fr); gap:3mm;">
+      <div class="stat-box" style="--cyan:#FFB000;">
+        <div class="num" style="font-size:22pt;color:var(--amber);">€ 0</div>
+        <div class="stat-label">External consulting costs<br />— all in-house engineering</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" style="font-size:22pt;">50+</div>
+        <div class="stat-label">Active student<br />members per season</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" style="font-size:22pt;">10+</div>
+        <div class="stat-label">Industry partners<br />currently active</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 05</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 6 — SPONSORSHIP TIERS
+══════════════════════════════════════════════ -->
+<section class="page">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark br"></div>
+  <div class="page-header-strip">
+    <img class="ph-logo" src="/logo.png" alt="UPT Racing" onerror="this.style.display:'none'" />
+    <span class="ph-label">Partnership Packages</span>
+  </div>
+
+  <div class="page-inner">
+    <div class="section-header" style="margin-bottom:4mm;">
+      <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>Sponsorship</div>
+      <h2 style="font-size:28pt;">Partner with the<br /><em>Next Generation</em></h2>
+    </div>
+
+    <p class="sponsor-intro">
+      Sponsoring UPT Racing means more than a logo on a race car.
+      It means direct access to <strong>motivated engineering talent</strong>, visibility at
+      <strong>international competitions</strong> and association with a team that earns results
+      on merit. We offer flexible tiers with customisable benefits.
+    </p>
+
+    <div class="tiers-grid">
+      <!-- Bronze -->
+      <div class="tier">
+        <div class="tier-badge">Supporting</div>
+        <div class="tier-name">Bronze</div>
+        <ul class="tier-perks">
+          <li>Logo on team website</li>
+          <li>Social media mention</li>
+          <li>Certificate of partnership</li>
+          <li>Season progress report</li>
+        </ul>
+      </div>
+
+      <!-- Silver -->
+      <div class="tier">
+        <div class="tier-badge">Partner</div>
+        <div class="tier-name">Silver</div>
+        <ul class="tier-perks">
+          <li>Logo on car bodywork (small)</li>
+          <li>Logo on team apparel</li>
+          <li>Website + social presence</li>
+          <li>Workshop visit &amp; media kit</li>
+          <li>Dedicated post on all channels</li>
+        </ul>
+      </div>
+
+      <!-- Gold / Main -->
+      <div class="tier featured">
+        <div class="tier-badge">Main Sponsor</div>
+        <div class="tier-name">Gold</div>
+        <ul class="tier-perks">
+          <li>Prime logo placement on car</li>
+          <li>Logo on helmet &amp; race suit</li>
+          <li>Logo on team apparel + banner</li>
+          <li>Branded garage / pit area</li>
+          <li>Co-branded social content</li>
+          <li>VIP competition day access</li>
+          <li>Access to engineering talent</li>
+          <li>Custom collaboration options</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- In-Kind note -->
+    <div style="padding: 4mm 5mm; border: 1px solid rgba(0,212,255,0.2); background: rgba(0,212,255,0.03); margin-bottom:5mm;">
+      <div class="label label-cyan" style="margin-bottom:2mm;"><span class="accent-line"></span>In-Kind Partnerships</div>
+      <p style="font-size:8.5pt;color:rgba(255,255,255,0.62);line-height:1.6;">
+        We also welcome <strong style="color:var(--white);">technical and in-kind sponsors</strong> — suppliers of materials,
+        software licences, machining services, electronics components or engineering tools.
+        These partnerships are deeply valued and credited across all team communications.
+        Current in-kind partners include <strong style="color:var(--cyan);">Ansys, Dassault Systèmes, Haltech, Hexagon, Linde, TME</strong> and more.
+      </p>
+    </div>
+
+    <div class="label" style="margin-bottom:3mm;"><span class="accent-line"></span>What Your Partnership Supports</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;">
+      <div style="padding:3mm;border:1px solid var(--border);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:700;color:var(--cyan);margin-bottom:1.5mm;">CAR PARTS</div>
+        <div style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.4;">Fabrication materials &amp; bought-in components</div>
+      </div>
+      <div style="padding:3mm;border:1px solid var(--border);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:700;color:var(--cyan);margin-bottom:1.5mm;">TRAVEL</div>
+        <div style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.4;">Competition logistics across Europe</div>
+      </div>
+      <div style="padding:3mm;border:1px solid var(--border);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:700;color:var(--cyan);margin-bottom:1.5mm;">SOFTWARE</div>
+        <div style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.4;">CAD, FEA, CFD, telemetry, ECU tuning</div>
+      </div>
+      <div style="padding:3mm;border:1px solid var(--border);text-align:center;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8pt;font-weight:700;color:var(--cyan);margin-bottom:1.5mm;">DEVELOPMENT</div>
+        <div style="font-size:7.5pt;color:rgba(255,255,255,0.5);line-height:1.4;">Testing, tuning &amp; next-car R&amp;D budget</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 06</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     PAGE 7 — CLOSE / CONTACT
+══════════════════════════════════════════════ -->
+<section class="page" id="close">
+  <div class="grid-overlay"></div>
+  <div class="corner-mark tl"></div>
+  <div class="corner-mark tr"></div>
+  <div class="corner-mark bl"></div>
+  <div class="corner-mark br"></div>
+
+  <!-- Background gradient accent -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 55% at 50% 40%, rgba(0,71,171,0.18) 0%, transparent 70%);pointer-events:none;"></div>
+
+  <div class="big-num">TSR4</div>
+
+  <div style="position:relative;z-index:2;text-align:center;width:100%;">
+    <div class="label" style="margin-bottom:5mm;justify-content:center;display:flex;align-items:center;gap:8px;">
+      <span class="accent-line"></span>Let's Build Something Together<span class="accent-line" style="margin-left:10px;margin-right:0;"></span>
+    </div>
+
+    <h2 style="margin-bottom:4mm;">Ready to <em>Race</em><br />with Us?</h2>
+    <p class="sub" style="margin:0 auto 8mm;">
+      Whether you're a company looking for brand visibility, a technology provider wanting
+      to partner on innovation, or an institution supporting the next generation of engineers —
+      we'd love to hear from you.
+    </p>
+
+    <div class="divider-line"></div>
+
+    <div class="contact-grid" style="margin:0 auto;">
+      <div class="contact-item">
+        <div class="c-label">Email</div>
+        <div class="c-val"><a href="mailto:contact@uptracing.ro">contact@uptracing.ro</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-label">Website</div>
+        <div class="c-val"><a href="https://uptracing.ro">uptracing.ro</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="c-label">Location</div>
+        <div class="c-val">Timișoara, Romania</div>
+      </div>
+    </div>
+
+    <div class="social-row">
+      <span class="social-pill">Instagram · @uptracingteam</span>
+      <span class="social-pill">Facebook · UPTRacingTeam</span>
+      <span class="social-pill">LinkedIn · upt-racing-team</span>
+    </div>
+
+    <div style="margin-top:10mm;">
+      <img src="/logo.png" alt="UPT Racing" style="height:12mm;width:auto;filter:brightness(0) invert(1);opacity:0.25;" onerror="this.style.display='none'" />
+    </div>
+  </div>
+
+  <div class="page-num">UPT RACING / 07</div>
+</section>
+
+</body>
+</html>
