@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import SectionLabel from '../components/ui/SectionLabel.astro';
 
-const departments = ['Toți', 'Leadership', 'Aero', 'Vehicle Dynamics', 'Mechanical', 'Powertrain', 'Electronics', 'Media & Marketing'];
+const departments = ['All', 'Leadership', 'Aero', 'Vehicle Dynamics', 'Mechanical', 'Powertrain', 'Electronics', 'Media & Marketing'];
 
 const members = [
   // Leadership
@@ -81,17 +81,17 @@ function initials(name: string) {
 }
 ---
 
-<Layout title="Echipă" description="Cunoaște membrii echipei UPT Racing 2026">
+<Layout title="Team" description="Meet the UPT Racing 2026 team members">
 
   <!-- Hero -->
   <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
     <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionLabel label="Sezonul 2026" light={true} />
+      <SectionLabel label="Season 2026" light={true} />
       <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
-        Echipa<br /><span style="color: var(--color-accent-cyan);">Noastră</span>
+        Our<br /><span style="color: var(--color-accent-cyan);">Team</span>
       </h1>
       <p class="mt-6 text-lg max-w-xl" style="color: rgba(255,255,255,0.6);">
-        {members.length} de membri. Un singur obiectiv — să concurăm la cel mai înalt nivel Formula Student.
+        {members.length} members. One goal — to compete at the highest level of Formula Student.
       </p>
     </div>
   </section>
@@ -146,7 +146,7 @@ function initials(name: string) {
 
       <!-- Count -->
       <p class="mt-12 text-sm" style="color: var(--color-text-muted);" id="member-count">
-        Se afișează {members.length} membri
+        Showing {members.length} members
       </p>
     </div>
   </section>
@@ -170,12 +170,12 @@ function initials(name: string) {
 
       let visible = 0;
       cards.forEach(c => {
-        const show = dept === 'Toți' || c.dataset.dept === dept;
+        const show = dept === 'All' || c.dataset.dept === dept;
         (c as HTMLElement).style.display = show ? '' : 'none';
         if (show) visible++;
       });
 
-      if (countEl) countEl.textContent = `Se afișează ${visible} membri`;
+      if (countEl) countEl.textContent = `Showing ${visible} members`;
     });
   });
 </script>
