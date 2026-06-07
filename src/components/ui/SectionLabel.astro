@@ -6,10 +6,10 @@ interface Props {
 const { label, light = false } = Astro.props;
 ---
 <div class="flex items-center gap-3 mb-4">
-  <div class="h-[3px] w-8" style="background: var(--color-accent-cyan);"></div>
+  <div class="h-[2px] w-10" style="background: var(--color-accent-amber);"></div>
   <span
-    class={`font-mono text-xs font-bold uppercase tracking-widest${light ? ' section-label-light' : ''}`}
-    style={`color: ${light ? 'var(--on-dark-muted)' : 'var(--color-text-muted)'};`}
+    class={`font-mono text-xs font-bold uppercase tracking-[0.25em]${light ? ' section-label-light' : ''}`}
+    style="color: var(--color-accent-amber);"
   >
     {label}
   </span>
