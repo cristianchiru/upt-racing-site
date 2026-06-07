@@ -75,7 +75,7 @@ const faqs = [
         </div>
         <div>
           <label class="block text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-text-muted);">Department</label>
-          <select name="department" class="w-full px-4 py-3 border bg-transparent text-sm focus:outline-none" style="border-color: var(--color-border); color: var(--color-text);">
+          <select name="department" class="form-select w-full px-4 py-3 border text-sm transition-colors" style="border-color: var(--color-border); color: var(--color-text);" onfocus="this.style.borderColor='var(--color-accent-amber)'" onblur="this.style.borderColor='var(--color-border)'">
             {departments.map(d => <option>{d.name}</option>)}
           </select>
         </div>

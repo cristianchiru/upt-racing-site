@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>404 — UPT Racing</title>
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const dark = stored ? stored === 'dark' : true;
+        if (dark) document.documentElement.classList.add('dark');
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- Background canvas -->
+    <div class="bg-canvas" aria-hidden="true">
+      <div class="bg-canvas__gradient"></div>
+      <div class="bg-canvas__noise"></div>
+    </div>
+
+    <main class="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+      <!-- Giant 404 watermark -->
+      <div
+        class="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+        style="font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(18rem, 45vw, 40rem); color: var(--color-text); opacity: 0.04; letter-spacing: -0.05em; line-height: 1;"
+      >
+        404
+      </div>
+
+      <!-- Amber accent corners -->
+      <div class="absolute top-0 left-0 w-24 h-[3px]" style="background: var(--color-accent-amber);"></div>
+      <div class="absolute bottom-0 right-0 w-24 h-[3px]" style="background: var(--color-accent-amber);"></div>
+
+<div class="relative text-center max-w-xl mx-auto px-6">
+        <p class="font-mono text-xs font-bold uppercase tracking-[0.25em] mb-6" style="color: var(--color-accent-amber);">
+          Error — Page Not Found
+        </p>
+        <h1
+          class="font-display font-black uppercase leading-none mb-6"
+          style="font-size: clamp(3.5rem, 9vw, 7rem); letter-spacing: -0.03em; color: var(--color-text);"
+        >
+          Wrong<br />Turn.
+        </h1>
+        <p class="text-lg mb-10" style="color: var(--color-text-muted);">
+          Looks like this page went off-track.<br />Let's get you back to the pits.
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a
+            href="/"
+            class="px-8 py-3 font-display font-bold uppercase tracking-wide text-sm transition-opacity hover:opacity-80"
+            style="background: var(--color-accent-amber); color: var(--color-primary-dark);"
+          >
+            Back to Home
+          </a>
+          <a
+            href="/competitions"
+            class="px-8 py-3 font-display font-bold uppercase tracking-wide text-sm border transition-colors hover:opacity-80"
+            style="border-color: var(--color-text-muted); color: var(--color-text);"
+          >
+            Race Calendar
+          </a>
+        </div>
+      </div>
+
+    </main>
+  </body>
+</html>

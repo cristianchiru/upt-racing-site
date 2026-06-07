@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/ui/SectionLabel.astro';
+
+const contacts = [
+  {
+    role: 'General Enquiries',
+    name: 'UPT Racing',
+    email: 'contact@uptracing.ro',
+    description: 'For general questions about the team, our project or upcoming events.',
+  },
+  {
+    role: 'Sponsorship & Partnerships',
+    name: 'Sponsorship Team',
+    email: 'sponsors@uptracing.ro',
+    description: 'Interested in partnering with us? Reach out to discuss sponsorship packages.',
+  },
+  {
+    role: 'Technical & Media',
+    name: 'Technical Team',
+    email: 'technical@uptracing.ro',
+    description: 'Press requests, technical collaborations and engineering enquiries.',
+  },
+];
+---
+
+<Layout title="Contact" description="Get in touch with UPT Racing">
+
+  <!-- Hero -->
+  <section class="py-24 lg:py-32" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Get in Touch" light={true} />
+      <h1 class="font-display font-black uppercase text-white leading-none" style="font-size: clamp(4rem, 10vw, 8rem);">
+        Contact<br /><span style="color: var(--color-accent-amber);">Us</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Contact cards -->
+  <section class="py-20 lg:py-32">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionLabel label="Reach Out" />
+      <h2 class="font-display font-black uppercase text-4xl lg:text-5xl mb-12" style="color: var(--color-text);">Who to contact</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {contacts.map(c => (
+          <div class="p-8 border flex flex-col gap-4" style="border-color: var(--color-border);">
+            <div>
+              <p class="font-mono text-xs font-bold uppercase tracking-widest mb-2" style="color: var(--color-accent-amber);">{c.role}</p>
+              <h3 class="font-display font-bold uppercase text-2xl" style="color: var(--color-text);">{c.name}</h3>
+            </div>
+            <p class="text-sm leading-relaxed flex-1" style="color: var(--color-text-muted);">{c.description}</p>
+            <a
+              href={`mailto:${c.email}`}
+              class="font-mono text-sm font-bold transition-colors hover:opacity-70"
+              style="color: var(--color-accent-cyan);"
+            >
+              {c.email}
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact form -->
+  <section class="py-20 lg:py-32" style="background: var(--section-darker);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <SectionLabel label="Send a Message" />
+        <h2 class="font-display font-black uppercase text-4xl lg:text-5xl mb-12" style="color: var(--color-text);">Drop us a line</h2>
+        <form class="space-y-6" name="contact" method="POST">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-2">
+              <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Name</label>
+              <input
+                type="text" name="name" required
+                class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors focus:border-current"
+                style="border-color: var(--color-border); color: var(--color-text);"
+                onfocus="this.style.borderColor='var(--color-accent-amber)'"
+                onblur="this.style.borderColor='var(--color-border)'"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Email</label>
+              <input
+                type="email" name="email" required
+                class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors"
+                style="border-color: var(--color-border); color: var(--color-text);"
+                onfocus="this.style.borderColor='var(--color-accent-amber)'"
+                onblur="this.style.borderColor='var(--color-border)'"
+              />
+            </div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Subject</label>
+            <select
+              name="subject"
+              class="form-select w-full px-4 py-3 text-sm border transition-colors"
+              style="border-color: var(--color-border); color: var(--color-text);"
+              onfocus="this.style.borderColor='var(--color-accent-amber)'"
+              onblur="this.style.borderColor='var(--color-border)'"
+            >
+              <option value="general">General Enquiry</option>
+              <option value="sponsorship">Sponsorship & Partnership</option>
+              <option value="technical">Technical / Media</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs font-bold uppercase tracking-widest" style="color: var(--color-text-muted);">Message</label>
+            <textarea
+              name="message" required rows="6"
+              class="px-4 py-3 text-sm bg-transparent border outline-none transition-colors resize-none"
+              style="border-color: var(--color-border); color: var(--color-text);"
+              onfocus="this.style.borderColor='var(--color-accent-amber)'"
+              onblur="this.style.borderColor='var(--color-border)'"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="px-10 py-3 font-display font-bold uppercase tracking-wide text-sm transition-opacity hover:opacity-80"
+            style="background: var(--color-accent-amber); color: var(--color-primary-dark);"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social / find us -->
+  <section class="py-20 lg:py-24" style="background: var(--color-primary-dark);">
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-start lg:items-center gap-8 justify-between">
+      <div>
+        <SectionLabel label="Find Us" light={true} />
+        <h2 class="font-display font-black uppercase text-3xl lg:text-4xl text-white">Follow the journey</h2>
+      </div>
+      <div class="flex gap-6">
+        <a href="https://instagram.com/uptracing" target="_blank" rel="noopener" class="font-mono text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-70" style="color: var(--color-accent-amber);">Instagram</a>
+        <a href="https://facebook.com/uptracing" target="_blank" rel="noopener" class="font-mono text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-70" style="color: var(--color-accent-amber);">Facebook</a>
+        <a href="https://linkedin.com/company/uptracing" target="_blank" rel="noopener" class="font-mono text-sm font-bold uppercase tracking-widest transition-colors hover:opacity-70" style="color: var(--color-accent-amber);">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

@@ -57,7 +57,7 @@ const currentPath = Astro.url.pathname;
           class="px-5 py-2 text-sm font-semibold border transition-colors"
           style="border-color: rgba(255,255,255,0.4); color: white;"
         >
-          Sponsor Us
+          Partner With Us
         </a>
         <a
           href="/join-us"
@@ -106,7 +106,7 @@ const currentPath = Astro.url.pathname;
       );
     })}
     <div class="flex gap-3 mt-6">
-      <a href="/sponsors" class="flex-1 text-center py-3 text-sm font-semibold border-2" style="border-color: var(--color-primary); color: var(--color-primary);">Sponsor Us</a>
+      <a href="/sponsors" class="flex-1 text-center py-3 text-sm font-semibold border-2" style="border-color: var(--color-primary); color: var(--color-primary);">Partner With Us</a>
       <a href="/join-us" class="flex-1 text-center py-3 text-sm font-semibold" style="background: var(--color-accent-amber); color: var(--color-primary-dark);">Apply Now</a>
     </div>
     <div class="mt-4 flex justify-center">
@@ -175,7 +175,7 @@ const currentPath = Astro.url.pathname;
     // Toggle class used by CSS for active/hover colour logic
     header.classList.toggle('header-transparent', transparent);
 
-    // Divider + Sponsor Us outline: white on transparent/dark, theme colour on solid light
+    // Divider + Partner With Us outline: white on transparent/dark, theme colour on solid light
     if (transparent || isDark) {
       if (divider)        divider.style.background       = 'rgba(255,255,255,0.15)';
       if (sponsorOutline) { sponsorOutline.style.borderColor = 'rgba(255,255,255,0.4)'; sponsorOutline.style.color = 'white'; }
