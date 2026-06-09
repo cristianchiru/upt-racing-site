@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPT Racing — Website User Manual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:   #071A2F;
+      --cobalt: #0047AB;
+      --cyan:   #00D4FF;
+      --amber:  #FFB000;
+      --white:  #FFFFFF;
+      --ink:    #1A1208;
+      --muted:  #5A6070;
+      --bg:     #FAFAFA;
+      --surface:#F0F2F5;
+      --border: #DDE1E8;
+      --code-bg:#EEF1F6;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 10pt; }
+    body { font-family: 'Inter', sans-serif; background: #e8e8e8; color: var(--ink); }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 4mm;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+    }
+    @page { size: A4 portrait; margin: 0; }
+    @media print { body { background: transparent; } .page { margin: 0; } }
+
+    /* ── TYPE ── */
+    h1,h2,h3,h4 { font-family: 'Oswald', sans-serif; text-transform: uppercase; }
+    code, .mono  { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── COVER ── */
+    #cover {
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 14mm;
+      min-height: 297mm;
+    }
+    #cover .top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1.5px;
+      background: linear-gradient(to right, var(--cyan), var(--amber));
+    }
+    #cover .grid-bg {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px), linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);
+      background-size: 12mm 12mm;
+    }
+    #cover .top-right {
+      position: absolute; top: 14mm; right: 14mm;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2mm;
+    }
+    #cover .top-right img { height: 9mm; filter: brightness(0) invert(1); opacity: 0.85; }
+    #cover .top-right span { font-family: 'JetBrains Mono', monospace; font-size: 7pt; color: rgba(255,255,255,0.3); letter-spacing: 0.2em; text-transform: uppercase; }
+    #cover .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); display: flex; align-items: center; gap: 8px; margin-bottom: 5mm; position: relative; z-index: 2; }
+    #cover .eyebrow::before { content: ''; display: inline-block; width: 28px; height: 2px; background: var(--cyan); }
+    #cover h1 { font-size: 46pt; font-weight: 700; letter-spacing: -0.02em; line-height: 0.92; color: white; margin-bottom: 6mm; position: relative; z-index: 2; }
+    #cover h1 em { font-style: normal; color: var(--cyan); }
+    #cover .sub { font-size: 10pt; font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1.65; max-width: 120mm; margin-bottom: 10mm; position: relative; z-index: 2; }
+    #cover .meta-row { display: flex; gap: 3mm; flex-wrap: wrap; position: relative; z-index: 2; }
+    #cover .meta-pill { padding: 2mm 4.5mm; border: 1px solid rgba(255,255,255,0.18); font-family: 'JetBrains Mono', monospace; font-size: 7pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    #cover .meta-pill.hi { border-color: var(--amber); color: var(--amber); }
+    #cover .wm { position: absolute; right: 6mm; bottom: 6mm; font-family: 'Oswald', sans-serif; font-size: 100pt; font-weight: 700; text-transform: uppercase; color: rgba(0,71,171,0.09); line-height: 1; letter-spacing: -0.04em; pointer-events: none; }
+
+    /* ── TOC ── */
+    .toc-page { padding: 14mm; background: var(--bg); }
+    .toc-page .section-label { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cobalt); display: flex; align-items: center; gap: 8px; margin-bottom: 4mm; }
+    .toc-page .section-label::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--cyan); }
+    .toc-page h2 { font-size: 26pt; font-weight: 700; color: var(--navy); margin-bottom: 8mm; }
+    .toc-item { display: flex; align-items: baseline; gap: 2mm; padding: 2.5mm 0; border-bottom: 1px solid var(--border); }
+    .toc-item .toc-num { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; color: var(--cyan); width: 8mm; flex-shrink: 0; }
+    .toc-item .toc-title { font-family: 'Oswald', sans-serif; font-size: 12pt; font-weight: 600; text-transform: uppercase; color: var(--navy); flex: 1; }
+    .toc-item .toc-sub { font-size: 8pt; color: var(--muted); margin-top: 0.5mm; }
+    .toc-item .toc-pg { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; color: var(--muted); }
+    .toc-section { margin-bottom: 1.5mm; }
+
+    /* ── CONTENT PAGES ── */
+    .ph { display: flex; align-items: center; justify-content: space-between; padding: 4mm 14mm; border-bottom: 2px solid var(--navy); background: var(--navy); }
+    .ph img { height: 5.5mm; width: auto; filter: brightness(0) invert(1); opacity: 0.7; }
+    .ph-right { display: flex; align-items: center; gap: 4mm; }
+    .ph-chapter { font-family: 'JetBrains Mono', monospace; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .ph-num { font-family: 'JetBrains Mono', monospace; font-size: 7pt; font-weight: 700; color: var(--amber); }
+
+    .pi { padding: 10mm 14mm 14mm; }
+
+    .ch-label { font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cobalt); display: flex; align-items: center; gap: 8px; margin-bottom: 3mm; }
+    .ch-label::before { content: ''; display: inline-block; width: 20px; height: 2px; background: var(--cyan); }
+    .ch-title { font-size: 22pt; font-weight: 700; color: var(--navy); margin-bottom: 6mm; line-height: 1; }
+    .ch-title em { font-style: normal; color: var(--cobalt); }
+
+    p { font-size: 9pt; line-height: 1.7; color: #333; margin-bottom: 3mm; }
+    ul, ol { padding-left: 5mm; margin-bottom: 3mm; }
+    li { font-size: 9pt; line-height: 1.65; color: #333; margin-bottom: 1.5mm; }
+    li::marker { color: var(--cobalt); font-weight: 700; }
+
+    h3 { font-size: 13pt; font-weight: 600; color: var(--navy); margin: 5mm 0 2.5mm; letter-spacing: 0.02em; }
+    h4 { font-size: 10pt; font-weight: 600; color: var(--cobalt); margin: 3.5mm 0 1.5mm; text-transform: uppercase; letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace; }
+
+    .note { padding: 3mm 4mm; background: rgba(0,71,171,0.06); border-left: 3px solid var(--cobalt); margin: 3mm 0; }
+    .note p { margin: 0; font-size: 8.5pt; color: var(--navy); }
+    .note.warn { background: rgba(255,176,0,0.08); border-color: var(--amber); }
+    .note.warn p { color: #7a5000; }
+    .note.tip { background: rgba(0,212,255,0.06); border-color: var(--cyan); }
+    .note.tip p { color: #004d5e; }
+
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); padding: 3mm 4mm; margin: 2.5mm 0; border-radius: 0; overflow: hidden; }
+    .code-block .cb-label { font-family: 'JetBrains Mono', monospace; font-size: 6pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5mm; }
+    .code-block code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 8pt; color: var(--navy); line-height: 1.6; white-space: pre; }
+    .code-block code .cm { color: var(--muted); }
+    .code-block code .kw { color: var(--cobalt); font-weight: 700; }
+    .code-block code .st { color: #2e7d32; }
+    .code-block code .ky { color: #6a1b9a; }
+
+    code { font-family: 'JetBrains Mono', monospace; font-size: 8pt; background: var(--code-bg); padding: 0.5mm 1.5mm; color: var(--cobalt); border: 1px solid var(--border); }
+
+    .step-list { list-style: none; padding: 0; counter-reset: steps; }
+    .step-list li { counter-increment: steps; display: flex; gap: 3mm; align-items: flex-start; margin-bottom: 3mm; }
+    .step-list li::before { content: counter(steps); display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--navy); color: white; font-family: 'JetBrains Mono', monospace; font-size: 7pt; font-weight: 700; flex-shrink: 0; margin-top: 0.5mm; }
+    .step-list li p { margin: 0; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+    .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 3mm; }
+
+    .info-card { padding: 4mm; border: 1px solid var(--border); background: white; }
+    .info-card .ic-label { font-family: 'JetBrains Mono', monospace; font-size: 6.5pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5mm; }
+    .info-card .ic-val { font-size: 9pt; font-weight: 600; color: var(--navy); }
+    .info-card .ic-val code { background: none; border: none; padding: 0; font-size: 8.5pt; color: var(--cobalt); }
+
+    .file-tree { background: var(--code-bg); border: 1px solid var(--border); padding: 3mm 4mm; margin: 2.5mm 0; }
+    .file-tree code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; line-height: 1.8; color: var(--ink); white-space: pre; background: none; border: none; padding: 0; }
+    .file-tree .dir { color: var(--cobalt); font-weight: 700; }
+    .file-tree .file { color: #2e7d32; }
+    .file-tree .comment { color: var(--muted); }
+
+    .page-num { position: absolute; bottom: 8mm; right: 12mm; font-family: 'JetBrains Mono', monospace; font-size: 7pt; color: var(--muted); letter-spacing: 0.1em; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 8.5pt; margin: 3mm 0; }
+    thead tr { background: var(--navy); }
+    thead th { font-family: 'JetBrains Mono', monospace; font-size: 7pt; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.8); padding: 2.5mm 3mm; text-align: left; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--surface); }
+    tbody td { padding: 2.5mm 3mm; color: #333; vertical-align: top; }
+    tbody td code { font-size: 7.5pt; }
+
+    .divider { height: 1px; background: var(--border); margin: 5mm 0; }
+    .cyan-bar { height: 2px; width: 32px; background: var(--cyan); margin-bottom: 3mm; }
+  </style>
+</head>
+<body>
+
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<section class="page" id="cover">
+  <div class="grid-bg"></div>
+  <div class="top-bar"></div>
+  <div class="top-right">
+    <img src="/logo.png" alt="UPT Racing" onerror="this.style.display='none'" />
+    <span>formulastudent.upt.ro</span>
+  </div>
+  <div class="wm">DOCS</div>
+
+  <div class="eyebrow">UPT Racing — Official Documentation</div>
+  <h1>Website<br />User <em>Manual</em></h1>
+  <p class="sub">
+    A complete guide for team members on how to run, update and maintain the
+    UPT Racing website — from adding a news post to deploying a new build.
+  </p>
+  <div class="meta-row">
+    <span class="meta-pill hi">Version 1.0 — 2025</span>
+    <span class="meta-pill">Astro v6 + Tailwind v4</span>
+    <span class="meta-pill">formulastudent.upt.ro</span>
+  </div>
+  <div class="page-num">UPT RACING / MANUAL</div>
+</section>
+
+
+<!-- ══════════════════ TABLE OF CONTENTS ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Contents</span></div>
+  </div>
+  <div class="toc-page">
+    <div class="section-label">User Manual</div>
+    <h2 style="font-size:24pt;color:var(--navy);margin-bottom:8mm;">Table of Contents</h2>
+
+    <div class="toc-section">
+      <div class="toc-item">
+        <span class="toc-num">01</span>
+        <div style="flex:1;">
+          <div class="toc-title">Getting Started</div>
+          <div class="toc-sub">Prerequisites · Installing dependencies · Running locally</div>
+        </div>
+        <span class="toc-pg">03</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">02</span>
+        <div style="flex:1;">
+          <div class="toc-title">Project Structure</div>
+          <div class="toc-sub">Folder layout · Key files · Where things live</div>
+        </div>
+        <span class="toc-pg">04</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">03</span>
+        <div style="flex:1;">
+          <div class="toc-title">Managing News Articles</div>
+          <div class="toc-sub">Adding · Editing · Deleting · Frontmatter fields</div>
+        </div>
+        <span class="toc-pg">05</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">04</span>
+        <div style="flex:1;">
+          <div class="toc-title">Managing Cars</div>
+          <div class="toc-sub">Adding a new car · Updating specs · Archive</div>
+        </div>
+        <span class="toc-pg">06</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">05</span>
+        <div style="flex:1;">
+          <div class="toc-title">Team & Sponsors</div>
+          <div class="toc-sub">Updating the roster · Adding sponsor logos</div>
+        </div>
+        <span class="toc-pg">07</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">06</span>
+        <div style="flex:1;">
+          <div class="toc-title">Site Configuration</div>
+          <div class="toc-sub">Banner · Social links · Nav · Events · Favicon</div>
+        </div>
+        <span class="toc-pg">08</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">07</span>
+        <div style="flex:1;">
+          <div class="toc-title">Adding Images & Media</div>
+          <div class="toc-sub">Where to place files · Naming conventions · Formats</div>
+        </div>
+        <span class="toc-pg">09</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">08</span>
+        <div style="flex:1;">
+          <div class="toc-title">Building & Deploying</div>
+          <div class="toc-sub">Production build · Uploading to UPT server · Git workflow</div>
+        </div>
+        <span class="toc-pg">10</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">09</span>
+        <div style="flex:1;">
+          <div class="toc-title">Pages Reference</div>
+          <div class="toc-sub">What each page does and what to edit</div>
+        </div>
+        <span class="toc-pg">11</span>
+      </div>
+      <div class="toc-item">
+        <span class="toc-num">10</span>
+        <div style="flex:1;">
+          <div class="toc-title">Troubleshooting</div>
+          <div class="toc-sub">Common errors and how to fix them</div>
+        </div>
+        <span class="toc-pg">12</span>
+      </div>
+    </div>
+
+    <div class="note tip" style="margin-top:8mm;">
+      <p><strong>First time?</strong> Start with Chapter 01 to get the site running locally, then jump to whichever chapter covers the task you need to do.</p>
+    </div>
+  </div>
+  <div class="page-num">02</div>
+</section>
+
+
+<!-- ══════════════════ CH 01 — GETTING STARTED ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Getting Started</span><span class="ph-num">01</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 01</div>
+    <div class="ch-title">Getting <em>Started</em></div>
+
+    <h3>Prerequisites</h3>
+    <p>Before you can run or edit the website you need the following tools installed on your computer:</p>
+    <div class="three-col" style="margin-bottom:4mm;">
+      <div class="info-card">
+        <div class="ic-label">Node.js</div>
+        <div class="ic-val">v18 or newer<br /><code>node -v</code> to check</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Package Manager</div>
+        <div class="ic-val">npm (comes with Node) or pnpm</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">Code Editor</div>
+        <div class="ic-val">VS Code recommended<br />with Astro extension</div>
+      </div>
+    </div>
+    <p>Install Node.js from <code>nodejs.org</code> if you don't have it. You can verify with <code>node -v</code> in your terminal.</p>
+
+    <h3>Clone & Install</h3>
+    <ol class="step-list">
+      <li><p>Clone the repository from GitHub to your computer.</p></li>
+      <li><p>Open a terminal in the project folder.</p></li>
+      <li><p>Install dependencies:</p></li>
+    </ol>
+    <div class="code-block">
+      <div class="cb-label">Terminal</div>
+      <code>npm install</code>
+    </div>
+
+    <h3>Run the Development Server</h3>
+    <div class="code-block">
+      <div class="cb-label">Terminal</div>
+      <code>npm run dev</code>
+    </div>
+    <p>This starts a local server. Open <code>http://localhost:4321</code> in your browser. The site reloads automatically every time you save a file — no need to restart.</p>
+
+    <h3>Useful Commands</h3>
+    <table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>npm run dev</code></td><td>Start local development server at localhost:4321</td></tr>
+        <tr><td><code>npm run build</code></td><td>Build the production-ready static site into <code>dist/</code></td></tr>
+        <tr><td><code>npm run preview</code></td><td>Preview the production build locally before deploying</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note tip">
+      <p><strong>Tip:</strong> Always run <code>npm run preview</code> after a build to check everything looks correct before uploading to the server.</p>
+    </div>
+  </div>
+  <div class="page-num">03</div>
+</section>
+
+
+<!-- ══════════════════ CH 02 — PROJECT STRUCTURE ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Project Structure</span><span class="ph-num">02</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 02</div>
+    <div class="ch-title">Project <em>Structure</em></div>
+
+    <p>The project follows the standard Astro layout. Here are the folders and files you will interact with most often:</p>
+
+    <div class="file-tree">
+      <code><span class="dir">src/</span>
+<span class="dir">  content/</span>            <span class="comment">← All editable content lives here</span>
+<span class="dir">    news/</span>              <span class="comment">← News articles (one .md file per article)</span>
+<span class="dir">    cars/</span>              <span class="comment">← Car data files (one .md file per car)</span>
+<span class="dir">  pages/</span>              <span class="comment">← One .astro file = one page of the site</span>
+    index.astro         <span class="comment">← Home page</span>
+    about.astro         <span class="comment">← About Us page</span>
+    team.astro          <span class="comment">← Meet the Team page</span>
+    sponsors.astro      <span class="comment">← Sponsors page</span>
+    competitions.astro  <span class="comment">← Competitions page</span>
+    contact.astro       <span class="comment">← Contact page</span>
+    join-us.astro       <span class="comment">← Join Us / Apply page</span>
+<span class="dir">    car/</span>
+      current.astro     <span class="comment">← Current car specs page</span>
+      archive.astro     <span class="comment">← Past cars archive</span>
+<span class="dir">    news/</span>
+      index.astro       <span class="comment">← News listing page</span>
+      [slug].astro      <span class="comment">← Individual news article page</span>
+<span class="dir">  components/</span>         <span class="comment">← Reusable UI pieces (header, footer, etc.)</span>
+<span class="dir">  layouts/</span>
+    Layout.astro        <span class="comment">← Main site shell (banner, nav, footer)</span>
+<span class="dir">  styles/</span>
+    global.css          <span class="comment">← Global CSS variables and base styles</span>
+<span class="dir">public/</span>               <span class="comment">← Static files served as-is (images, logos)</span></code>
+    </div>
+
+    <div class="note">
+      <p><strong>Rule of thumb:</strong> For day-to-day content updates (news, cars, team) you only ever touch files inside <code>src/content/</code> and <code>public/</code>. You rarely need to edit <code>src/pages/</code> unless you are changing the layout of a specific page.</p>
+    </div>
+
+    <h3>The Content System</h3>
+    <p>The site uses <strong>Astro Content Collections</strong> — a simple, structured way to manage content using Markdown files. Each collection is a folder inside <code>src/content/</code>. Each item in a collection is one <code>.md</code> file with a frontmatter block (the section between <code>---</code> dashes) and a body of text below.</p>
+
+    <div class="two-col" style="margin-top:3mm;">
+      <div class="info-card">
+        <div class="ic-label">news/</div>
+        <div class="ic-val" style="font-size:8.5pt;font-weight:400;color:#333;line-height:1.5;">Each file is one article. The filename becomes the URL slug. Files are automatically sorted by date.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-label">cars/</div>
+        <div class="ic-val" style="font-size:8.5pt;font-weight:400;color:#333;line-height:1.5;">Each file is one car generation. Used to populate the archive page and individual car detail pages.</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">04</div>
+</section>
+
+
+<!-- ══════════════════ CH 03 — NEWS ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Managing News</span><span class="ph-num">03</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 03</div>
+    <div class="ch-title">Managing <em>News Articles</em></div>
+
+    <h3>Adding a New Article</h3>
+    <ol class="step-list">
+      <li><p>Create a new file in <code>src/content/news/</code>. Name it in lowercase with hyphens, e.g. <code>fs-balkans-2025-results.md</code>. The filename becomes the URL: <code>/news/fs-balkans-2025-results</code>.</p></li>
+      <li><p>Add the frontmatter block at the top of the file (see template below).</p></li>
+      <li><p>Write the article body in Markdown below the second <code>---</code>.</p></li>
+      <li><p>Save — the article appears automatically on the news listing and homepage.</p></li>
+    </ol>
+
+    <h4>Article Template</h4>
+    <div class="code-block">
+      <div class="cb-label">src/content/news/your-article-slug.md</div>
+      <code><span class="ky">---</span>
+<span class="kw">title</span>:       <span class="st">"Your Article Title Here"</span>
+<span class="kw">date</span>:        <span class="st">2025-07-15</span>          <span class="cm"># YYYY-MM-DD format</span>
+<span class="kw">category</span>:   <span class="st">competition</span>         <span class="cm"># competition | team | technical | event</span>
+<span class="kw">author</span>:     <span class="st">"Your Name"</span>
+<span class="kw">coverImage</span>: <span class="st">"/news/your-image.jpg"</span> <span class="cm"># place image in public/news/</span>
+<span class="kw">excerpt</span>:    <span class="st">"One sentence summary shown on the news card."</span>
+<span class="kw">featured</span>:   <span class="st">false</span>               <span class="cm"># true = shown as hero on news page</span>
+<span class="ky">---</span>
+
+Your article content goes here. You can use **bold**, *italic*,
+## Headings, and - bullet lists.
+</code>
+    </div>
+
+    <h4>Frontmatter Fields Reference</h4>
+    <table>
+      <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>title</code></td><td>Yes</td><td>Article headline shown on cards and the article page</td></tr>
+        <tr><td><code>date</code></td><td>Yes</td><td>Publication date — articles are sorted newest first</td></tr>
+        <tr><td><code>category</code></td><td>Yes</td><td><code>competition</code>, <code>team</code>, <code>technical</code>, or <code>event</code></td></tr>
+        <tr><td><code>author</code></td><td>No</td><td>Author name shown on the article</td></tr>
+        <tr><td><code>coverImage</code></td><td>No</td><td>Path to image — place in <code>public/news/</code></td></tr>
+        <tr><td><code>excerpt</code></td><td>Yes</td><td>Short summary for news cards and SEO description</td></tr>
+        <tr><td><code>featured</code></td><td>No</td><td>Set to <code>true</code> to feature as the hero article</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Editing an Article</h3>
+    <p>Open the relevant <code>.md</code> file in <code>src/content/news/</code> and edit the frontmatter or body text. Save — changes appear instantly in dev mode.</p>
+
+    <h3>Deleting an Article</h3>
+    <p>Delete the <code>.md</code> file. The article and its URL are automatically removed on the next build.</p>
+
+    <div class="note warn">
+      <p><strong>Note:</strong> Only one article should have <code>featured: true</code> at a time. If multiple are featured, the most recent one is used as the hero.</p>
+    </div>
+  </div>
+  <div class="page-num">05</div>
+</section>
+
+
+<!-- ══════════════════ CH 04 — CARS ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Managing Cars</span><span class="ph-num">04</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 04</div>
+    <div class="ch-title">Managing <em>Cars</em></div>
+
+    <h3>Updating Current Car Specs</h3>
+    <p>The <strong>current car specs page</strong> (<code>/car/current</code>) is edited directly in <code>src/pages/car/current.astro</code>. Open the file and update the <code>specs</code> object at the top — it is a plain JavaScript object with tab names as keys.</p>
+
+    <h3>Adding a New Car to the Archive</h3>
+    <ol class="step-list">
+      <li><p>Create a new file in <code>src/content/cars/</code>, e.g. <code>tsr5.md</code>.</p></li>
+      <li><p>Fill in the frontmatter using the template below.</p></li>
+      <li><p>Add the car's cover image to <code>public/</code> and reference it in <code>coverImage</code>.</p></li>
+    </ol>
+
+    <h4>Car File Template</h4>
+    <div class="code-block">
+      <div class="cb-label">src/content/cars/tsr5.md</div>
+      <code><span class="ky">---</span>
+<span class="kw">title</span>:       <span class="st">"TSR 5"</span>
+<span class="kw">year</span>:        <span class="st">2026</span>
+<span class="kw">years</span>:       <span class="st">"2025–2026"</span>
+<span class="kw">tagline</span>:    <span class="st">"Your one-line description"</span>
+<span class="kw">coverImage</span>: <span class="st">"/tsr5.jpg"</span>
+
+<span class="kw">engine</span>:     <span class="st">"Engine name and displacement"</span>
+<span class="kw">weight</span>:     <span class="st">"XXX kg"</span>
+
+<span class="kw">powertrain</span>:
+  <span class="kw">engine</span>:       <span class="st">"Engine model"</span>
+  <span class="kw">displacement</span>: <span class="st">"XXX cm³"</span>
+  <span class="kw">ecu</span>:          <span class="st">"ECU model"</span>
+  <span class="kw">drivetrain</span>:   <span class="st">"Drivetrain description"</span>
+
+<span class="kw">chassis</span>:
+  <span class="kw">type</span>:         <span class="st">"Frame type"</span>
+
+<span class="kw">dimensions</span>:
+  <span class="kw">length</span>:       <span class="st">"XXXX mm"</span>
+  <span class="kw">width</span>:        <span class="st">"XXXX mm"</span>
+  <span class="kw">height</span>:       <span class="st">"XXXX mm"</span>
+  <span class="kw">wheelbase</span>:    <span class="st">"XXXX mm"</span>
+
+<span class="kw">seasons</span>:
+  - <span class="st">"FS Event Name Year"</span>
+
+<span class="kw">results</span>:
+  - <span class="kw">event</span>:     <span class="st">"FS Event Name Year"</span>
+    <span class="kw">placement</span>: <span class="st">1</span>
+    <span class="kw">year</span>:      <span class="st">2026</span>
+<span class="ky">---</span>
+
+Optional longer description of the car here.
+</code>
+    </div>
+
+    <div class="note">
+      <p><strong>Archive page:</strong> The car archive at <code>/car/archive</code> automatically lists all files in <code>src/content/cars/</code>, sorted by year (newest first). No extra step needed.</p>
+    </div>
+  </div>
+  <div class="page-num">06</div>
+</section>
+
+
+<!-- ══════════════════ CH 05 — TEAM & SPONSORS ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Team &amp; Sponsors</span><span class="ph-num">05</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 05</div>
+    <div class="ch-title">Team &amp; <em>Sponsors</em></div>
+
+    <h3>Updating the Team Roster</h3>
+    <p>The team page is managed directly in <code>src/pages/team.astro</code>. Open the file and find the <code>members</code> array near the top. Each member is an object — add, edit or remove entries as needed.</p>
+
+    <div class="code-block">
+      <div class="cb-label">src/pages/team.astro — members array</div>
+      <code>{
+  <span class="kw">name</span>:       <span class="st">"First Last"</span>,
+  <span class="kw">role</span>:       <span class="st">"Chief Engineer"</span>,
+  <span class="kw">department</span>: <span class="st">"Mechanical"</span>, <span class="cm">// Mechanical | Electronics | Aero | Business</span>
+  <span class="kw">image</span>:      <span class="st">"/team/firstname-lastname.jpg"</span>,
+  <span class="kw">linkedin</span>:   <span class="st">"https://linkedin.com/in/..."</span>, <span class="cm">// optional</span>
+},</code>
+    </div>
+
+    <p>Place member photos in <code>public/team/</code>. Use consistent dimensions — ideally square or 3:4 portrait, minimum 400×400px.</p>
+
+    <div class="note warn">
+      <p><strong>No photo yet?</strong> Leave the <code>image</code> field as an empty string <code>""</code> — the page will show a placeholder automatically.</p>
+    </div>
+
+    <h3>Adding Sponsor Logos</h3>
+    <p>Sponsor logos appear in the animated marquee on the homepage and on the Sponsors page. Two sets of logos are used — white (for dark backgrounds) and colour (for light backgrounds). They are stored in:</p>
+
+    <div class="file-tree">
+      <code><span class="dir">public/</span>
+<span class="dir">  Logo sponsori alb/SVG/</span>    <span class="comment">← White/light version logos</span>
+<span class="dir">  Logo sponsori albastre/SVG/</span> <span class="comment">← Colour version logos</span></code>
+    </div>
+
+    <ol class="step-list">
+      <li><p>Add the SVG logo files to both folders (white version and colour version).</p></li>
+      <li><p>Open <code>src/pages/index.astro</code> and find the <code>marqueeLogos</code> array.</p></li>
+      <li><p>Add an entry with the exact filenames:</p></li>
+    </ol>
+
+    <div class="code-block">
+      <div class="cb-label">src/pages/index.astro — marqueeLogos array</div>
+      <code>{ <span class="kw">name</span>: <span class="st">'Sponsor Name'</span>, <span class="kw">fileW</span>: <span class="st">'Logo-white.svg'</span>, <span class="kw">fileB</span>: <span class="st">'Logo-blue.svg'</span> },</code>
+    </div>
+
+    <p>The sponsor also needs to be added to <code>src/pages/sponsors.astro</code> where the full sponsor grid is defined. Find the <code>sponsors</code> array in that file and add an entry with <code>name</code>, <code>logo</code>, <code>url</code>, and <code>tier</code> fields.</p>
+
+    <h3>Updating Social Links</h3>
+    <p>Social links (Instagram, Facebook, LinkedIn) are set in two places:</p>
+    <ul>
+      <li><code>src/components/layout/Footer.astro</code> — the footer social icons</li>
+      <li><code>src/pages/contact.astro</code> — the contact page social links</li>
+    </ul>
+    <p>Search for the existing URLs and replace them with updated ones.</p>
+  </div>
+  <div class="page-num">07</div>
+</section>
+
+
+<!-- ══════════════════ CH 06 — SITE CONFIG ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Site Configuration</span><span class="ph-num">06</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 06</div>
+    <div class="ch-title">Site <em>Configuration</em></div>
+
+    <h3>The Launch Event Banner</h3>
+    <p>The amber banner at the top of every page is configured in <code>src/layouts/Layout.astro</code>. Find the element with <code>id="launch-banner"</code> and update:</p>
+
+    <table>
+      <thead><tr><th>What to change</th><th>Where to find it</th></tr></thead>
+      <tbody>
+        <tr><td>Event name / text</td><td>The <code>&lt;span&gt;</code> inside the banner div — change the text directly</td></tr>
+        <tr><td>YouTube Live URL</td><td>The <code>href="#"</code> on <code>id="banner-stream-link"</code> — replace <code>#</code> with the YouTube URL</td></tr>
+        <tr><td>Hide the banner</td><td>Add <code>style="display:none;"</code> to the <code>id="launch-banner"</code> div</td></tr>
+        <tr><td>Dismiss reset (testing)</td><td>In browser DevTools → Application → Local Storage → delete <code>banner-tsr4evo-dismissed</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Upcoming Events (Homepage)</h3>
+    <p>The event countdown on the homepage is driven by the <code>events</code> array in <code>src/pages/index.astro</code>:</p>
+    <div class="code-block">
+      <div class="cb-label">src/pages/index.astro</div>
+      <code><span class="kw">const</span> events = [
+  { <span class="kw">title</span>: <span class="st">'Formula Student Balkans'</span>, <span class="kw">date</span>: <span class="kw">new</span> Date(<span class="st">'2026-07-12'</span>), <span class="kw">end</span>: <span class="kw">new</span> Date(<span class="st">'2026-07-17'</span>), <span class="kw">location</span>: <span class="st">'Dej, Romania'</span> },
+  <span class="cm">// add more events here</span>
+];</code>
+    </div>
+
+    <h3>Navigation Links</h3>
+    <p>The nav links are defined in <code>src/components/layout/Header.astro</code> in the <code>navLinks</code> array at the very top. Add, remove or reorder items there.</p>
+
+    <h3>Hero Stats (Homepage)</h3>
+    <p>The four animated stat counters on the homepage are the <code>stats</code> array in <code>src/pages/index.astro</code>. Each has a <code>value</code>, <code>num</code> (the number to count to), <code>title</code> and <code>desc</code>.</p>
+
+    <h3>About Page — Milestones</h3>
+    <p>The timeline on the About page is the <code>milestones</code> array at the top of <code>src/pages/about.astro</code>. Add a new object for each milestone with <code>year</code>, <code>title</code> and <code>desc</code>.</p>
+
+    <h3>Favicon</h3>
+    <p>The favicon is <code>public/logo.png</code>. Replace this file with a new one (keep the same filename and use a square PNG, minimum 512×512px).</p>
+
+    <div class="note">
+      <p><strong>Page titles &amp; SEO descriptions</strong> are set in each page's <code>&lt;Layout title="..." description="..."&gt;</code> tag at the top of every <code>.astro</code> file.</p>
+    </div>
+  </div>
+  <div class="page-num">08</div>
+</section>
+
+
+<!-- ══════════════════ CH 07 — IMAGES ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Images &amp; Media</span><span class="ph-num">07</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 07</div>
+    <div class="ch-title">Images &amp; <em>Media</em></div>
+
+    <h3>Where to Place Files</h3>
+    <p>All public assets (images, audio, PDFs) go inside the <code>public/</code> folder. Files placed here are served exactly as-is — a file at <code>public/hero-image.jpg</code> is accessible at <code>/hero-image.jpg</code> in the site.</p>
+
+    <div class="file-tree">
+      <code><span class="dir">public/</span>
+  hero-image.jpg          <span class="comment">← Homepage hero background</span>
+  logo.png                <span class="comment">← Site logo + favicon</span>
+  team-section.jpg        <span class="comment">← About page team photo</span>
+  tsr4hybrid.jpg          <span class="comment">← Current car hero image</span>
+  engine.mp3              <span class="comment">← Engine sound for Wake the Beast button</span>
+<span class="dir">  team/</span>                 <span class="comment">← Team member photos</span>
+<span class="dir">  news/</span>                 <span class="comment">← News article cover images</span>
+<span class="dir">  Logo sponsori alb/SVG/</span>  <span class="comment">← White sponsor logos</span>
+<span class="dir">  Logo sponsori albastre/SVG/</span> <span class="comment">← Colour sponsor logos</span></code>
+    </div>
+
+    <h3>Image Guidelines</h3>
+    <table>
+      <thead><tr><th>Use</th><th>Format</th><th>Recommended size</th></tr></thead>
+      <tbody>
+        <tr><td>Hero / car backgrounds</td><td>JPG</td><td>1920×1080px minimum, compressed to under 500KB</td></tr>
+        <tr><td>News cover images</td><td>JPG</td><td>1280×720px (16:9)</td></tr>
+        <tr><td>Team member photos</td><td>JPG / PNG</td><td>400×400px square or 400×533px (3:4)</td></tr>
+        <tr><td>Sponsor logos</td><td>SVG</td><td>Vector — any size, keep viewBox clean</td></tr>
+        <tr><td>Favicon</td><td>PNG</td><td>512×512px square</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Compressing Images</h3>
+    <p>Large images slow the site down. Before adding a photo, compress it using one of these free tools:</p>
+    <ul>
+      <li><strong>squoosh.app</strong> — drag and drop, choose WebP or JPG, adjust quality</li>
+      <li><strong>tinypng.com</strong> — simple drag and drop PNG/JPG compression</li>
+    </ul>
+    <p>Aim for under <strong>300KB</strong> for hero images and under <strong>100KB</strong> for cards and thumbnails.</p>
+
+    <h3>Replacing the Hero Image</h3>
+    <p>The homepage hero is <code>public/hero-image.jpg</code>. To replace it, simply save a new file with the exact same name — it overwrites the old one. No code change needed.</p>
+
+    <h3>Replacing the Engine Sound</h3>
+    <p>The "Wake the Beast" audio clip is <code>public/engine.mp3</code>. Replace the file with a new MP3 of the same name. Keep it under 2MB for fast loading.</p>
+
+    <div class="note tip">
+      <p><strong>Naming convention:</strong> Use lowercase letters and hyphens only — no spaces or special characters in filenames. Example: <code>tsr5-launch-event.jpg</code> ✓ &nbsp; <code>TSR5 Launch Event.jpg</code> ✗</p>
+    </div>
+  </div>
+  <div class="page-num">09</div>
+</section>
+
+
+<!-- ══════════════════ CH 08 — BUILD & DEPLOY ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Building &amp; Deploying</span><span class="ph-num">08</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 08</div>
+    <div class="ch-title">Building &amp; <em>Deploying</em></div>
+
+    <h3>Building for Production</h3>
+    <p>When your changes are ready, build the static site. This generates a <code>dist/</code> folder containing plain HTML, CSS and JS files — everything the server needs.</p>
+    <div class="code-block">
+      <div class="cb-label">Terminal</div>
+      <code>npm run build</code>
+    </div>
+    <p>After the build finishes, preview it locally to check everything is correct:</p>
+    <div class="code-block">
+      <div class="cb-label">Terminal</div>
+      <code>npm run preview</code>
+    </div>
+
+    <h3>Uploading to the UPT Server</h3>
+    <p>The site is hosted at <strong>formulastudent.upt.ro</strong> on a university server. Upload the contents of the <code>dist/</code> folder to the server's web root using SFTP or the file manager provided by the IT department. The specific credentials and path will be provided by your UPT system administrator.</p>
+    <div class="note warn">
+      <p><strong>Important:</strong> Upload the <em>contents</em> of <code>dist/</code>, not the folder itself. The server should serve <code>index.html</code> from the web root.</p>
+    </div>
+
+    <h3>Git Workflow</h3>
+    <p>All changes are tracked with Git. Follow this workflow to keep the history clean:</p>
+    <div class="code-block">
+      <div class="cb-label">Terminal — standard workflow</div>
+      <code><span class="cm"># 1. Check what changed</span>
+git status
+
+<span class="cm"># 2. Stage your changes</span>
+git add src/content/news/my-new-article.md
+
+<span class="cm"># 3. Commit with a clear message</span>
+git commit -m "Add FS Balkans 2025 results article"
+
+<span class="cm"># 4. Push to GitHub</span>
+git push</code>
+    </div>
+
+    <h3>Commit Message Guidelines</h3>
+    <table>
+      <thead><tr><th>Type</th><th>Example message</th></tr></thead>
+      <tbody>
+        <tr><td>New article</td><td><code>Add FS Balkans 2025 results article</code></td></tr>
+        <tr><td>Update content</td><td><code>Update TSR4 specs — correct weight to 256kg</code></td></tr>
+        <tr><td>New team member</td><td><code>Add Mihai Ionescu to electronics roster</code></td></tr>
+        <tr><td>Fix a bug</td><td><code>Fix mobile menu overlapping About link</code></td></tr>
+        <tr><td>Add sponsor</td><td><code>Add Continental to sponsor marquee</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="note tip">
+      <p><strong>Good habit:</strong> Commit often and with specific messages. It makes it easy for future team members to understand what changed and when.</p>
+    </div>
+  </div>
+  <div class="page-num">10</div>
+</section>
+
+
+<!-- ══════════════════ CH 09 — PAGES REFERENCE ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Pages Reference</span><span class="ph-num">09</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 09</div>
+    <div class="ch-title">Pages <em>Reference</em></div>
+
+    <p>Quick reference for what each page does and where to edit its content.</p>
+
+    <table>
+      <thead><tr><th>Page</th><th>URL</th><th>File to edit</th><th>What to update</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Home</strong></td>
+          <td><code>/</code></td>
+          <td><code>src/pages/index.astro</code></td>
+          <td>Stats, events, hero text. News and sponsors auto-populate.</td>
+        </tr>
+        <tr>
+          <td><strong>About Us</strong></td>
+          <td><code>/about</code></td>
+          <td><code>src/pages/about.astro</code></td>
+          <td><code>milestones</code> array for timeline, <code>values</code> array, team photo.</td>
+        </tr>
+        <tr>
+          <td><strong>Current Car</strong></td>
+          <td><code>/car/current</code></td>
+          <td><code>src/pages/car/current.astro</code></td>
+          <td><code>specs</code> object, gallery images, car title and season.</td>
+        </tr>
+        <tr>
+          <td><strong>Car Archive</strong></td>
+          <td><code>/car/archive</code></td>
+          <td><code>src/content/cars/*.md</code></td>
+          <td>Add a new <code>.md</code> file per car — auto-listed.</td>
+        </tr>
+        <tr>
+          <td><strong>Team</strong></td>
+          <td><code>/team</code></td>
+          <td><code>src/pages/team.astro</code></td>
+          <td><code>members</code> array — name, role, department, photo.</td>
+        </tr>
+        <tr>
+          <td><strong>Competitions</strong></td>
+          <td><code>/competitions</code></td>
+          <td><code>src/pages/competitions.astro</code></td>
+          <td>Results table, upcoming events list.</td>
+        </tr>
+        <tr>
+          <td><strong>News</strong></td>
+          <td><code>/news</code></td>
+          <td><code>src/content/news/*.md</code></td>
+          <td>Add/edit/delete <code>.md</code> files — auto-listed by date.</td>
+        </tr>
+        <tr>
+          <td><strong>Sponsors</strong></td>
+          <td><code>/sponsors</code></td>
+          <td><code>src/pages/sponsors.astro</code></td>
+          <td><code>sponsors</code> array and tier descriptions.</td>
+        </tr>
+        <tr>
+          <td><strong>Join Us</strong></td>
+          <td><code>/join-us</code></td>
+          <td><code>src/pages/join-us.astro</code></td>
+          <td>Department list, FAQ questions, application form fields.</td>
+        </tr>
+        <tr>
+          <td><strong>Contact</strong></td>
+          <td><code>/contact</code></td>
+          <td><code>src/pages/contact.astro</code></td>
+          <td>Email address, social links, contact form.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Layout &amp; Global Elements</h3>
+    <table>
+      <thead><tr><th>Element</th><th>File</th></tr></thead>
+      <tbody>
+        <tr><td>Header / navigation</td><td><code>src/components/layout/Header.astro</code></td></tr>
+        <tr><td>Footer</td><td><code>src/components/layout/Footer.astro</code></td></tr>
+        <tr><td>Launch banner, progress bar, cursor</td><td><code>src/layouts/Layout.astro</code></td></tr>
+        <tr><td>Colours, fonts, dark/light mode</td><td><code>src/styles/global.css</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="page-num">11</div>
+</section>
+
+
+<!-- ══════════════════ CH 10 — TROUBLESHOOTING ══════════════════ -->
+<section class="page">
+  <div class="ph">
+    <img src="/logo.png" alt="" onerror="this.style.display='none'" />
+    <div class="ph-right"><span class="ph-chapter">Troubleshooting</span><span class="ph-num">10</span></div>
+  </div>
+  <div class="pi">
+    <div class="ch-label">Chapter 10</div>
+    <div class="ch-title"><em>Troubleshooting</em></div>
+
+    <table>
+      <thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>npm run dev</code> fails</td>
+          <td>Dependencies not installed or wrong Node version</td>
+          <td>Run <code>npm install</code> first. Check <code>node -v</code> ≥ 18.</td>
+        </tr>
+        <tr>
+          <td>My new article doesn't appear</td>
+          <td>Missing required frontmatter field or wrong date format</td>
+          <td>Check <code>title</code>, <code>date</code>, <code>category</code> and <code>excerpt</code> are all present. Date must be <code>YYYY-MM-DD</code>.</td>
+        </tr>
+        <tr>
+          <td>Image not showing</td>
+          <td>Wrong path or file not in <code>public/</code></td>
+          <td>Confirm file exists in <code>public/</code>. Path in code must start with <code>/</code> (e.g. <code>/news/photo.jpg</code>).</td>
+        </tr>
+        <tr>
+          <td>Banner still shows after dismiss</td>
+          <td><code>localStorage</code> has the dismiss flag set</td>
+          <td>DevTools → Application → Local Storage → delete <code>banner-tsr4evo-dismissed</code>.</td>
+        </tr>
+        <tr>
+          <td>Dark mode not toggling</td>
+          <td>JavaScript error or <code>localStorage</code> stuck</td>
+          <td>Open DevTools console for errors. Clear localStorage and reload.</td>
+        </tr>
+        <tr>
+          <td>Build fails with content error</td>
+          <td>Frontmatter field type mismatch</td>
+          <td>Check the terminal output — it will name the file and field. Common issue: <code>date</code> must be a plain date, not a string in quotes.</td>
+        </tr>
+        <tr>
+          <td>Fonts look wrong after deploy</td>
+          <td>Google Fonts blocked by browser or network</td>
+          <td>The fonts load from Google CDN. If the server blocks external requests, download and self-host the font files.</td>
+        </tr>
+        <tr>
+          <td>Page shows old content after deploy</td>
+          <td>Browser cache</td>
+          <td>Hard refresh: <code>Cmd+Shift+R</code> (Mac) / <code>Ctrl+Shift+R</code> (Windows).</td>
+        </tr>
+        <tr>
+          <td>Mobile horizontal scroll</td>
+          <td>An element is wider than the viewport</td>
+          <td>DevTools → toggle device toolbar → inspect which element overflows. Likely a long unbreakable string or image without <code>max-width</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Getting Help</h3>
+    <ul>
+      <li><strong>Astro docs:</strong> <code>docs.astro.build</code> — comprehensive reference for all Astro features</li>
+      <li><strong>Tailwind docs:</strong> <code>tailwindcss.com/docs</code> — utility class reference</li>
+      <li><strong>Git history:</strong> Run <code>git log --oneline</code> to see all past changes and identify when something broke</li>
+      <li><strong>Revert a file:</strong> <code>git checkout -- src/pages/index.astro</code> to undo uncommitted changes to a file</li>
+    </ul>
+
+    <div class="note tip">
+      <p><strong>When in doubt, don't delete — comment out.</strong> Wrap the section in <code>&lt;!-- ... --&gt;</code> (HTML) or <code>{/* ... */}</code> (Astro/JSX) so you can restore it easily.</p>
+    </div>
+
+    <div style="margin-top:8mm;padding:5mm;border:1px solid var(--border);background:white;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-size:13pt;font-weight:700;text-transform:uppercase;color:var(--navy);margin-bottom:1mm;">UPT Racing — Website Manual v1.0</div>
+        <div style="font-size:8pt;color:var(--muted);">formulastudent.upt.ro · Astro v6 + Tailwind CSS v4 · 2025</div>
+      </div>
+      <img src="/logo.png" alt="UPT Racing" style="height:10mm;width:auto;opacity:0.35;" onerror="this.style.display='none'" />
+    </div>
+  </div>
+  <div class="page-num">12</div>
+</section>
+
+</body>
+</html>
