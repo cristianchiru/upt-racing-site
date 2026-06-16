@@ -5,6 +5,8 @@ interface Props {
   size?: 'sm' | 'md' | 'lg';
   type?: 'button' | 'submit';
   class?: string;
+  download?: boolean | string;
+  target?: string;
 }
 
 const {
@@ -13,6 +15,8 @@ const {
   size = 'md',
   type = 'button',
   class: className = '',
+  download,
+  target,
 } = Astro.props;
 
 const sizes = {
@@ -31,7 +35,7 @@ const base = `inline-flex items-center justify-center font-semibold uppercase tr
 ---
 
 {href ? (
-  <a href={href} class={base} style={styles[variant]}>
+  <a href={href} class={base} style={styles[variant]} download={download} target={target}>
     <slot />
   </a>
 ) : (
